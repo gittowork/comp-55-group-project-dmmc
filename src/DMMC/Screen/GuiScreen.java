@@ -13,6 +13,7 @@ public class GuiScreen extends Screen
 	{
 		super(sizeX, sizeY);
 	}
+
 	
 	public void keyPressed(KeyEvent e)
 	{
@@ -80,5 +81,6 @@ public class GuiScreen extends Screen
 	{
 		
 	}
+
 
 }
