@@ -22,7 +22,13 @@ public class Tile extends PhysicsObject{
 		type = t;
 	}
 	
-	public TileType getType(){return type;}
+	public TileType getType()
+	{
+		return type;
+	}
 	
-	public void setType(TileType t){type = t;}
+	public void setType(TileType t)
+	{
+		type = t;
+	}
 }
