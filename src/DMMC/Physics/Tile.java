@@ -32,3 +32,5 @@ public class Tile extends PhysicsObject{
 		type = t;
 	}
 }
+
+
