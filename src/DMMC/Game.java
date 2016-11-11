@@ -35,7 +35,7 @@ public class Game extends GraphicsProgram{
 		gameState = GameState.Init;
 		
 		
-		// drawing tiles on sample input
+		// drawing tiles on the sample input
 /********************************************************************/
 		int levelX = windowWidth/tileWidth;
 		int levelY = windowHeight/tileHeight;
