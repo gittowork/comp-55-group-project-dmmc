@@ -41,48 +41,55 @@ public class LevelScreen extends Screen implements ActionListener {
 		
 	}
 	
-	public short getFrame() {
+	public short getFrame() 
+	{
 		return frameNum;
 		
 	}
 
 
-/*
-	public void inputRight() {
+
+	public void inputRight() 
+	{
 		// TODO Auto-generated method stub
 		
 	}
 
 
-	public void inputZ() {
+	public void inputZ() 
+	{
 		// TODO Auto-generated method stub
 		
 	}
 
 
-	public void inputEnter() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void inputUp() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void inputDown() {
+	public void inputEnter() 
+	{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void inputLeft() {
+	public void inputUp() 
+	{
 		// TODO Auto-generated method stub
 		
 	}
-*/
+
+	@Override
+	public void inputDown() 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void inputLeft() 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 
 }

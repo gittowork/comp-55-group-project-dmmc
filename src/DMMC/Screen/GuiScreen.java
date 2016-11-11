@@ -1,23 +1,20 @@
 package DMMC.Screen;
-
-import java.awt.Button;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-
+import DMMC.Physics.Button;
 public class GuiScreen extends Screen 
 {
-	private int cursorPosX;
-	private ArrayList<Button> button;
+	private int cursorPosX;				//which button the cursor is at
+	private ArrayList<Button> button;	//stores the buttons on the screen
 
 	public GuiScreen(int sizeX, int sizeY) 
 	{
-		super(sizeX, sizeY);
+		super(sizeX, sizeY);		
 	}
 
 	
 	public void keyPressed(KeyEvent e)
 	{
-		//int input = e.getKeyCode()
 		if (e.getKeyCode() == 38) //38 is up
 		{
 			//do up things
@@ -52,34 +49,40 @@ public class GuiScreen extends Screen
 			return;
 	}
 	
+	@Override
 	public void inputUp()
 	{
-		
+		System.out.println("uppp");
 	}
 	
+	@Override
 	public void inputDown()
 	{
-		
+		System.out.println("down we goo");
 	}
 	
+	@Override
 	public void inputLeft()
 	{
-		
+		System.out.println("now left");
 	}
 	
+	@Override
 	public void inputRight()
 	{
-		
+		System.out.println("now to the right");
 	}
 	
+	@Override
 	public void inputZ()
 	{
 		
 	}
-	
+
+	@Override
 	public void inputEnter()
 	{
-		
+		System.out.println("enterrrr");
 	}
 
 

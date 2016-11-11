@@ -1,5 +1,6 @@
 import java.awt.*;
 
+import DMMC.Screen.GuiScreen;
 import acm.graphics.*;
 import acm.program.*;
 

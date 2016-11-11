@@ -31,7 +31,7 @@ public abstract class Screen {
 		
 
 	}
-	/*
+	
 	public abstract void inputUp();
 
 	public abstract void inputDown();
@@ -43,6 +43,6 @@ public abstract class Screen {
 	public abstract void inputZ();
 
 	public abstract void inputEnter();
-	*/
+	
 	
 }
