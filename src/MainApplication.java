@@ -21,6 +21,7 @@ public class MainApplication extends GraphicsApplication {
 		menu = new MenuPane(this);
 		setupInteractions();
 		switchToSome();
+		System.out.println("Yo Sup");
 	}
 	
 	/* Method: setupInteractions
