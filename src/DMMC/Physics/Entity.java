@@ -73,7 +73,7 @@ public class Entity extends PhysicsObject{
 		acceleration = new GPoint(0, 0);
 		
 		//Collision Points
-		colPoints = new CollisionPoint[8];
+		colPoints = new CollisionPoint[4];
 		for(int i = 0; i < colPoints.length; i ++)
 			colPoints[i] = new CollisionPoint(0,0);
 			
@@ -81,21 +81,26 @@ public class Entity extends PhysicsObject{
 	
 	private void setColPoint()
 	{
-		//top
-		colPoints[0].setLocation(getScreenPosX(), getScreenPosY() - colPointPadding);
-		colPoints[1].setLocation(getScreenPosX() + screenObj.getWidth(), getScreenPosY() - colPointPadding);
-				
-		//left
-		colPoints[2].setLocation(getScreenPosX() + screenObj.getWidth() + colPointPadding, getScreenPosY());
-		colPoints[3].setLocation(getScreenPosX() + screenObj.getWidth() + colPointPadding, getScreenPosY() + screenObj.getHeight());
-				
-		//bottom
-		colPoints[4].setLocation(getScreenPosX() + screenObj.getWidth(), getScreenPosY() + screenObj.getHeight() + colPointPadding);
-		colPoints[5].setLocation(getScreenPosX(), getScreenPosY() + screenObj.getHeight() + colPointPadding);
-				
-		//right
-		colPoints[6].setLocation(getScreenPosX() - colPointPadding, getScreenPosY() + screenObj.getHeight());
-		colPoints[7].setLocation(getScreenPosX() - colPointPadding, getScreenPosY());
+//		//top
+//		colPoints[0].setLocation(getScreenPosX(), getScreenPosY() - colPointPadding);
+//		colPoints[1].setLocation(getScreenPosX() + screenObj.getWidth(), getScreenPosY() - colPointPadding);
+//				
+//		//left
+//		colPoints[2].setLocation(getScreenPosX() + screenObj.getWidth() + colPointPadding, getScreenPosY());
+//		colPoints[3].setLocation(getScreenPosX() + screenObj.getWidth() + colPointPadding, getScreenPosY() + screenObj.getHeight());
+//				
+//		//bottom
+//		colPoints[4].setLocation(getScreenPosX() + screenObj.getWidth(), getScreenPosY() + screenObj.getHeight() + colPointPadding);
+//		colPoints[5].setLocation(getScreenPosX(), getScreenPosY() + screenObj.getHeight() + colPointPadding);
+//				
+//		//right
+//		colPoints[6].setLocation(getScreenPosX() - colPointPadding, getScreenPosY() + screenObj.getHeight());
+//		colPoints[7].setLocation(getScreenPosX() - colPointPadding, getScreenPosY());
+		
+		colPoints[0].setLocation(getScreenPos());
+		colPoints[1].setLocation(getScreenPosX() + screenObj.getWidth(), getScreenPosY());
+		colPoints[2].setLocation(getScreenPosX() + screenObj.getWidth(), getScreenPosY() + screenObj.getHeight());
+		colPoints[3].setLocation(getScreenPosX(), getScreenPosY() + screenObj.getHeight());
 		
 		//check for collision
 		for(int i = 0; i < colPoints.length; i ++)
