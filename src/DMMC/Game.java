@@ -39,16 +39,20 @@ public class Game extends GraphicsProgram{
 /********************************************************************/
 		int levelX = windowWidth/tileWidth;
 		int levelY = windowHeight/tileHeight;
-		currentScreen=new GuiScreen(levelX, levelY);
+		
+		currentScreen = new GuiScreen(levelX, levelY);
 		String arr[][] = new String[levelX][levelY];
-		for(int i=0;i<levelX;i++){
-			for(int j=0;j<levelY;j++){
+		
+		for(int i=0;i<levelX;i++)
+		{
+			for(int j=0;j<levelY;j++)
+			{
 				arr[i][j]="0";
 				if(j==levelY-1)
 					arr[i][j]="1";
 			}
 		}
-		currentScreen.drawTiles(arr);
+		currentScreen.initTiles(arr);
 		Tile[][] t = currentScreen.getTitleMap();
 		for(int i=0;i<levelX;i++){
 			for(int j=0;j<levelY;j++){
@@ -62,16 +66,16 @@ public class Game extends GraphicsProgram{
 		System.out.println(gameState.toString());
 		
 		
-//		e = new Entity(new GImage("TESTIMAGE.jpg"));
-//		add(e.getScreenObj());
+		e = new Entity(new GImage("player.png"));
+		add(e.getScreenObj());
 	}
 	
 	public void run()
 	{
-//		System.out.println("RUN");
-//		while(true){
-//			e.update();
-//		}
+		System.out.println("RUN");
+		while(true){
+			e.update();
+		}
 		
 	}
 	
