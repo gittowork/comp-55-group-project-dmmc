@@ -9,6 +9,8 @@ import acm.graphics.GPoint;
 public class Entity extends PhysicsObject{
 	
 	private static int lastId = 0;
+	private static double colPointPadding = 2;
+
 	
 	protected GPoint velocity;
 	protected GPoint acceleration;
@@ -54,8 +56,29 @@ public class Entity extends PhysicsObject{
 	}
 	
 	public void initPoints(){
+		//Vector Points
 		velocity = new GPoint(0, 0);
 		acceleration = new GPoint(0, 0);
+		
+		//Collision Points
+		colPoints = new CollisionPoint[8];
+		
+		//top
+		colPoints[0] = new CollisionPoint(getScreenPosX(), getScreenPosY() - colPointPadding);
+		colPoints[1] = new CollisionPoint(getScreenPosX() + screenObj.getWidth(), getScreenPosY() - colPointPadding);
+		
+		//left
+		colPoints[2] = new CollisionPoint(getScreenPosX() + screenObj.getWidth() + colPointPadding, getScreenPosY());
+		colPoints[3] = new CollisionPoint(getScreenPosX() + screenObj.getWidth() + colPointPadding, getScreenPosY() + screenObj.getHeight());
+		
+		//bottom
+		colPoints[4] = new CollisionPoint(getScreenPosX() + screenObj.getWidth(), getScreenPosY() + screenObj.getHeight() + colPointPadding);
+		colPoints[5] = new CollisionPoint(getScreenPosX(), getScreenPosY() + screenObj.getHeight() + colPointPadding);
+		
+		//right
+		colPoints[6] = new CollisionPoint(getScreenPosX() - colPointPadding, getScreenPosY() + screenObj.getHeight());
+		colPoints[7] = new CollisionPoint(getScreenPosX() - colPointPadding, getScreenPosY());
+		
 	}
 //	public abstract void spawnAction();
 //	public abstract void deathAction();
