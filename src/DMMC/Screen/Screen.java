@@ -44,13 +44,13 @@ public abstract class Screen {
 				switch (arr[i][j]) 
 				{
 				case "1":
-					tileMap[i][j] = new Tile(new GImage("solid.png"), TileType.Solid);
+					tileMap[i][j] = new Tile(new GImage("solid.png"), TileType.Dirt);
 					break;
 				case "0":
-					tileMap[i][j] = new Tile(new GImage("empty.png"), TileType.Empty);
+					tileMap[i][j] = new Tile(new GImage("empty.png"), TileType.Air);
 					break;
 				default:
-					tileMap[i][j] = new Tile(new GImage("empty.png"), TileType.Empty);
+					tileMap[i][j] = new Tile(new GImage("empty.png"), TileType.Air);
 					break;
 				}
 
