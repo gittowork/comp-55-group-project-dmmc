@@ -2,28 +2,36 @@ package DMMC;
 
 
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.Timer;
+
+import DMMC.Physics.Entity;
+import DMMC.Physics.Tile;
 import DMMC.Screen.GuiScreen;
 import DMMC.Screen.Screen;
-import DMMC.Physics.*;
 import acm.graphics.GImage;
 import acm.program.GraphicsProgram;
 
-public class Game extends GraphicsProgram{
+public class Game extends GraphicsProgram implements ActionListener{
 
 	
 	private static final long serialVersionUID = 1L;
 	public static final double GRAVITY = 9.8;
 	public static final int windowHeight = 600, windowWidth = 400;
 	public static final int tileHeight=50, tileWidth=50;
+	public static final int FPS = 60;
 	
 	private Screen currentScreen; 
 	private ArrayList<Profile> profiles;
 	private int currentUser; // position of user in list^
 	private HashMap<String, Image[]> animations;
 	private GameState gameState;
+	private Timer timer;
+	
 	Entity e;
 	
 	public void init()
@@ -33,7 +41,7 @@ public class Game extends GraphicsProgram{
 		currentUser = -1;
 		animations = new HashMap<String, Image[]>();
 		gameState = GameState.Init;
-		
+		timer = new Timer((int)(1000/FPS), this);
 		
 		// drawing tiles on the sample input
 /********************************************************************/
@@ -43,6 +51,7 @@ public class Game extends GraphicsProgram{
 		currentScreen = new GuiScreen(levelX, levelY);
 		String arr[][] = new String[levelX][levelY];
 		
+		//Set tile type array
 		for(int i=0;i<levelX;i++)
 		{
 			for(int j=0;j<levelY;j++)
@@ -68,22 +77,17 @@ public class Game extends GraphicsProgram{
 		
 		e = new Entity(new GImage("player.png"));
 		add(e.getScreenObj());
+		
+		timer.start();
 	}
 	
 	public void run()
 	{
 		System.out.println("RUN");
-		while(true){
-			e.update();
-		}
 		
 	}
-	
-	
-	
-	
-	public static double deltaTime(){
-		return 1/60;
+	public void actionPerformed(ActionEvent event)
+	{
+		e.update();
 	}
-
 }

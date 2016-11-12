@@ -46,7 +46,7 @@ public class Entity extends PhysicsObject{
 	public void setCollideable(boolean b){collidable = b;}
 	
 	public void update(){
-		setAccY(0.00001);
+		setAccY(Game.GRAVITY /Game.FPS);
 		setVelX(getVelX() + getAccX() );
 		setVelY(getVelY() + getAccY() );
 		screenObj.move(getVelX(), getVelY());
