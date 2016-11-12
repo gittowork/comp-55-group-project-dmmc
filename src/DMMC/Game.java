@@ -41,7 +41,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			
 			if(y < 0)
 				return 0;
-			else if(y >= getNumTiles(true))
+			else if(y >= windowHeight)
 				return (int) Math.floor(getNumTiles(true) - 1);
 			
 			return y;
@@ -52,11 +52,17 @@ public class Game extends GraphicsProgram implements ActionListener{
 			
 			if(x < 0)
 				return 0;
-			else if(x >= getNumTiles(false))
+			else if(x >= windowWidth)
 				return (int) Math.floor(getNumTiles(false) - 1);
 			
 			return x;
 		}
+	}
+	
+	public static GPoint tilePosToScreen(int x, int y)
+	{
+		System.out.println(currentScreen.getTile(x, y).getScreenPosX() + " : " + currentScreen.getTile(x, y).getScreenPosY());
+		return currentScreen.getTile(x, y).getScreenPos();
 	}
 	
 	public static boolean isPointOnSolid(GPoint p)
@@ -110,14 +116,10 @@ public class Game extends GraphicsProgram implements ActionListener{
 			}
 		}
 		currentScreen.initTiles(arr);
-		Tile[][] t = currentScreen.getTitleMap();
-		for(int i=0;i<levelX;i++){
-			for(int j=0;j<levelY;j++){
-				GImage image = new GImage(t[i][j].getScreenObj().getImage(),i*tileWidth,j*tileHeight);
-				image.setSize(tileWidth, tileHeight);
-				add(image);
-			}
-		}		
+
+		for(int x = 0; x < levelX; x ++)
+			for(int y = 0; y < levelY; y ++)
+				add(currentScreen.getTitleMap()[x][y].getScreenObj());
 /*************************** End of Drawing tiles on sample input ***************/		
 
 		System.out.println(gameState.toString());

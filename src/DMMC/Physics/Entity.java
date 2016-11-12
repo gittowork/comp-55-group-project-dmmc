@@ -9,7 +9,7 @@ import acm.graphics.GPoint;
 public class Entity extends PhysicsObject{
 	
 	private static int lastId = 0;
-	private static double colPointPadding = 2;
+	private static double colPointPadding = 0;
 
 	
 	protected GPoint velocity;
@@ -20,6 +20,7 @@ public class Entity extends PhysicsObject{
 	protected boolean weightless;
 	protected boolean collidable;
 	protected CollisionPoint[] colPoints;
+	private GPoint collisionTilePoint;
 
 	public Entity(GImage i, Image[] initAnimation) {
 		super(i, initAnimation);
@@ -57,12 +58,72 @@ public class Entity extends PhysicsObject{
 		setVelX(getVelX() + getAccX());
 		setVelY(getVelY() + getAccY());
 		
-		for(int i = 0; i < colPoints.length; i ++)
-			if(colPoints[i].getColliding())
+		if(colPoints[0].getColliding())
+		{
+			collisionTilePoint = Game.tilePosToScreen(colPoints[0].getTileX(), colPoints[0].getTileY());
+			if(getVelY() < 0)
 			{
-				setVelX(0);
+				screenObj.setLocation(getScreenPosX(), collisionTilePoint.getY() + Game.tileHeight + colPointPadding);
 				setVelY(0);
-			}	
+			}
+			if(getVelX() < 0)
+			{
+				screenObj.setLocation(collisionTilePoint.getX() + Game.tileWidth + colPointPadding, getScreenPosY());
+				setVelX(0);
+			}
+			
+			checkForCollision();
+		}
+		if(colPoints[1].getColliding())
+		{
+			collisionTilePoint = Game.tilePosToScreen(colPoints[1].getTileX(), colPoints[1].getTileY());
+			if(getVelY() < 0)
+			{
+				screenObj.setLocation(getScreenPosX(), collisionTilePoint.getY() + Game.tileHeight + colPointPadding);
+				setVelY(0);
+			}
+			if(getVelX() > 0)
+			{
+				screenObj.setLocation(collisionTilePoint.getX() - screenObj.getWidth() - colPointPadding, getScreenPosY());
+				setVelX(0);
+			}
+			
+			checkForCollision();
+		}
+		if(colPoints[2].getColliding())
+		{
+			collisionTilePoint = Game.tilePosToScreen(colPoints[2].getTileX(), colPoints[2].getTileY());
+			System.out.println(collisionTilePoint.getX() + " : " + collisionTilePoint.getY());
+			if(getVelY() > 0)
+			{
+				screenObj.setLocation(screenObj.getX(), collisionTilePoint.getY() - screenObj.getHeight() - colPointPadding);
+				setVelY(0);
+			}
+			if(getVelX() > 0)
+			{
+				screenObj.setLocation(collisionTilePoint.getX() - screenObj.getWidth() - colPointPadding, getScreenPosY());
+				setVelX(0);
+			}
+			
+			checkForCollision();
+
+		}
+		if(colPoints[3].getColliding())
+		{
+			collisionTilePoint = Game.tilePosToScreen(colPoints[3].getTileX(), colPoints[3].getTileY());
+			if(getVelY() > 0)
+			{
+				screenObj.setLocation(screenObj.getX(), collisionTilePoint.getY() - screenObj.getHeight() - colPointPadding);
+				setVelY(0);
+			}
+			if(getVelX() < 0)
+			{
+				screenObj.setLocation(collisionTilePoint.getX() + Game.tileWidth + colPointPadding, getScreenPosY());
+				setVelX(0);
+			}
+				
+			checkForCollision();
+		}
 		screenObj.move(getVelX(), getVelY());
 
 	}
@@ -102,7 +163,10 @@ public class Entity extends PhysicsObject{
 		colPoints[2].setLocation(getScreenPosX() + screenObj.getWidth(), getScreenPosY() + screenObj.getHeight());
 		colPoints[3].setLocation(getScreenPosX(), getScreenPosY() + screenObj.getHeight());
 		
-		//check for collision
+		checkForCollision();
+	}
+	private void checkForCollision()
+	{
 		for(int i = 0; i < colPoints.length; i ++)
 			colPoints[i].setColliding(Game.isPointOnSolid(colPoints[i]));
 	}

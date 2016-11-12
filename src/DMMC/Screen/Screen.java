@@ -1,5 +1,6 @@
 package DMMC.Screen;
 
+import DMMC.Game;
 import DMMC.Physics.Tile;
 import DMMC.Physics.TileType;
 import acm.graphics.GImage;
@@ -53,6 +54,9 @@ public abstract class Screen {
 					tileMap[i][j] = new Tile(new GImage("empty.png"), TileType.Air);
 					break;
 				}
+				tileMap[i][j].setScreenPosX(i * Game.tileWidth);
+				tileMap[i][j].setScreenPosY(j * Game.tileHeight);
+				tileMap[i][j].getScreenObj().setSize(Game.tileWidth, Game.tileHeight);
 
 			}
 		}
