@@ -12,8 +12,9 @@ public class Button extends Tile {
 		// TODO Auto-generated constructor stub
 	}
 
-	private void buttonAction()
+	public void buttonAction()
 	{
+		//called when player selects button, redirect to another screen
 		
 	}
 	
