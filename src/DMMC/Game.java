@@ -41,7 +41,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			
 			if(y < 0)
 				return 0;
-			else if(y >= windowHeight)
+			else if(y >= windowHeight/tileHeight)
 				return (int) Math.floor(getNumTiles(true) - 1);
 			
 			return y;
@@ -52,7 +52,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			
 			if(x < 0)
 				return 0;
-			else if(x >= windowWidth)
+			else if(x >= windowWidth/tileHeight)
 				return (int) Math.floor(getNumTiles(false) - 1);
 			
 			return x;
@@ -61,7 +61,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 	
 	public static GPoint tilePosToScreen(int x, int y)
 	{
-		System.out.println(currentScreen.getTile(x, y).getScreenPosX() + " : " + currentScreen.getTile(x, y).getScreenPosY());
 		return currentScreen.getTile(x, y).getScreenPos();
 	}
 	

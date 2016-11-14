@@ -54,7 +54,6 @@ public abstract class Screen {
 					tileMap[i][j] = new Tile(new GImage("empty.png"), TileType.Air);
 					break;
 				}
-				System.out.println(i * Game.tileWidth);
 				tileMap[i][j].setScreenPosX(i * Game.tileWidth);
 				tileMap[i][j].setScreenPosY(j * Game.tileHeight);
 				tileMap[i][j].getScreenObj().setSize(Game.tileWidth, Game.tileHeight);
