@@ -140,25 +140,33 @@ public class Game extends GraphicsProgram implements ActionListener{
 		timer.start();
 	}
 	
+	//to malvika :D
 	//hardcoded load screen for the buttons on each screen
 	private void loadScreen(GameState g)
 	{
-
 		GButton buton;
-		GImage pic = new GImage("player.png");
-		TileType but = TileType.Button;
+		
+		//this is the hardcoded part. for now, we're just gunna have an if statement 
+		//for every screen and then put buttons in manually like i have
 		if (g == GameState.UserSelectScreen)
 		{
-			buton = new GButton("New User", 100, 200, 100, 50);
+			//note: instead of using our button class, i decided to use osvaldo's gbutton class. i already added it
+			buton = new GButton("New User", 100, 200, 100, 50);	//makes the button with the text you want inside
 			add(buton);
 		}
 	}
 	
+	
 	public void run()
 	{
 		System.out.println("RUN");
+		
+		//use this to test the different screens. so for example 
+		//if you're making the main menu, just change the gamestate to MainMenuScreen and then just load it
 		gameState = GameState.UserSelectScreen;
 		loadScreen(gameState);
+		
+		//note: you might want to comment out all of pranav's stuff so its not in the way lol
 		
 		
 	}
