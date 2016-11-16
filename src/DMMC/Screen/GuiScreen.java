@@ -17,6 +17,10 @@ public class GuiScreen extends Screen implements ActionListener
 		ArrayList<Button> button = new ArrayList<Button>();
 	}
 
+	public void updateButtonList()
+	{
+		
+	}
 	
 	public void keyPressed(KeyEvent e)
 	{

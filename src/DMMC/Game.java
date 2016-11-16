@@ -13,12 +13,16 @@ import javax.xml.parsers.DocumentBuilder;
 
 import org.omg.PortableServer.ServantActivator;
 
+import DMMC.Physics.Button;
 import DMMC.Physics.Entity;
+import DMMC.Physics.GButton;
 import DMMC.Physics.Tile;
+import DMMC.Physics.TileType;
 import DMMC.Screen.GuiScreen;
 import DMMC.Screen.Screen;
 import acm.graphics.GImage;
 import acm.graphics.GPoint;
+import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
 
 public class Game extends GraphicsProgram implements ActionListener{
@@ -87,6 +91,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 	private Timer timer;
 	Entity e;
 	
+	
 	public void init()
 	{
 		this.resize(windowWidth, windowHeight);
@@ -98,6 +103,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		
 		// drawing tiles on the sample input
 /********************************************************************/
+	
 		int levelX = windowWidth/tileWidth;
 		int levelY = windowHeight/tileHeight;
 		
@@ -122,6 +128,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 				add(currentScreen.getTitleMap()[x][y].getScreenObj());
 /*************************** End of Drawing tiles on sample input ***************/		
 
+	
 		System.out.println(gameState.toString());
 		
 		
@@ -134,9 +141,34 @@ public class Game extends GraphicsProgram implements ActionListener{
 		timer.start();
 	}
 	
+	//to malvika :D
+	//hardcoded load screen for the buttons on each screen
+	private void loadScreen(GameState g)
+	{
+		GButton buton;
+		
+		//this is the hardcoded part. for now, we're just gunna have an if statement 
+		//for every screen and then put buttons in manually like i have
+		if (g == GameState.UserSelectScreen)
+		{
+			//note: instead of using our button class, i decided to use osvaldo's gbutton class. i already added it
+			buton = new GButton("New User", 100, 200, 100, 50);	//makes the button with the text you want inside
+			add(buton);
+		}
+	}
+	
+	
 	public void run()
 	{
 		System.out.println("RUN");
+		
+		//use this to test the different screens. so for example 
+		//if you're making the main menu, just change the gamestate to MainMenuScreen and then just load it
+		gameState = GameState.UserSelectScreen;
+		loadScreen(gameState);
+		
+		//note: you might want to comment out all of pranav's stuff so its not in the way lol
+		
 		
 	}
 	@Override
