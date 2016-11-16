@@ -4,7 +4,8 @@ import com.sun.prism.shader.Solid_Color_AlphaTest_Loader;
 
 public enum TileType {
 	Air("Air",false),
-	Dirt("Dirt", true);
+	Dirt("Dirt", true),
+	Button("Button", true);
 	//...
 	
 	private String name;

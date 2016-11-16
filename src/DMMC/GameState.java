@@ -4,10 +4,15 @@ public enum GameState {
 	Init("Init"),
 	UserSelectScreen("UserSelectScreen"),
 	MainMenuScreen("MainMenuScreen"),
+	CreditsScreen("CreditsScreen"),
+	HowToScreen("HowToScreen"),
+	Leaderboards("Leaderboards"),
+	OptionsScreen("OptionsScreen"),
+	LevelSelectScreen("LevelSelect"),
 	GameScreen("GameScreen");
-	//...
 	
 	private String name;
+	
 	
 	private GameState(String n) {
 		name= n;
@@ -18,4 +23,6 @@ public enum GameState {
 	{
 		return name;
 	}
+	
+	
 }

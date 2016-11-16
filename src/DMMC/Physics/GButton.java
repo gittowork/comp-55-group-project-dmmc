@@ -1,4 +1,4 @@
-
+package DMMC.Physics;
 import java.awt.Color;
 import java.awt.Font;
 

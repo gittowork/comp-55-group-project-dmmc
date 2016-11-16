@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 
+import DMMC.Physics.GButton;
 import acm.graphics.GObject;
 import acm.graphics.GOval;
 import acm.graphics.GRect;
