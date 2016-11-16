@@ -114,6 +114,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 					arr[i][j]="1";
 			}
 		}
+		arr[(int) (getNumTiles(false) - 1)][(int)(getNumTiles(true) - 2)] = "1";
 		currentScreen.initTiles(arr);
 
 		for(int x = 0; x < levelX; x ++)
@@ -138,6 +139,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		System.out.println("RUN");
 		
 	}
+	@Override
 	public void actionPerformed(ActionEvent event)
 	{
 		e.update();

@@ -2,14 +2,17 @@ package DMMC.Physics;
 
 import java.awt.Image;
 
+import com.sun.javafx.sg.prism.web.NGWebView;
+
 import DMMC.Game;
 import acm.graphics.GImage;
 import acm.graphics.GPoint;
+import sun.tools.jar.resources.jar;
 
 public class Entity extends PhysicsObject{
 
 	private static int lastId = 0;
-	private static double colPointPadding = 1;
+	private static final double colPointPadding = 1;
 
 
 	protected GPoint velocity;
@@ -60,71 +63,101 @@ public class Entity extends PhysicsObject{
 		setVelX(getVelX() + getAccX());
 		setVelY(getVelY() + getAccY());
 		setVelX(0.5);
-		
-		while(cornerPoints[0].getColliding()
-				|| cornerPoints[1].getColliding()
-				|| cornerPoints[2].getColliding()
-				|| cornerPoints[3].getColliding())
+
+		short indexOrder[] = new short[4];
+		for(int i = 0; i < indexOrder.length; i ++)
 		{
-			short biggestIndex = 0;
-			for(short i = 0; i < colIndex.length; i ++)
-				if(colIndex[biggestIndex] < colIndex[i])
-					biggestIndex = i;
-						
-			//TODO: Positioning BROKEN!
-			switch (biggestIndex) {
-			case 0: // Top
+			indexOrder[i] = -1;
+		}
+
+		shortColIndex(indexOrder);
+		System.out.println("FRAME:");
+		for(short i = 0; i < indexOrder.length; i ++)
+		{
+			if(colIndex[indexOrder[i]] == 0)
+				break;
+			if(indexOrder[i] == 0)
+			{
 				if(colPoints[0].getColliding())
 					collisionTilePoint =  Game.tilePosToScreen(colPoints[0].getTileX(), colPoints[0].getTileY());
-				else 
+				else if(colPoints[1].getColliding())
 					collisionTilePoint =  Game.tilePosToScreen(colPoints[1].getTileX(), colPoints[1].getTileY()); 
-
+				else 
+					break;
+				
 				screenObj.setLocation(getScreenPosX(), collisionTilePoint.getY() + Game.tileHeight);
 				System.out.println("TOP");
 				setVelY(0);
-				break;
-			case 1: // Right
+			}
+			else if(indexOrder[i] == 1)
+			{
 				if(colPoints[2].getColliding())
 					collisionTilePoint =  Game.tilePosToScreen(colPoints[2].getTileX(), colPoints[2].getTileY());
-				else 
+				else if(colPoints[3].getColliding())
 					collisionTilePoint =  Game.tilePosToScreen(colPoints[3].getTileX(), colPoints[3].getTileY()); 
-				
+				else 
+					break;
+
 				screenObj.setLocation(collisionTilePoint.getX() - screenObj.getWidth(), getScreenPosY());
 				System.out.println("RIGHT");
 				setVelX(0);
-				break;
-			case 2: // Bot
+			}
+			else if(indexOrder[i] == 2)
+			{
 				if(colPoints[4].getColliding())
 					collisionTilePoint =  Game.tilePosToScreen(colPoints[4].getTileX(), colPoints[4].getTileY());
-				else 
+				else if(colPoints[5].getColliding())
 					collisionTilePoint =  Game.tilePosToScreen(colPoints[5].getTileX(), colPoints[5].getTileY()); 
-				
+				else 
+					break;
+
 				screenObj.setLocation(screenObj.getX(), collisionTilePoint.getY() - screenObj.getHeight());
 				System.out.println("BOT");
 				setVelY(0);
-				break;
-			case 3: // Left
+			}
+			else if(indexOrder[i] == 3)
+			{
 				if(colPoints[6].getColliding())
 					collisionTilePoint =  Game.tilePosToScreen(colPoints[6].getTileX(), colPoints[6].getTileY());
-				else 
+				else if(colPoints[7].getColliding())
 					collisionTilePoint =  Game.tilePosToScreen(colPoints[7].getTileX(), colPoints[7].getTileY()); 
+				else 
+					break;
 
 				screenObj.setLocation(collisionTilePoint.getX() + Game.tileWidth , getScreenPosY());
 				System.out.println("LEFT");
 				setVelX(0);
-				break;
-
-			default:
-				//No collision
-				break;
 			}
 			System.out.println("SET");
 			setColPoint();
+			shortColIndex(indexOrder);
 		}
 		screenObj.move(getVelX(), getVelY());
-		
-		System.out.println("OUT");
 
+
+		System.out.println("OUT\n");
+
+	}
+	
+	private void shortColIndex(short[] indexOrder)
+	{
+		boolean sorting = true;
+		short lookNum = 2;
+		short j = 0;
+		while(sorting)
+		{
+			for(short i = 0; i < indexOrder.length; i ++)
+			{
+				if(colIndex[i] == lookNum)
+				{
+					indexOrder[j++] = i;
+				}
+			}
+			lookNum--;
+			if(j == 4)
+				sorting = false;
+		}
+		
 	}
 
 	private void initPoints(){
@@ -150,37 +183,38 @@ public class Entity extends PhysicsObject{
 	private void setColPoint()
 	{
 		//top
-		colPoints[0].setLocation(getScreenPosX(), getScreenPosY() - colPointPadding);
-		colPoints[1].setLocation(getScreenPosX() + screenObj.getWidth(), getScreenPosY() - colPointPadding);
+		colPoints[0].setLocation(getScreenPosX() + colPointPadding, getScreenPosY() - colPointPadding);
+		colPoints[1].setLocation(getScreenPosX() + screenObj.getWidth() - colPointPadding, getScreenPosY() - colPointPadding);
 
 		//left
-		colPoints[2].setLocation(getScreenPosX() + screenObj.getWidth() + colPointPadding, getScreenPosY());
-		colPoints[3].setLocation(getScreenPosX() + screenObj.getWidth() + colPointPadding, getScreenPosY() + screenObj.getHeight());
+		colPoints[2].setLocation(getScreenPosX() + screenObj.getWidth() + colPointPadding, getScreenPosY() + colPointPadding);
+		colPoints[3].setLocation(getScreenPosX() + screenObj.getWidth() + colPointPadding, getScreenPosY() + screenObj.getHeight() - colPointPadding);
 
 		//bottom
-		colPoints[4].setLocation(getScreenPosX() + screenObj.getWidth(), getScreenPosY() + screenObj.getHeight() + colPointPadding);
-		colPoints[5].setLocation(getScreenPosX(), getScreenPosY() + screenObj.getHeight() + colPointPadding);
+		colPoints[4].setLocation(getScreenPosX() + screenObj.getWidth() - colPointPadding, getScreenPosY() + screenObj.getHeight() + colPointPadding);
+		colPoints[5].setLocation(getScreenPosX() + colPointPadding, getScreenPosY() + screenObj.getHeight() + colPointPadding);
 
 		//right
-		colPoints[6].setLocation(getScreenPosX() - colPointPadding, getScreenPosY() + screenObj.getHeight());
-		colPoints[7].setLocation(getScreenPosX() - colPointPadding, getScreenPosY());
+		colPoints[6].setLocation(getScreenPosX() - colPointPadding, getScreenPosY() + screenObj.getHeight() - colPointPadding);
+		colPoints[7].setLocation(getScreenPosX() - colPointPadding, getScreenPosY() + colPointPadding);
 
 		//Top Right
-		cornerPoints[0].setLocation(getScreenPosX() + 1, getScreenPosY() + 1);
+		cornerPoints[0].setLocation(getScreenPosX(), getScreenPosY());
 
 		//Top Left
-		cornerPoints[1].setLocation(getScreenPosX() + screenObj.getWidth() - 1, getScreenPosY() + 1);
+		cornerPoints[1].setLocation(getScreenPosX() + screenObj.getWidth(), getScreenPosY());
 
 		//Bot Left
-		cornerPoints[2].setLocation(getScreenPosX() + screenObj.getWidth() - 1, getScreenPosY() + screenObj.getHeight() - 1);
+		cornerPoints[2].setLocation(getScreenPosX() + screenObj.getWidth(), getScreenPosY() + screenObj.getHeight());
 
 		//Bot Right
-		cornerPoints[3].setLocation(getScreenPosX() + 1,  getScreenPosY() + screenObj.getHeight() - 1);
+		cornerPoints[3].setLocation(getScreenPosX(),  getScreenPosY() + screenObj.getHeight());
 
 		checkForCollision();
 	}
 	private void checkForCollision()
 	{
+		//reset col index
 		for(short i = 0; i < colIndex.length; i ++)
 			colIndex[i] = 0;
 
@@ -194,6 +228,11 @@ public class Entity extends PhysicsObject{
 		}
 		for(short i = 0; i < cornerPoints.length; i ++)
 			cornerPoints[i].setColliding(Game.isPointOnSolid(cornerPoints[i]));
+		
+		System.out.println("Cur Col: ");
+		for(int i = 0; i < colIndex.length; i ++)
+			System.out.print(colIndex[i]);
+		System.out.println("");
 	}
 	//	public abstract void spawnAction();
 	//	public abstract void deathAction();

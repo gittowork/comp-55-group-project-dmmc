@@ -1,6 +1,5 @@
 package DMMC.Physics;
 
-import com.sun.prism.shader.Solid_Color_AlphaTest_Loader;
 
 public enum TileType {
 	Air("Air",false),
