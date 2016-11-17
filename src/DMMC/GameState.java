@@ -7,6 +7,7 @@ public enum GameState {
 	CreditsScreen("CreditsScreen"),
 	HowToScreen("HowToScreen"),
 	Leaderboards("Leaderboards"),
+	MapSelect("MapSelectionScreen"),
 	OptionsScreen("OptionsScreen"),
 	LevelSelectScreen("LevelSelect"),
 	GameScreen("GameScreen");

@@ -89,6 +89,12 @@ public class LevelScreen extends Screen implements ActionListener {
 		// TODO Auto-generated method stub
 		
 	}
+	@Override
+	public void inputEsc() 
+	{
+		// TODO Auto-generated method stub
+		
+	}
 
 	
 

@@ -29,6 +29,9 @@ public class GuiScreen extends Screen implements ActionListener
 		case 13:
 			inputEnter();
 			break;
+		case 27:
+			inputEsc();
+			break;
 		case 37:
 			inputLeft();
 			break;
@@ -83,6 +86,14 @@ public class GuiScreen extends Screen implements ActionListener
 		button.get(cursorPosX).buttonAction();
 		System.out.println("enterrrr");
 	}
+	@Override
+	public void inputEsc()
+	{
+		
+	}
+
+	
+	
 
 
 	@Override

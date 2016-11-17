@@ -91,7 +91,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 	private Timer timer;
 	Entity e;
 	
-	
 	public void init()
 	{
 		this.resize(windowWidth, windowHeight);
@@ -99,8 +98,13 @@ public class Game extends GraphicsProgram implements ActionListener{
 		currentUser = -1;
 		animations = new HashMap<String, Image[]>();
 		gameState = GameState.Init;
-		timer = new Timer((int)(1000/FPS), this);
-		
+		timer = new Timer((int)(1000/FPS), this);	
+		addMouseListeners();
+		timer.start();
+	}
+	
+	
+	private void loadNewGame(){ //when a user clicks new run, loads game.
 		// drawing tiles on the sample input
 /********************************************************************/
 	
@@ -129,17 +133,36 @@ public class Game extends GraphicsProgram implements ActionListener{
 /*************************** End of Drawing tiles on sample input ***************/		
 
 	
-		System.out.println(gameState.toString());
-		
-		
+		System.out.println(gameState.toString());		
 		e = new Entity(new GImage("player.png"));
 		e.getScreenObj().setSize(e.getScreenObj().getSize().getWidth() * 2, e.getScreenObj().getSize().getHeight() * 2);
 		e.setScreenPosX(e.getScreenPosX() + 10);
 		add(e.getScreenObj());
 		
-		addMouseListeners();
-		timer.start();
+		
 	}
+	
+	
+	private void loadMainMenu(){
+		int levelX = windowWidth/tileWidth;
+		int levelY = windowHeight/tileHeight;
+		currentScreen=new GuiScreen(levelX, levelY);
+		GButton button1 = new GButton("New Run", windowWidth/2-50, 50, 100, 50);
+		GButton button2 = new GButton("Leaderboard", windowWidth/2-50, 150, 100, 50);
+		GButton button3 = new GButton("Options", windowWidth/2-50, 250, 100, 50);	
+		GButton button4 = new GButton("How To", windowWidth/2-50, 350, 100, 50);	
+		GButton button5 = new GButton("Credits", windowWidth/2-50, 450, 100, 50);	
+
+
+		add(button1);
+		add(button2);
+		add(button3);
+		add(button4);
+		add(button5);
+
+	}
+	
+	
 	
 	//to malvika :D
 	//hardcoded load screen for the buttons on each screen
@@ -155,6 +178,9 @@ public class Game extends GraphicsProgram implements ActionListener{
 			buton = new GButton("New User", 100, 200, 100, 50);	//makes the button with the text you want inside
 			add(buton);
 		}
+		else if(g==GameState.MainMenuScreen){
+			loadMainMenu();
+		}
 	}
 	
 	
@@ -164,7 +190,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		
 		//use this to test the different screens. so for example 
 		//if you're making the main menu, just change the gamestate to MainMenuScreen and then just load it
-		gameState = GameState.UserSelectScreen;
+		gameState = GameState.MainMenuScreen;
 		loadScreen(gameState);
 		
 		//note: you might want to comment out all of pranav's stuff so its not in the way lol
