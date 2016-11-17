@@ -19,7 +19,7 @@ public class LevelScreen extends Screen implements ActionListener {
 	
 	public LevelScreen(int sizeX, int sizeY) {
 		super(sizeX, sizeY);
-		updateTimer=new Timer(1000, this); //do we need an initial delay?
+		updateTimer=new Timer(1000, this); //how much delay?
 		updateTimer.setInitialDelay(3000);
 	}
 
