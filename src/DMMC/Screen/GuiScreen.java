@@ -26,22 +26,22 @@ public class GuiScreen extends Screen implements ActionListener
 	{
 		switch (e.getKeyCode())
 		{
-		case 13:
+		case KeyEvent.VK_ENTER:
 			inputEnter();
 			break;
-		case 27:
+		case KeyEvent.VK_ESCAPE:
 			inputEsc();
 			break;
-		case 37:
+		case KeyEvent.VK_LEFT:
 			inputLeft();
 			break;
-		case 38:
+		case KeyEvent.VK_UP:
 			inputUp();
 			break;
-		case 39:
+		case KeyEvent.VK_RIGHT:
 			inputRight();
 			break;
-		case 40:
+		case KeyEvent.VK_DOWN:
 			inputDown();
 			break;
 		default:
