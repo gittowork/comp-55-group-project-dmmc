@@ -4,6 +4,7 @@ package DMMC;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -100,6 +101,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		gameState = GameState.Init;
 		timer = new Timer((int)(1000/FPS), this);	
 		addMouseListeners();
+		addKeyListeners();
 		timer.start();
 	}
 	
@@ -146,19 +148,28 @@ public class Game extends GraphicsProgram implements ActionListener{
 	private void loadMainMenu(){
 		int levelX = windowWidth/tileWidth;
 		int levelY = windowHeight/tileHeight;
-		currentScreen=new GuiScreen(levelX, levelY);
+		GuiScreen tmp = new GuiScreen(levelX, levelY);
+		currentScreen=tmp;
 		GButton button1 = new GButton("New Run", windowWidth/2-50, 50, 100, 50);
 		GButton button2 = new GButton("Leaderboard", windowWidth/2-50, 150, 100, 50);
 		GButton button3 = new GButton("Options", windowWidth/2-50, 250, 100, 50);	
 		GButton button4 = new GButton("How To", windowWidth/2-50, 350, 100, 50);	
 		GButton button5 = new GButton("Credits", windowWidth/2-50, 450, 100, 50);	
-
-
+		button1.addActionListener(this);
+		button2.addActionListener(this);
+		button3.addActionListener(this);
+		button4.addActionListener(this);
+		button5.addActionListener(this);
 		add(button1);
 		add(button2);
 		add(button3);
 		add(button4);
 		add(button5);
+		tmp.addGButton(button1);
+		tmp.addGButton(button2);
+		tmp.addGButton(button3);
+		tmp.addGButton(button4);
+		tmp.addGButton(button5);
 
 	}
 	
@@ -181,6 +192,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 		else if(g==GameState.MainMenuScreen){
 			loadMainMenu();
 		}
+		else if(g==GameState.GameScreen)
+			loadNewGame();
 	}
 	
 	
@@ -200,14 +213,101 @@ public class Game extends GraphicsProgram implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent event)
 	{
+		if("New Run".equals(event.getActionCommand()))
+			loadScreen(GameState.GameScreen);
+		
+		if(e != null)
 		e.update();
 	}
 	
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
+		
+		if(currentScreen instanceof GuiScreen){
+			GuiScreen tmp = (GuiScreen) currentScreen;
+			if(tmp.getGButton(e.getX(),e.getY()) != null){
+				GButton b = tmp.getGButton(e.getX(),e.getY());
+				b.fireActionEvent(b.getGLabel().getLabel());
+			}
+		}
+		
 		System.out.println("X: " + screenPosToTile(e.getX(), false));
 		System.out.println("Y: " + screenPosToTile(e.getY(), true));
 	}
+
+
+	public void keyPressed(KeyEvent e)
+	{
+		switch (e.getKeyCode())
+		{
+		case KeyEvent.VK_ENTER:
+			inputEnter();
+			break;
+		case KeyEvent.VK_ESCAPE:
+			inputEsc();
+			break;
+		case KeyEvent.VK_LEFT:
+			inputLeft();
+			break;
+		case KeyEvent.VK_UP:
+			inputUp();
+			break;
+		case KeyEvent.VK_RIGHT:
+			inputRight();
+			break;
+		case KeyEvent.VK_DOWN:
+			inputDown();
+			break;
+		default:
+			break;
+		}
+		
+	}
+	
+	//similar to code in inputEnter() for all other arrow keys
+	public void inputUp()
+	{
+		System.out.println("uppp");
+	}
+	
+	public void inputDown()
+	{
+		System.out.println("down we goo");
+	}
+	
+	public void inputLeft()
+	{
+		System.out.println("now left");
+	}
+	
+	public void inputRight()
+	{
+		System.out.println("now to the right");
+	}
+	
+	
+	public void inputZ()
+	{
+		
+	}
+
+	
+	public void inputEnter()
+	{
+		System.out.println("enterrrr");
+		if(currentScreen instanceof GuiScreen){
+			GuiScreen tmp = (GuiScreen) currentScreen;
+			if(tmp.getGButton() != null){
+				GButton b = tmp.getGButton();
+				b.fireActionEvent(b.getGLabel().getLabel());
+			}
+		}
+	}
+	public void inputEsc()
+	{
+		
+	}
+
 	
 }
