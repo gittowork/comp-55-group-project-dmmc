@@ -22,6 +22,8 @@ public class GuiScreen extends Screen implements ActionListener
 		
 	}
 	
+	//currscreen.inputUp() in GAME(move it) 
+	
 	public void keyPressed(KeyEvent e)
 	{
 		switch (e.getKeyCode())
