@@ -201,6 +201,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 			loadCredits();
 		else if(g==GameState.HowToScreen)
 			loadHowTo();
+		else if(g==GameState.Leaderboards)
+				loadLeaderboards();
 	}
 	
 	//made this class because load credits, options, and leaderboards have the same code
@@ -264,6 +266,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 			loadScreen(GameState.CreditsScreen);
 		if("How To".equals(event.getActionCommand()))
 			loadScreen(GameState.HowToScreen);
+		if("Leaderboard".equals(event.getActionCommand()))
+			loadScreen(GameState.Leaderboards);
 		if("Go Back(Esc)".equals(event.getActionCommand()))
 			loadScreen(GameState.MainMenuScreen);
 		if(e != null)
