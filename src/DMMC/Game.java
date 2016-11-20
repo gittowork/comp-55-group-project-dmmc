@@ -202,7 +202,9 @@ public class Game extends GraphicsProgram implements ActionListener{
 		else if(g==GameState.HowToScreen)
 			loadHowTo();
 		else if(g==GameState.Leaderboards)
-				loadLeaderboards();
+			loadLeaderboards();
+		else if(g == GameState.OptionsScreen)
+			loadOptions();
 	}
 	
 	//made this class because load credits, options, and leaderboards have the same code
@@ -218,6 +220,13 @@ public class Game extends GraphicsProgram implements ActionListener{
 		button1.addActionListener(this);
 		button1.drawCursor();
 		tmp.addGButton(button1);
+	}
+	
+	private void loadOptions()
+	{
+		loadBasic();
+		GLabel label = new GLabel("Game Music Volume: ", 0, 100);
+		add(label);
 	}
 	
 	private void loadCredits() 
@@ -261,9 +270,11 @@ public class Game extends GraphicsProgram implements ActionListener{
 	{	
 		//System.out.println(event.getActionCommand());
 		if("New Run".equals(event.getActionCommand()))
-		loadScreen(GameState.GameScreen);
+			loadScreen(GameState.GameScreen);
 		if("Credits".equals(event.getActionCommand()))
 			loadScreen(GameState.CreditsScreen);
+		if("Options".equals(event.getActionCommand()))
+			loadScreen(GameState.OptionsScreen);
 		if("How To".equals(event.getActionCommand()))
 			loadScreen(GameState.HowToScreen);
 		if("Leaderboard".equals(event.getActionCommand()))
