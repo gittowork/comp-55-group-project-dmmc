@@ -3,12 +3,14 @@ import java.awt.Color;
 import java.awt.Font;
 
 import acm.graphics.GCompound;
+import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GRoundRect;
 
 public class GButton extends GCompound {
 	private GRoundRect rect;
 	private GLabel message;
+	private GImage cursor;
 	
 	public static final int BUFFER = 20;
 	
@@ -54,7 +56,19 @@ public class GButton extends GCompound {
 	public void setColor(Color col) {
 		message.setColor(col);
 	}
-	public GLabel getGLabel(){
+	public GLabel getGLabel(){ //change by Malvika 
 	    return message;
 	}
+	
+	public void drawCursor() {
+		cursor=new GImage("Sword1Cursor.png"); 
+		cursor.setSize(30,30);
+		add(cursor, this.getWidth()/2,this.getHeight()/2 + 10);
+	}
+	public void removeCursor(){
+		if(cursor != null){
+			remove(cursor);
+			cursor=null;
+		}
+}
 }

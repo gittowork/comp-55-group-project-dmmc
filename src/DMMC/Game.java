@@ -22,6 +22,7 @@ import DMMC.Physics.TileType;
 import DMMC.Screen.GuiScreen;
 import DMMC.Screen.Screen;
 import acm.graphics.GImage;
+import acm.graphics.GLabel;
 import acm.graphics.GPoint;
 import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
@@ -113,6 +114,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		int levelX = windowWidth/tileWidth;
 		int levelY = windowHeight/tileHeight;
 		
+		
 		currentScreen = new GuiScreen(levelX, levelY);
 		String arr[][] = new String[levelX][levelY];
 		
@@ -146,6 +148,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 	
 	
 	private void loadMainMenu(){
+		removeAll();
 		int levelX = windowWidth/tileWidth;
 		int levelY = windowHeight/tileHeight;
 		GuiScreen tmp = new GuiScreen(levelX, levelY);
@@ -170,7 +173,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		tmp.addGButton(button3);
 		tmp.addGButton(button4);
 		tmp.addGButton(button5);
-
+		button1.drawCursor();
 	}
 	
 	
@@ -194,6 +197,40 @@ public class Game extends GraphicsProgram implements ActionListener{
 		}
 		else if(g==GameState.GameScreen)
 			loadNewGame();
+		else if(g==GameState.CreditsScreen)
+			loadCredits();
+		else if(g==GameState.HowToScreen)
+			loadHowTo();
+	}
+	
+	private void loadCredits() {
+		removeAll();
+		int levelX = windowWidth/tileWidth;
+		int levelY = windowHeight/tileHeight;
+		GuiScreen tmp = new GuiScreen(levelX, levelY);
+		currentScreen=tmp;
+		GButton button1 = new GButton("Go Back(Esc)", 0, 0, 100, 50);
+		add(button1);
+		button1.addActionListener(this);
+		button1.drawCursor();
+		tmp.addGButton(button1);
+		GLabel label = new GLabel("Programmers: Malvika Sriram, Pranav Thirunavukkarasu, Maxine Lien, Brendan Ahdoot", 0, 100);
+		add (label);
+	}
+	
+	private void loadHowTo() {
+		removeAll(); 
+		int levelX = windowWidth/tileWidth;
+		int levelY = windowHeight/tileHeight;
+		GuiScreen tmp2 = new GuiScreen(levelX, levelY);
+		currentScreen=tmp2;
+		GButton button2 = new GButton("Go Back(Esc)", 0, 0, 100, 50);
+		add(button2);
+		button2.addActionListener(this);
+		button2.drawCursor();
+		tmp2.addGButton(button2);
+		GLabel label1 = new GLabel("How to Play Super S'more Seige:", 0, 100);
+		add(label1);
 	}
 	
 	
@@ -210,16 +247,26 @@ public class Game extends GraphicsProgram implements ActionListener{
 		
 		
 	}
+	
+	//dont need for keyboard
 	@Override
 	public void actionPerformed(ActionEvent event)
-	{
+	{	
+		//System.out.println(event.getActionCommand());
 		if("New Run".equals(event.getActionCommand()))
-			loadScreen(GameState.GameScreen);
-		
+		loadScreen(GameState.GameScreen);
+		if("Credits".equals(event.getActionCommand()))
+			loadScreen(GameState.CreditsScreen);
+		if("How To".equals(event.getActionCommand()))
+			loadScreen(GameState.HowToScreen);
+		if("Go Back(Esc)".equals(event.getActionCommand()))
+			loadScreen(GameState.MainMenuScreen);
 		if(e != null)
-		e.update();
+		e.update(); 
 	}
 	
+	//the following function is for mouse use. code was used to test the screen. Use if needed. 
+	/*
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
@@ -235,7 +282,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		System.out.println("X: " + screenPosToTile(e.getX(), false));
 		System.out.println("Y: " + screenPosToTile(e.getY(), true));
 	}
-
+*/
 
 	public void keyPressed(KeyEvent e)
 	{
@@ -267,13 +314,21 @@ public class Game extends GraphicsProgram implements ActionListener{
 	
 	//similar to code in inputEnter() for all other arrow keys
 	public void inputUp()
-	{
+	{ //updating cursor position every tie a specific key is clicked based on it's key code 
 		System.out.println("uppp");
+		if(currentScreen instanceof GuiScreen){
+			GuiScreen tmp = (GuiScreen) currentScreen; 
+			tmp.updateCursorPos(-1);
+		}
 	}
 	
 	public void inputDown()
 	{
 		System.out.println("down we goo");
+		if(currentScreen instanceof GuiScreen){
+			GuiScreen tmp = (GuiScreen) currentScreen; 
+			tmp.updateCursorPos(1);
+		}
 	}
 	
 	public void inputLeft()
@@ -284,6 +339,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 	public void inputRight()
 	{
 		System.out.println("now to the right");
+		
 	}
 	
 	
@@ -306,8 +362,14 @@ public class Game extends GraphicsProgram implements ActionListener{
 	}
 	public void inputEsc()
 	{
-		
+		if(currentScreen instanceof GuiScreen){
+			GuiScreen tmp = (GuiScreen) currentScreen;
+			if(tmp.getGButton() != null ){
+				GButton b = tmp.getGButton();
+				if("Go Back(Esc)".equals(b.getGLabel().getLabel()))
+					b.fireActionEvent(b.getGLabel().getLabel());
+			}
 	}
-
+	}
 	
 }
