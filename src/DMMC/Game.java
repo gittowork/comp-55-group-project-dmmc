@@ -203,7 +203,9 @@ public class Game extends GraphicsProgram implements ActionListener{
 			loadHowTo();
 	}
 	
-	private void loadCredits() {
+	//made this class because load credits, options, and leaderboards have the same code
+	private void loadBasic()
+	{
 		removeAll();
 		int levelX = windowWidth/tileWidth;
 		int levelY = windowHeight/tileHeight;
@@ -214,25 +216,28 @@ public class Game extends GraphicsProgram implements ActionListener{
 		button1.addActionListener(this);
 		button1.drawCursor();
 		tmp.addGButton(button1);
+	}
+	
+	private void loadCredits() 
+	{
+		loadBasic();
 		GLabel label = new GLabel("Programmers: Malvika Sriram, Pranav Thirunavukkarasu, Maxine Lien, Brendan Ahdoot", 0, 100);
 		add (label);
 	}
 	
-	private void loadHowTo() {
-		removeAll(); 
-		int levelX = windowWidth/tileWidth;
-		int levelY = windowHeight/tileHeight;
-		GuiScreen tmp2 = new GuiScreen(levelX, levelY);
-		currentScreen=tmp2;
-		GButton button2 = new GButton("Go Back(Esc)", 0, 0, 100, 50);
-		add(button2);
-		button2.addActionListener(this);
-		button2.drawCursor();
-		tmp2.addGButton(button2);
+	private void loadHowTo() 
+	{
+		loadBasic();
 		GLabel label1 = new GLabel("How to Play Super S'more Seige:", 0, 100);
 		add(label1);
 	}
 	
+	private void loadLeaderboards()
+	{
+		loadBasic();
+		GLabel label1 = new GLabel("Leaderboards", 0, 100);
+		add(label1);
+	}
 	
 	public void run()
 	{
