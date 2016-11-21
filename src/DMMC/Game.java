@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.xml.parsers.DocumentBuilder;
 
@@ -32,7 +33,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 	//Static*******************************************************
 	private static final long serialVersionUID = 1L;
 	public static final double GRAVITY = 1;
-	public static final int windowHeight = 600, windowWidth = 400;
+	public static final int windowHeight = 500, windowWidth = 700;
 	public static final int tileHeight=50, tileWidth=50;
 	public static final int FPS = 60;
 	
@@ -97,6 +98,17 @@ public class Game extends GraphicsProgram implements ActionListener{
 	{
 		this.resize(windowWidth, windowHeight);
 		profiles = new ArrayList<Profile>();
+		
+		//add us to existing profiles
+		Profile maxine = new Profile("Maxine");
+		Profile pranav = new Profile("Peanut");
+		Profile malvika = new Profile("Malvika");
+		Profile brendan = new Profile("Brendan");
+		profiles.add(maxine);
+		profiles.add(pranav);
+		profiles.add(malvika);
+		profiles.add(brendan);
+		
 		currentUser = -1;
 		animations = new HashMap<String, Image[]>();
 		gameState = GameState.Init;
@@ -182,19 +194,15 @@ public class Game extends GraphicsProgram implements ActionListener{
 	//hardcoded load screen for the buttons on each screen
 	private void loadScreen(GameState g)
 	{
-		GButton buton;
 		
 		//this is the hardcoded part. for now, we're just gunna have an if statement 
 		//for every screen and then put buttons in manually like i have
 		if (g == GameState.UserSelectScreen)
 		{
-			//note: instead of using our button class, i decided to use osvaldo's gbutton class. i already added it
-			buton = new GButton("New User", 100, 200, 100, 50);	//makes the button with the text you want inside
-			add(buton);
+			loadUserSelect();
 		}
-		else if(g==GameState.MainMenuScreen){
+		else if(g==GameState.MainMenuScreen)
 			loadMainMenu();
-		}
 		else if(g==GameState.GameScreen)
 			loadNewGame();
 		else if(g==GameState.CreditsScreen)
@@ -208,44 +216,91 @@ public class Game extends GraphicsProgram implements ActionListener{
 	}
 	
 	//made this class because load credits, options, and leaderboards have the same code
-	private void loadBasic()
+	private void loadBasic(Boolean back)
 	{
 		removeAll();
 		int levelX = windowWidth/tileWidth;
 		int levelY = windowHeight/tileHeight;
 		GuiScreen tmp = new GuiScreen(levelX, levelY);
 		currentScreen=tmp;
-		GButton button1 = new GButton("Go Back(Esc)", 0, 0, 100, 50);
+		GButton button1;
+		if (back)
+		{
+			button1 = new GButton("Go Back(Esc)", 0, 0, 100, 50);
+		}
+		
+		else
+		{
+			button1 = new GButton("New User", windowWidth/2 + 50, 300, 100, 100);
+		}
+		
 		add(button1);
 		button1.addActionListener(this);
 		button1.drawCursor();
 		tmp.addGButton(button1);
+		
+	}
+	
+	private void loadUserSelect()
+	{
+		loadBasic(false);
+		addExistingUsers();
+		GLabel title = new GLabel("Welcome!", windowWidth/2, 50);
+		add(title);
+		
+		
+	}
+	
+	//helper function for the user select screen
+	private void addExistingUsers()
+	{
+		if(!profiles.isEmpty())
+		{
+			for(int i = 0; i < profiles.size(); i++)
+			{
+				int posX = i*100 + 150;
+				GButton user = new GButton(profiles.get(i).getName(), posX, 150, 100, 100);
+				add(user);
+			}
+		}
+	}
+	
+	private void addNewUser()
+	{
+		String name = new String(JOptionPane.showInputDialog("Type in Name: "));
+		if (name != null)
+		{
+			loadScreen(GameState.MainMenuScreen);
+			Profile newUser = new Profile(name);
+			profiles.add(newUser);
+		}
+		
 	}
 	
 	private void loadOptions()
 	{
-		loadBasic();
+		loadBasic(true);
 		GLabel label = new GLabel("Game Music Volume: ", 0, 100);
 		add(label);
 	}
 	
 	private void loadCredits() 
 	{
-		loadBasic();
+		loadBasic(true);
 		GLabel label = new GLabel("Programmers: Malvika Sriram, Pranav Thirunavukkarasu, Maxine Lien, Brendan Ahdoot", 0, 100);
 		add (label);
 	}
 	
 	private void loadHowTo() 
 	{
-		loadBasic();
+		loadBasic(true);
 		GLabel label1 = new GLabel("How to Play Super S'more Seige:", 0, 100);
 		add(label1);
 	}
 	
 	private void loadLeaderboards()
 	{
-		loadBasic();
+		loadBasic(true);
 		GLabel label1 = new GLabel("Leaderboards", 0, 100);
 		add(label1);
 	}
@@ -256,7 +311,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		
 		//use this to test the different screens. so for example 
 		//if you're making the main menu, just change the gamestate to MainMenuScreen and then just load it
-		gameState = GameState.MainMenuScreen;
+		gameState = GameState.UserSelectScreen;
 		loadScreen(gameState);
 		
 		//note: you might want to comment out all of pranav's stuff so its not in the way lol
@@ -269,6 +324,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 	public void actionPerformed(ActionEvent event)
 	{	
 		//System.out.println(event.getActionCommand());
+		if("New User".equals(event.getActionCommand()))
+			addNewUser();
 		if("New Run".equals(event.getActionCommand()))
 			loadScreen(GameState.GameScreen);
 		if("Credits".equals(event.getActionCommand()))
@@ -334,7 +391,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 	
 	//similar to code in inputEnter() for all other arrow keys
 	public void inputUp()
-	{ //updating cursor position every tie a specific key is clicked based on it's key code 
+	{ //updating cursor position every time a specific key is clicked based on it's key code 
 		System.out.println("uppp");
 		if(currentScreen instanceof GuiScreen){
 			GuiScreen tmp = (GuiScreen) currentScreen; 
@@ -354,6 +411,11 @@ public class Game extends GraphicsProgram implements ActionListener{
 	public void inputLeft()
 	{
 		System.out.println("now left");
+		if(currentScreen instanceof GuiScreen)
+		{
+			GuiScreen tmp = (GuiScreen) currentScreen;
+			tmp.updateCursorPos(2);	//??????
+		}
 	}
 	
 	public void inputRight()
@@ -365,7 +427,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 	
 	public void inputZ()
 	{
-		
+		System.out.println("why you pressing z????");
 	}
 
 	
