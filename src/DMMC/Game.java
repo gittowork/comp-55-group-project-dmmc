@@ -165,11 +165,12 @@ public class Game extends GraphicsProgram implements ActionListener{
 		int levelY = windowHeight/tileHeight;
 		GuiScreen tmp = new GuiScreen(levelX, levelY);
 		currentScreen=tmp;
-		GButton button1 = new GButton("New Run", windowWidth/2-50, 50, 100, 50);
-		GButton button2 = new GButton("Leaderboard", windowWidth/2-50, 150, 100, 50);
-		GButton button3 = new GButton("Options", windowWidth/2-50, 250, 100, 50);	
-		GButton button4 = new GButton("How To", windowWidth/2-50, 350, 100, 50);	
-		GButton button5 = new GButton("Credits", windowWidth/2-50, 450, 100, 50);	
+		GLabel title = new GLabel("Super Siege Smores", windowWidth/2-50, windowHeight/6 -50);
+		GButton button1 = new GButton("New Run", windowWidth/2-50, 2*(windowHeight/6)-50, 100, 50);
+		GButton button2 = new GButton("Leaderboard", windowWidth/2-50, 3*(windowHeight/6)-50, 100, 50);
+		GButton button3 = new GButton("Options", windowWidth/2-50, 4*(windowHeight/6)-50, 100, 50);	
+		GButton button4 = new GButton("How To", windowWidth/2-50, 5*(windowHeight/6)-50, 100, 50);	
+		GButton button5 = new GButton("Credits", windowWidth/2-50, windowHeight-50, 100, 50);	
 		button1.addActionListener(this);
 		button2.addActionListener(this);
 		button3.addActionListener(this);
@@ -180,6 +181,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		add(button3);
 		add(button4);
 		add(button5);
+		add(title);
 		tmp.addGButton(button1);
 		tmp.addGButton(button2);
 		tmp.addGButton(button3);
