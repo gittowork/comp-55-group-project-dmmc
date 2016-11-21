@@ -256,6 +256,9 @@ public class Game extends GraphicsProgram implements ActionListener{
 	//helper function for the user select screen
 	private void addExistingUsers()
 	{
+		int levelX = windowWidth/tileWidth;
+		int levelY = windowHeight/tileHeight;
+		GuiScreen temp = new GuiScreen(levelX, levelY);
 		if(!profiles.isEmpty())
 		{
 			for(int i = 0; i < profiles.size(); i++)
@@ -263,12 +266,14 @@ public class Game extends GraphicsProgram implements ActionListener{
 				int posX = i*100 + 150;
 				GButton user = new GButton(profiles.get(i).getName(), posX, 150, 100, 100);
 				add(user);
+				temp.addGButton(user);
 			}
 		}
 	}
 	
 	private void addNewUser()
 	{
+		//if user presses cancel, null pointer exception
 		String name = new String(JOptionPane.showInputDialog("Type in Name: "));
 		if (name != null)
 		{
