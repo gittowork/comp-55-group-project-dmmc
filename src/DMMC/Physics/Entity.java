@@ -27,18 +27,26 @@ public abstract class Entity extends PhysicsObject{
 	protected char[] indexOrder;
 	private GPoint collisionTilePoint;
 	private boolean drawable;
+	private boolean grounded;
 
 	public Entity(GImage i, Image[] initAnimation) {
 		super(i, initAnimation);
 		initPoints();
 		setColPoint();
+		drawable = true;
 	}
 
 	public Entity(GImage i) {
 		super(i);
 		initPoints();
 		setColPoint();
+		drawable = true;
 	}
+	
+//	public Entity() {
+//		super();
+//		drawable = false;
+//	}
 
 	public double getVelX(){return velocity.getX();}
 	public double getVelY(){return velocity.getY();}
@@ -47,13 +55,14 @@ public abstract class Entity extends PhysicsObject{
 	public char getId(){return id;}
 	public boolean isWeightless() {return weightless;}
 	public boolean isCollideable() {return collidable;}
+	public boolean isGrounded(){return grounded;}
 
 	public void setVelX(double x){ velocity.setLocation(x,getVelY());}
 	public void setVelY(double y){ velocity.setLocation(getVelX(),y);}
 	public void setAccX(double x){ acceleration.setLocation(x,getAccY());}
 	public void setAccY(double y){ acceleration.setLocation(getAccX(),y);}
 	public void setWeightless(boolean b){weightless = b;}
-	public void setCollideable(boolean b){collidable = b;}
+	public void setCollideable(boolean b){collidable = b;} 
 
 	public void update(){
 
@@ -145,6 +154,12 @@ public abstract class Entity extends PhysicsObject{
 		
 		//sort indexes
 		sortColIndex(indexOrder);
+		
+		//is grounded?
+		if(colIndex[2] != 0)
+			grounded = true;
+		else
+			grounded = false;
 	}
 	
 	private void repositionAfterCol()
@@ -161,7 +176,7 @@ public abstract class Entity extends PhysicsObject{
 				break;
 			
 			//Top Collision
-			if(indexOrder[i] == 0)
+			if(indexOrder[i] == 0 && getVelY() < 0)
 			{
 				//Get tile that is colliding
 				if(colPoints[0].getColliding())
@@ -173,11 +188,12 @@ public abstract class Entity extends PhysicsObject{
 				
 				//reset position
 				screenObj.setLocation(getScreenPosX(), collisionTilePoint.getY() + Game.tileHeight);
+				
 				setVelY(0);
 			}
 			
 			//Right Collision
-			else if(indexOrder[i] == 1)
+			else if(indexOrder[i] == 1 && getVelX() > 0)
 			{
 				//Get tile that is colliding
 				if(colPoints[2].getColliding())
@@ -189,11 +205,12 @@ public abstract class Entity extends PhysicsObject{
 
 				//reset position
 				screenObj.setLocation(collisionTilePoint.getX() - screenObj.getWidth(), getScreenPosY());
+				
 				setVelX(0);
 			}
 			
 			//Bot Collision
-			else if(indexOrder[i] == 2)
+			else if(indexOrder[i] == 2 && getVelY() > 0)
 			{
 				//Get tile that is colliding
 				if(colPoints[4].getColliding())
@@ -205,11 +222,12 @@ public abstract class Entity extends PhysicsObject{
 
 				//reset position
 				screenObj.setLocation(screenObj.getX(), collisionTilePoint.getY() - screenObj.getHeight());
+				
 				setVelY(0);
 			}
 			
 			//Left Collision
-			else if(indexOrder[i] == 3)
+			else if(indexOrder[i] == 3 && getVelX() < 0)
 			{
 				//Get tile that is colliding
 				if(colPoints[6].getColliding())
@@ -221,6 +239,7 @@ public abstract class Entity extends PhysicsObject{
 
 				//reset position
 				screenObj.setLocation(collisionTilePoint.getX() + Game.tileWidth , getScreenPosY());
+				
 				setVelX(0);
 			}
 		}

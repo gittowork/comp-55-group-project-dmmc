@@ -37,7 +37,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 	//Static*******************************************************
 	private static final long serialVersionUID = 1L;
-	public static final double GRAVITY = 1;
+	public static final double GRAVITY = 5;
 	public static final int windowHeight = 500, windowWidth = 700;
 	public static final int tileHeight=50, tileWidth=50;
 	public static final int FPS = 60;
@@ -291,7 +291,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 	//helper function for the user select screen
 	private void addExistingUsers()
 	{
-		int levelX = windowWidth/tileWidth;
+		int levelX = windowWidth/tileWidth; 
 		int levelY = windowHeight/tileHeight;
 		GuiScreen temp = new GuiScreen(levelX, levelY);
 		if(!profiles.isEmpty())

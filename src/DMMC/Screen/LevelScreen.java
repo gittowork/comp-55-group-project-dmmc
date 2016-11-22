@@ -83,8 +83,9 @@ public class LevelScreen extends Screen implements ActionListener {
 	public void inputUp() 
 	{
 		for (Entity e: entities){
-			if (e instanceof Player){
-				e.setVelY(30);
+			if (e instanceof Player 
+					&& e.isGrounded()){
+				e.setVelY(-3);
 				break;
 			}
 		}
