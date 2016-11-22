@@ -60,7 +60,7 @@ public class Entity extends PhysicsObject{
 		setAccY(Game.GRAVITY /Game.FPS);
 		setVelX(getVelX() + getAccX());
 		setVelY(getVelY() + getAccY());
-		setVelX(0.5);
+		setVelX(1);
 		repositionAfterCol();
 		
 		screenObj.move(getVelX(), getVelY());
