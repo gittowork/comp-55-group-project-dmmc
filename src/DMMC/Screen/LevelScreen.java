@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import DMMC.Game;
 import DMMC.Physics.Entity;
 import DMMC.Physics.Player;
 import acm.graphics.GImage;
@@ -19,7 +20,7 @@ public class LevelScreen extends Screen implements ActionListener {
 	public LevelScreen(int sizeX, int sizeY) {
 		super(sizeX, sizeY);
 		entities = new ArrayList<Entity>();
-		Entity e = new Player(new GImage("player.png"));
+		Entity e = new Player(new GImage("player-0.png"), Game.getAnime("player-0"));
 		e.getScreenObj().setSize(e.getScreenObj().getSize().getWidth() * 2, e.getScreenObj().getSize().getHeight() * 2);
 		e.setScreenPosX(e.getScreenPosX() + 10);
 		entities.add(e);
