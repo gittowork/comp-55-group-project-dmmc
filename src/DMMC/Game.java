@@ -34,10 +34,12 @@ import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
 
 public class Game extends GraphicsProgram implements ActionListener{
+	
+	public static boolean demo = true;
 
 	//Static*******************************************************
 	private static final long serialVersionUID = 1L;
-	public static final double GRAVITY = 5;
+	public static final double GRAVITY = 9.8;
 	public static final int windowHeight = 500, windowWidth = 700;
 	public static final int tileHeight=50, tileWidth=50;
 	public static final int FPS = 60;
@@ -166,18 +168,45 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 		currentScreen = new LevelScreen(levelX, levelY);
 		String arr[][] = new String[levelX][levelY];
+		System.out.println(levelX + " : " + levelY);
+		
+		int[][] levelString = {
+				{1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+				{1,0,0,0,0,1,1,1,1,0,0,0,0,1},
+				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+				{1,1,1,0,0,0,0,0,0,0,0,1,1,1},
+				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+				{1,0,0,1,1,1,1,1,1,1,1,0,0,1},
+				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+				{1,1,0,0,0,0,0,0,0,0,0,0,1,1},
+				{1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+				};
+		int[][] demoString = {
+				{1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+				{1,1,0,0,0,0,0,0,0,0,0,0,1,1},
+				{1,0,1,0,0,0,0,0,0,0,0,1,0,1},
+				{1,0,0,1,0,0,0,0,0,0,1,0,0,1},
+				{1,0,0,0,1,0,0,0,0,1,0,0,0,1},
+				{1,0,0,0,0,0,1,1,0,0,0,0,0,1},
+				{1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+				};
 
 		//Set tile type array
 		for(int i=0;i<levelX;i++)
 		{
 			for(int j=0;j<levelY;j++)
 			{
-				arr[i][j]="0";
-				if(j==levelY-1)
-					arr[i][j]="1";
+				if(!demo)
+					arr[i][j] = Integer.toString(levelString[j][i]);
+				else
+					arr[i][j] = Integer.toString(demoString[j][i]);
 			}
 		}
-		arr[(int) (getNumTiles(false) - 1)][(int)(getNumTiles(true) - 2)] = "1";
+
 		currentScreen.initTiles(arr);
 
 		for(int x = 0; x < levelX; x ++)
@@ -446,6 +475,17 @@ public class Game extends GraphicsProgram implements ActionListener{
 	}
 	public void keyReleased(KeyEvent e)
 	{
-		currentScreen.inputReleased();
+		switch (e.getKeyCode())
+		{
+		case KeyEvent.VK_LEFT:
+			currentScreen.inputLeftReleased();
+			break;
+		case KeyEvent.VK_RIGHT:
+			currentScreen.inputRightReleased();
+			break;
+		default:
+			break;
+		}
+
 	}
 }

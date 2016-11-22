@@ -13,6 +13,7 @@ public abstract class Entity extends PhysicsObject{
 
 	private static int lastId = 0;
 	private static final double colPointPadding = 1;
+	public static int maxVelX = 3;
 
 
 	protected GPoint velocity;
@@ -28,12 +29,14 @@ public abstract class Entity extends PhysicsObject{
 	private GPoint collisionTilePoint;
 	private boolean drawable;
 	private boolean grounded;
+	private boolean forced; // true if object is going to move
 
 	public Entity(GImage i, Image[] initAnimation) {
 		super(i, initAnimation);
 		initPoints();
 		setColPoint();
 		drawable = true;
+		forced = false;
 	}
 
 	public Entity(GImage i) {
@@ -41,6 +44,7 @@ public abstract class Entity extends PhysicsObject{
 		initPoints();
 		setColPoint();
 		drawable = true;
+		forced = false;
 	}
 	
 //	public Entity() {
@@ -56,6 +60,7 @@ public abstract class Entity extends PhysicsObject{
 	public boolean isWeightless() {return weightless;}
 	public boolean isCollideable() {return collidable;}
 	public boolean isGrounded(){return grounded;}
+	public boolean isForced(){return forced;}
 
 	public void setVelX(double x){ velocity.setLocation(x,getVelY());}
 	public void setVelY(double y){ velocity.setLocation(getVelX(),y);}
@@ -63,6 +68,7 @@ public abstract class Entity extends PhysicsObject{
 	public void setAccY(double y){ acceleration.setLocation(getAccX(),y);}
 	public void setWeightless(boolean b){weightless = b;}
 	public void setCollideable(boolean b){collidable = b;} 
+	public void setForced(boolean f){forced = f;}
 
 	public void update(){
 
@@ -73,7 +79,11 @@ public abstract class Entity extends PhysicsObject{
 		repositionAfterCol();
 		
 		screenObj.move(getVelX(), getVelY());
-
+		
+		if(!forced && getVelX() != 0)
+		{
+			setVelX(getVelX() * 0.7);
+		}
 	}
 	
 	//gets an array of the indexes of colindex in order of its contents

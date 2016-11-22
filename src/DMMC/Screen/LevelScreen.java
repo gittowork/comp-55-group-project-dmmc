@@ -22,7 +22,8 @@ public class LevelScreen extends Screen implements ActionListener {
 		entities = new ArrayList<Entity>();
 		Entity e = new Player(new GImage("player-0.png"), Game.getAnime("player-0"));
 		e.getScreenObj().setSize(e.getScreenObj().getSize().getWidth() * 2, e.getScreenObj().getSize().getHeight() * 2);
-		e.setScreenPosX(e.getScreenPosX() + 10);
+		e.setScreenPosX(Game.windowWidth/2);
+		e.setScreenPosY(Game.windowHeight/2);
 		entities.add(e);
 	}
 
@@ -57,9 +58,24 @@ public class LevelScreen extends Screen implements ActionListener {
 	@Override
 	public void inputRight() 
 	{
+		System.out.println("SETT R");
 		for (Entity e: entities){
 			if (e instanceof Player){
-				e.setVelX(1);
+				e.setVelX(Entity.maxVelX);
+				e.setForced(true);
+				break;
+			}
+		}
+	}
+	
+	@Override
+	public void inputLeft() 
+	{
+		System.out.println("SETT L");
+		for (Entity e: entities){
+			if (e instanceof Player){
+				e.setVelX(-Entity.maxVelX);
+				e.setForced(true);
 				break;
 			}
 		}
@@ -85,7 +101,7 @@ public class LevelScreen extends Screen implements ActionListener {
 		for (Entity e: entities){
 			if (e instanceof Player 
 					&& e.isGrounded()){
-				e.setVelY(-3);
+				e.setVelY(-6);
 				break;
 			}
 		}
@@ -100,27 +116,27 @@ public class LevelScreen extends Screen implements ActionListener {
 	
 	
 	@Override
-	public void inputReleased()
+	public void inputLeftReleased()
 	{
 		for (Entity e: entities){
 			if (e instanceof Player){
-				e.setVelX(0);
-				break;
-			}
-		}
-	}
-
-	@Override
-	public void inputLeft() 
-	{
-		for (Entity e: entities){
-			if (e instanceof Player){
-				e.setVelX(-1);
+				e.setForced(false);
 				break;
 			}
 		}
 	}
 	
+	@Override
+	public void inputRightReleased()
+	{
+		for (Entity e: entities){
+			if (e instanceof Player){
+				e.setForced(false);
+				break;
+			}
+		}
+	}
+
 	@Override
 	public void inputEsc() 
 	{

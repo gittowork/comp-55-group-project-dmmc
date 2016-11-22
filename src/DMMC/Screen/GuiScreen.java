@@ -33,28 +33,28 @@ public class GuiScreen extends Screen implements ActionListener
 	@Override
 	public void inputUp()
 	{
-		System.out.println("uppp");
+		//System.out.println("uppp");
 		updateCursorPos(-1);
 	}
 
 	@Override
 	public void inputDown()
 	{
-		System.out.println("down we goo");
+		//System.out.println("down we goo");
 		updateCursorPos(1);
 	}
 
 	@Override
 	public void inputLeft()
 	{
-		System.out.println("now left");
+		//System.out.println("now left");
 		updateCursorPos(2);	//??????
 	}
 
 	@Override
 	public void inputRight()
 	{
-		System.out.println("now to the right");
+		//System.out.println("now to the right");
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class GuiScreen extends Screen implements ActionListener
 	public void inputEnter()
 	{
 
-		System.out.println("enterrrr");
+		//System.out.println("enterrrr");
 		if(getGButton() != null){
 			GButton b = getGButton();
 			b.fireActionEvent(b.getGLabel().getLabel());
@@ -84,7 +84,12 @@ public class GuiScreen extends Screen implements ActionListener
 	}
 	
 	@Override
-	public void inputReleased()
+	public void inputLeftReleased()
+	{
+		
+	}
+	@Override
+	public void inputRightReleased()
 	{
 		
 	}
