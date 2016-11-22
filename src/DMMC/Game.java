@@ -373,92 +373,26 @@ public class Game extends GraphicsProgram implements ActionListener{
 		switch (e.getKeyCode())
 		{
 		case KeyEvent.VK_ENTER:
-			inputEnter();
+			currentScreen.inputEnter();
 			break;
 		case KeyEvent.VK_ESCAPE:
-			inputEsc();
+			currentScreen.inputEsc();
 			break;
 		case KeyEvent.VK_LEFT:
-			inputLeft();
+			currentScreen.inputLeft();
 			break;
 		case KeyEvent.VK_UP:
-			inputUp();
+			currentScreen.inputUp();
 			break;
 		case KeyEvent.VK_RIGHT:
-			inputRight();
+			currentScreen.inputRight();
 			break;
 		case KeyEvent.VK_DOWN:
-			inputDown();
+			currentScreen.inputDown();
 			break;
 		default:
 			break;
 		}
 		
 	}
-	
-	//similar to code in inputEnter() for all other arrow keys
-	public void inputUp()
-	{ //updating cursor position every time a specific key is clicked based on it's key code 
-		System.out.println("uppp");
-		if(currentScreen instanceof GuiScreen){
-			GuiScreen tmp = (GuiScreen) currentScreen; 
-			tmp.updateCursorPos(-1);
-		}
-	}
-	
-	public void inputDown()
-	{
-		System.out.println("down we goo");
-		if(currentScreen instanceof GuiScreen){
-			GuiScreen tmp = (GuiScreen) currentScreen; 
-			tmp.updateCursorPos(1);
-		}
-	}
-	
-	public void inputLeft()
-	{
-		System.out.println("now left");
-		if(currentScreen instanceof GuiScreen)
-		{
-			GuiScreen tmp = (GuiScreen) currentScreen;
-			tmp.updateCursorPos(2);	//??????
-		}
-	}
-	
-	public void inputRight()
-	{
-		System.out.println("now to the right");
-		
-	}
-	
-	
-	public void inputZ()
-	{
-		System.out.println("why you pressing z????");
-	}
-
-	
-	public void inputEnter()
-	{
-		System.out.println("enterrrr");
-		if(currentScreen instanceof GuiScreen){
-			GuiScreen tmp = (GuiScreen) currentScreen;
-			if(tmp.getGButton() != null){
-				GButton b = tmp.getGButton();
-				b.fireActionEvent(b.getGLabel().getLabel());
-			}
-		}
-	}
-	public void inputEsc()
-	{
-		if(currentScreen instanceof GuiScreen){
-			GuiScreen tmp = (GuiScreen) currentScreen;
-			if(tmp.getGButton() != null ){
-				GButton b = tmp.getGButton();
-				if("Go Back(Esc)".equals(b.getGLabel().getLabel()))
-					b.fireActionEvent(b.getGLabel().getLabel());
-			}
-	}
-	}
-	
 }
