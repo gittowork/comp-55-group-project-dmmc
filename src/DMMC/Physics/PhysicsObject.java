@@ -44,7 +44,11 @@ public abstract class PhysicsObject {
 	public void iterAnimantion() {
 		// index is -1 if no animation is loaded
 		if(curAnimeIndex != -1)
+		{
 			screenObj.setImage(curAnimation[curAnimeIndex++]);
+			screenObj.setSize(this.getScreenObj().getSize().getWidth()*2, this.getScreenObj().getSize().getWidth()*2);
+		}
+			
 		
 		//loop back to first image
 		if(curAnimeIndex == curAnimation.length)

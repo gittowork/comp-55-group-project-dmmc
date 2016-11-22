@@ -6,9 +6,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.xml.parsers.DocumentBuilder;
@@ -36,6 +40,13 @@ public class Game extends GraphicsProgram implements ActionListener{
 	public static final int windowHeight = 500, windowWidth = 700;
 	public static final int tileHeight=50, tileWidth=50;
 	public static final int FPS = 60;
+	public static final String[] imageNames = {	
+		"player-0",
+		"player-1"
+	};
+	public static final int[] animationLengths = {
+			2
+	};
 	
 	private static Screen currentScreen;
 	
@@ -93,6 +104,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 	private GameState gameState;
 	private Timer timer;
 	Entity e;
+	private int timerIndex;
 	
 	public void init()
 	{
@@ -116,6 +128,24 @@ public class Game extends GraphicsProgram implements ActionListener{
 		addMouseListeners();
 		addKeyListeners();
 		timer.start();
+		timerIndex = 0;
+		
+		Image img;
+		Image[] pics;
+		try {
+			for (int i = 0; i < animationLengths.length; i++)
+			{
+				pics = new Image[animationLengths[i]];
+				for (int j = 0; j < animationLengths[i]; j++)
+				{
+					img = ImageIO.read(new File("../media/Images/" + imageNames[j] + ".png"));
+					pics[j] = img;
+					System.out.println(img.toString());
+				}
+				animations.put(imageNames[i], pics);	//the key isnt right and wont work for all
+			}			
+		} catch (IOException e) {
+		}
 	}
 	
 	
@@ -150,10 +180,14 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 	
 		System.out.println(gameState.toString());		
-		e = new Entity(new GImage("player.png"));
+		e = new Entity(new GImage("player-0.png"), animations.get("player-0"));
 		e.getScreenObj().setSize(e.getScreenObj().getSize().getWidth() * 2, e.getScreenObj().getSize().getHeight() * 2);
 		e.setScreenPosX(e.getScreenPosX() + 10);
 		add(e.getScreenObj());
+		
+		
+		
+
 		
 		
 	}
@@ -346,7 +380,15 @@ public class Game extends GraphicsProgram implements ActionListener{
 		if("Go Back(Esc)".equals(event.getActionCommand()))
 			loadScreen(GameState.MainMenuScreen);
 		if(e != null)
-		e.update(); 
+		{
+			e.update(); 
+			timerIndex++;
+			if (timerIndex == 60)
+			{
+				e.iterAnimantion();	//the animation shouldn't be in timer.
+				timerIndex = 0;
+			}
+		}
 	}
 	
 	//the following function is for mouse use. code was used to test the screen. Use if needed. 
