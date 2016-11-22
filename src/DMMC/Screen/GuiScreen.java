@@ -82,6 +82,12 @@ public class GuiScreen extends Screen implements ActionListener
 					b.fireActionEvent(b.getGLabel().getLabel());
 		}
 	}
+	
+	@Override
+	public void inputReleased()
+	{
+		
+	}
 
 
 	public void updateCursorPos(int update) {

@@ -79,6 +79,6 @@ public abstract class Screen {
 
 	public abstract void inputEsc();
 	
-
+	public abstract void inputReleased();
 
 }

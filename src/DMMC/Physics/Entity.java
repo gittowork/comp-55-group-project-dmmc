@@ -9,7 +9,7 @@ import acm.graphics.GImage;
 import acm.graphics.GPoint;
 import sun.tools.jar.resources.jar;
 
-public class Entity extends PhysicsObject{
+public abstract class Entity extends PhysicsObject{
 
 	private static int lastId = 0;
 	private static final double colPointPadding = 1;
@@ -26,6 +26,7 @@ public class Entity extends PhysicsObject{
 	protected char[] colIndex;
 	protected char[] indexOrder;
 	private GPoint collisionTilePoint;
+	private boolean drawable;
 
 	public Entity(GImage i, Image[] initAnimation) {
 		super(i, initAnimation);
@@ -60,7 +61,6 @@ public class Entity extends PhysicsObject{
 		setAccY(Game.GRAVITY /Game.FPS);
 		setVelX(getVelX() + getAccX());
 		setVelY(getVelY() + getAccY());
-		setVelX(1);
 		repositionAfterCol();
 		
 		screenObj.move(getVelX(), getVelY());
@@ -121,7 +121,7 @@ public class Entity extends PhysicsObject{
 		colPoints[6].setLocation(getScreenPosX() - colPointPadding, getScreenPosY() + screenObj.getHeight() - colPointPadding);
 		colPoints[7].setLocation(getScreenPosX() - colPointPadding, getScreenPosY() + colPointPadding);
 
-		checkForCollision();
+		//checkForCollision();
 	}
 	private void checkForCollision()
 	{
@@ -154,6 +154,7 @@ public class Entity extends PhysicsObject{
 			//reset collision points to see if any more repositioning is needed
 			//TODO: Being called every 4 times a frame every time, make set location function, call only when location is set or moved
 			setColPoint();
+			checkForCollision();
 			
 			//if not collision on side, leave
 			if(colIndex[indexOrder[i]] == 0)
@@ -224,7 +225,7 @@ public class Entity extends PhysicsObject{
 			}
 		}
 	}
-	//	public abstract void spawnAction();
-	//	public abstract void deathAction();
-	//	public abstract void behaviorAction();
+		public abstract void spawnAction();
+		public abstract void deathAction();
+		public abstract void behaviorAction();
 }

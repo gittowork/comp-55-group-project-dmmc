@@ -18,9 +18,11 @@ import org.omg.PortableServer.ServantActivator;
 import DMMC.Physics.Button;
 import DMMC.Physics.Entity;
 import DMMC.Physics.GButton;
+import DMMC.Physics.Player;
 import DMMC.Physics.Tile;
 import DMMC.Physics.TileType;
 import DMMC.Screen.GuiScreen;
+import DMMC.Screen.LevelScreen;
 import DMMC.Screen.Screen;
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
@@ -127,7 +129,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		int levelY = windowHeight/tileHeight;
 		
 		
-		currentScreen = new GuiScreen(levelX, levelY);
+		currentScreen = new LevelScreen(levelX, levelY);
 		String arr[][] = new String[levelX][levelY];
 		
 		//Set tile type array
@@ -150,11 +152,9 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 	
 		System.out.println(gameState.toString());		
-		e = new Entity(new GImage("player.png"));
-		e.getScreenObj().setSize(e.getScreenObj().getSize().getWidth() * 2, e.getScreenObj().getSize().getHeight() * 2);
-		e.setScreenPosX(e.getScreenPosX() + 10);
-		add(e.getScreenObj());
-		
+		LevelScreen temp = (LevelScreen)currentScreen;
+		for(Entity e: temp.getEntities())
+			add(e.getScreenObj());
 		
 	}
 	
@@ -345,8 +345,12 @@ public class Game extends GraphicsProgram implements ActionListener{
 			loadScreen(GameState.Leaderboards);
 		if("Go Back(Esc)".equals(event.getActionCommand()))
 			loadScreen(GameState.MainMenuScreen);
-		if(e != null)
-		e.update(); 
+		if(currentScreen instanceof LevelScreen)
+		{
+			LevelScreen temp = (LevelScreen)currentScreen;
+			for(Entity e: temp.getEntities())
+				e.update();
+		}
 	}
 	
 	//the following function is for mouse use. code was used to test the screen. Use if needed. 
@@ -394,5 +398,9 @@ public class Game extends GraphicsProgram implements ActionListener{
 			break;
 		}
 		
+	}
+	public void keyReleased(KeyEvent e)
+	{
+		currentScreen.inputReleased();
 	}
 }

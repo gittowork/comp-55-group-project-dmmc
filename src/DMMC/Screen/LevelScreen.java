@@ -3,15 +3,14 @@ package DMMC.Screen;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import javax.swing.Timer;
 
 import DMMC.Physics.Entity;
+import DMMC.Physics.Player;
+import acm.graphics.GImage;
 
 public class LevelScreen extends Screen implements ActionListener {
 	
 	private ArrayList <Entity> entities; 
-	
-	private Timer updateTimer;
 
 	private short frameNum; 
 	
@@ -19,8 +18,11 @@ public class LevelScreen extends Screen implements ActionListener {
 	
 	public LevelScreen(int sizeX, int sizeY) {
 		super(sizeX, sizeY);
-		updateTimer=new Timer(1000, this); //how much delay?
-		updateTimer.setInitialDelay(3000);
+		entities = new ArrayList<Entity>();
+		Entity e = new Player(new GImage("player.png"));
+		e.getScreenObj().setSize(e.getScreenObj().getSize().getWidth() * 2, e.getScreenObj().getSize().getHeight() * 2);
+		e.setScreenPosX(e.getScreenPosX() + 10);
+		entities.add(e);
 	}
 
 	public void drawEntities() {
@@ -46,23 +48,30 @@ public class LevelScreen extends Screen implements ActionListener {
 		return frameNum;
 		
 	}
-
-
-
-	public void inputRight() 
-	{
-		// TODO Auto-generated method stub
-		
+	
+	public ArrayList<Entity> getEntities(){
+		return entities;
 	}
 
+	@Override
+	public void inputRight() 
+	{
+		for (Entity e: entities){
+			if (e instanceof Player){
+				e.setVelX(1);
+				break;
+			}
+		}
+	}
 
+	@Override
 	public void inputZ() 
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
-
+	@Override
 	public void inputEnter() 
 	{
 		// TODO Auto-generated method stub
@@ -72,8 +81,12 @@ public class LevelScreen extends Screen implements ActionListener {
 	@Override
 	public void inputUp() 
 	{
-		// TODO Auto-generated method stub
-		
+		for (Entity e: entities){
+			if (e instanceof Player){
+				e.setVelY(30);
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -82,20 +95,34 @@ public class LevelScreen extends Screen implements ActionListener {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
+	@Override
+	public void inputReleased()
+	{
+		for (Entity e: entities){
+			if (e instanceof Player){
+				e.setVelX(0);
+				break;
+			}
+		}
+	}
 
 	@Override
 	public void inputLeft() 
 	{
-		// TODO Auto-generated method stub
-		
+		for (Entity e: entities){
+			if (e instanceof Player){
+				e.setVelX(-1);
+				break;
+			}
+		}
 	}
+	
 	@Override
 	public void inputEsc() 
 	{
 		// TODO Auto-generated method stub
 		
 	}
-
-	
-
 }
