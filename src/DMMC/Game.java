@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Stack;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
@@ -36,6 +37,7 @@ import acm.program.GraphicsProgram;
 public class Game extends GraphicsProgram implements ActionListener{
 	
 	public static boolean demo = true;
+	private Stack<Screen> storeScreen = new Stack<Screen>();
 
 	//Static*******************************************************
 	private static final long serialVersionUID = 1L;
@@ -251,7 +253,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		tmp.addGButton(button3);
 		tmp.addGButton(button4);
 		tmp.addGButton(button5);
-		button1.drawCursor();
+		tmp.getGButton().drawCursor();
 	}
 
 
@@ -279,6 +281,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 			loadLeaderboards();
 		else if(g == GameState.OptionsScreen)
 			loadOptions();
+		else if(g== GameState.MapSelect)
+			loadMapScreen();
 	}
 
 	//made this class because load credits, options, and leaderboards have the same code
@@ -302,11 +306,35 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 		add(button1);
 		button1.addActionListener(this);
-		button1.drawCursor();
 		tmp.addGButton(button1);
+		tmp.getGButton().drawCursor();
 
 	}
 
+	private void loadMapScreen(){
+		removeAll();
+		int levelX = windowWidth/tileWidth;
+		int levelY = windowHeight/tileHeight;
+		GuiScreen tmp = new GuiScreen(levelX, levelY);
+		currentScreen=tmp;
+		GLabel title = new GLabel("Maps", windowWidth/2-50, windowHeight/6 -50);
+		GButton button1 = new GButton("Map1", windowWidth/2-50, 2*(windowHeight/6)-50, 100, 50);
+		GButton button2 = new GButton("Map2", windowWidth/2-50, 3*(windowHeight/6)-50, 100, 50);
+		GButton button3 = new GButton("Map3", windowWidth/2-50, 4*(windowHeight/6)-50, 100, 50);	
+		button1.addActionListener(this);
+		button2.addActionListener(this);
+		button3.addActionListener(this);
+		add(button1);
+		add(button2);
+		add(button3);
+		add(title);
+		tmp.addGButton(button1);
+		tmp.addGButton(button2);
+		tmp.addGButton(button3);
+		tmp.getGButton().drawCursor();
+	}
+	
+	
 	private void loadUserSelect()
 	{
 		loadBasic(false);
@@ -397,6 +425,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 		if("New User".equals(event.getActionCommand()))
 			addNewUser();
 		if("New Run".equals(event.getActionCommand()))
+			loadScreen(GameState.MapSelect);
+		if(event.getActionCommand() != null && event.getActionCommand().contains("Map"))
 			loadScreen(GameState.GameScreen);
 		if("Credits".equals(event.getActionCommand()))
 			loadScreen(GameState.CreditsScreen);
@@ -405,7 +435,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		if("How To".equals(event.getActionCommand()))
 			loadScreen(GameState.HowToScreen);
 		if("Leaderboard".equals(event.getActionCommand()))
-			loadScreen(GameState.Leaderboards);
+			loadScreen(GameState.MapSelect);
 		if("Go Back(Esc)".equals(event.getActionCommand()))
 			loadScreen(GameState.MainMenuScreen);
 		
