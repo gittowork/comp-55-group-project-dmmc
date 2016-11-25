@@ -37,8 +37,9 @@ import acm.program.GraphicsProgram;
 public class Game extends GraphicsProgram implements ActionListener{
 	
 	public static boolean demo = true;
-	private Stack<Screen> storeScreen = new Stack<Screen>();
-
+	private Stack<Screen> storeScreen = new Stack<Screen>(); // store screen
+	private Stack<GameState> storeGameState = new Stack<GameState>(); // store game state
+	private boolean ifEnterPressed=false; //detecting if we press enter so that esc does not store previous screen
 	//Static*******************************************************
 	private static final long serialVersionUID = 1L;
 	public static final double GRAVITY = 9.8;
@@ -166,9 +167,13 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 		int levelX = windowWidth/tileWidth;
 		int levelY = windowHeight/tileHeight;
-
+		if(ifEnterPressed){
+			storeGameState.push(gameState); //stores previous screens on stack 
+			storeScreen.push(currentScreen);
+		}
 
 		currentScreen = new LevelScreen(levelX, levelY);
+		gameState=GameState.GameScreen;//sets current screen 
 		String arr[][] = new String[levelX][levelY];
 		System.out.println(levelX + " : " + levelY);
 		
@@ -229,8 +234,14 @@ public class Game extends GraphicsProgram implements ActionListener{
 		removeAll();
 		int levelX = windowWidth/tileWidth;
 		int levelY = windowHeight/tileHeight;
-		GuiScreen tmp = new GuiScreen(levelX, levelY);
+		GuiScreen tmp = new GuiScreen(levelX, levelY); //peek returns whatever is on top of the stack
+		if(!storeGameState.empty() && storeGameState.peek()==GameState.MainMenuScreen){ // checking if top screen is the screen we are loading 
+			storeGameState.pop(); 
+			GuiScreen tmp1=(GuiScreen)storeScreen.pop();   //if yes, set previous cursor pos
+			tmp.setCursorPos(tmp1.getCursorPos());
+		}
 		currentScreen=tmp;
+		gameState=GameState.MainMenuScreen;
 		GLabel title = new GLabel("Super Siege Smores", windowWidth/2-50, windowHeight/6 -50);
 		GButton button1 = new GButton("New Run", windowWidth/2-50, 2*(windowHeight/6)-50, 100, 50);
 		GButton button2 = new GButton("Leaderboard", windowWidth/2-50, 3*(windowHeight/6)-50, 100, 50);
@@ -298,7 +309,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 		{
 			button1 = new GButton("Go Back(Esc)", 0, 0, 100, 50);
 		}
-
 		else
 		{
 			button1 = new GButton("New User", windowWidth/2 + 50, 300, 100, 100);
@@ -316,7 +326,17 @@ public class Game extends GraphicsProgram implements ActionListener{
 		int levelX = windowWidth/tileWidth;
 		int levelY = windowHeight/tileHeight;
 		GuiScreen tmp = new GuiScreen(levelX, levelY);
+		if(!storeGameState.empty() && storeGameState.peek()==GameState.MapSelect){
+			storeGameState.pop();
+			GuiScreen tmp1=(GuiScreen)storeScreen.pop();
+			tmp.setCursorPos(tmp1.getCursorPos());
+		}
+		if(ifEnterPressed){
+			storeGameState.push(gameState);
+			storeScreen.push(currentScreen);
+		}
 		currentScreen=tmp;
+		gameState=GameState.MapSelect;
 		GLabel title = new GLabel("Maps", windowWidth/2-50, windowHeight/6 -50);
 		GButton button1 = new GButton("Map1", windowWidth/2-50, 2*(windowHeight/6)-50, 100, 50);
 		GButton button2 = new GButton("Map2", windowWidth/2-50, 3*(windowHeight/6)-50, 100, 50);
@@ -378,6 +398,10 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 	private void loadOptions()
 	{
+		if(ifEnterPressed){
+			storeGameState.push(gameState);
+			storeScreen.push(currentScreen);
+		}
 		loadBasic(true);
 		GLabel label = new GLabel("Game Music Volume: ", 0, 100);
 		add(label);
@@ -385,6 +409,10 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 	private void loadCredits() 
 	{
+		if(ifEnterPressed){
+			storeGameState.push(gameState);
+			storeScreen.push(currentScreen);
+		}
 		loadBasic(true);
 		GLabel label = new GLabel("Programmers: Malvika Sriram, Pranav Thirunavukkarasu, Maxine Lien, Brendan Ahdoot", 0, 100);
 		add (label);
@@ -392,6 +420,10 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 	private void loadHowTo() 
 	{
+		if(ifEnterPressed){
+			storeGameState.push(gameState);
+			storeScreen.push(currentScreen);
+		}
 		loadBasic(true);
 		GLabel label1 = new GLabel("How to Play Super S'more Seige:", 0, 100);
 		add(label1);
@@ -399,6 +431,10 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 	private void loadLeaderboards()
 	{
+		if(ifEnterPressed){
+			storeGameState.push(gameState);
+			storeScreen.push(currentScreen);
+		}
 		loadBasic(true);
 		GLabel label1 = new GLabel("Leaderboards", 0, 100);
 		add(label1);
@@ -481,10 +517,12 @@ public class Game extends GraphicsProgram implements ActionListener{
 		switch (e.getKeyCode())
 		{
 		case KeyEvent.VK_ENTER:
+			ifEnterPressed=true;
 			currentScreen.inputEnter();
+			ifEnterPressed=false;
 			break;
 		case KeyEvent.VK_ESCAPE:
-			currentScreen.inputEsc();
+			inputEsc();
 			break;
 		case KeyEvent.VK_LEFT:
 			currentScreen.inputLeft();
@@ -517,5 +555,10 @@ public class Game extends GraphicsProgram implements ActionListener{
 			break;
 		}
 
+	}
+	public void inputEsc()
+	{
+		if(!storeGameState.empty())
+			loadScreen(storeGameState.peek());
 	}
 }

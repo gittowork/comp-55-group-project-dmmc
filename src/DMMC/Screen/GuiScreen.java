@@ -76,11 +76,12 @@ public class GuiScreen extends Screen implements ActionListener
 	@Override
 	public void inputEsc()
 	{
-			if(getGButton() != null ){
-				GButton b = getGButton();
-				if("Go Back(Esc)".equals(b.getGLabel().getLabel()))
-					b.fireActionEvent(b.getGLabel().getLabel());
-		}
+//			if(getGButton() != null ){
+//				GButton b = getGButton();
+//				if("Go Back(Esc)".equals(b.getGLabel().getLabel()))
+//					b.fireActionEvent(b.getGLabel().getLabel());
+//		}
+		
 	}
 	
 	@Override
@@ -144,5 +145,11 @@ public class GuiScreen extends Screen implements ActionListener
 		gButtons.add(b);
 	}
 
+	public int getCursorPos(){
+		return cursorPosX;
+	}
+	public void setCursorPos(int pos){
+		this.cursorPosX=pos;
+	}
 
 }
