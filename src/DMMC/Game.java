@@ -40,6 +40,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 	private Stack<Screen> storeScreen = new Stack<Screen>(); // store screen
 	private Stack<GameState> storeGameState = new Stack<GameState>(); // store game state
 	private boolean ifEnterPressed=false; //detecting if we press enter so that esc does not store previous screen
+	private boolean newGameSelected=false;
 	//Static*******************************************************
 	private static final long serialVersionUID = 1L;
 	public static final double GRAVITY = 9.8;
@@ -295,6 +296,11 @@ public class Game extends GraphicsProgram implements ActionListener{
 		else if(g== GameState.MapSelect)
 			loadMapScreen();
 	}
+	
+	private void loadScreen(GameState g, String whichMap)
+	{
+		
+	}
 
 	//made this class because load credits, options, and leaderboards have the same code
 	private void loadBasic(Boolean back)
@@ -337,10 +343,13 @@ public class Game extends GraphicsProgram implements ActionListener{
 		}
 		currentScreen=tmp;
 		gameState=GameState.MapSelect;
+		String prefix = "L";
+		if(newGameSelected)
+			prefix="G";
 		GLabel title = new GLabel("Maps", windowWidth/2-50, windowHeight/6 -50);
-		GButton button1 = new GButton("Map1", windowWidth/2-50, 2*(windowHeight/6)-50, 100, 50);
-		GButton button2 = new GButton("Map2", windowWidth/2-50, 3*(windowHeight/6)-50, 100, 50);
-		GButton button3 = new GButton("Map3", windowWidth/2-50, 4*(windowHeight/6)-50, 100, 50);	
+		GButton button1 = new GButton(prefix+"Map1", windowWidth/2-50, 2*(windowHeight/6)-50, 100, 50);
+		GButton button2 = new GButton(prefix+"Map2", windowWidth/2-50, 3*(windowHeight/6)-50, 100, 50);
+		GButton button3 = new GButton(prefix+"Map3", windowWidth/2-50, 4*(windowHeight/6)-50, 100, 50);	
 		button1.addActionListener(this);
 		button2.addActionListener(this);
 		button3.addActionListener(this);
@@ -439,6 +448,17 @@ public class Game extends GraphicsProgram implements ActionListener{
 		GLabel label1 = new GLabel("Leaderboards", 0, 100);
 		add(label1);
 	}
+	
+	private void loadLeaderboards(String scores)
+	{
+		if(ifEnterPressed){
+			storeGameState.push(gameState);
+			storeScreen.push(currentScreen);
+		}
+		loadBasic(true);
+		GLabel label1 = new GLabel("Leaderboards: "+ scores, 0, 100);
+		add(label1);
+	}
 
 	public void run()
 	{
@@ -460,20 +480,30 @@ public class Game extends GraphicsProgram implements ActionListener{
 	{	
 		if("New User".equals(event.getActionCommand()))
 			addNewUser();
-		if("New Run".equals(event.getActionCommand()))
+		if("New Run".equals(event.getActionCommand())){
+			newGameSelected=true;
 			loadScreen(GameState.MapSelect);
-		if(event.getActionCommand() != null && event.getActionCommand().contains("Map"))
+		}
+		if(event.getActionCommand() != null && event.getActionCommand().contains("GMap")){
 			loadScreen(GameState.GameScreen);
+		}
 		if("Credits".equals(event.getActionCommand()))
 			loadScreen(GameState.CreditsScreen);
 		if("Options".equals(event.getActionCommand()))
 			loadScreen(GameState.OptionsScreen);
 		if("How To".equals(event.getActionCommand()))
 			loadScreen(GameState.HowToScreen);
-		if("Leaderboard".equals(event.getActionCommand()))
+		if("Leaderboard".equals(event.getActionCommand())){
+			newGameSelected=false;
 			loadScreen(GameState.MapSelect);
+
+		}
 		if("Go Back(Esc)".equals(event.getActionCommand()))
-			loadScreen(GameState.MainMenuScreen);
+			inputEsc();;
+		if(event.getActionCommand() != null && event.getActionCommand().contains("LMap")){
+			loadLeaderboards(event.getActionCommand());
+		}		
+		
 		
 		if(currentScreen instanceof LevelScreen)
 		{
