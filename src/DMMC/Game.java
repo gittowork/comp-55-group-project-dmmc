@@ -379,12 +379,13 @@ public class Game extends GraphicsProgram implements ActionListener{
 		int levelX = windowWidth/tileWidth; 
 		int levelY = windowHeight/tileHeight;
 		int posX = 0;
+		
 		GuiScreen temp = new GuiScreen(levelX, levelY);
 		if(!profiles.isEmpty())
 		{
 			for(int i = 0; i < profiles.size(); i++)
 			{
-				posX = i*100 + 150;
+				posX = (i+1)*(windowWidth/(profiles.size()+3));
 				GButton user = new GButton(profiles.get(i).getName(), posX, 150, 100, 100);
 				add(user);
 				temp.addGButton(user);
