@@ -37,7 +37,7 @@ public class Ghost extends Entity {
 
 	@Override
 	public void behaviorAction() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

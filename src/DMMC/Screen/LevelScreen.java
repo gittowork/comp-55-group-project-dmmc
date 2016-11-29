@@ -17,6 +17,8 @@ public class LevelScreen extends Screen implements ActionListener {
 	
 	private int curWave;
 	
+	private Entity player;
+	
 	public LevelScreen(int sizeX, int sizeY) {
 		super(sizeX, sizeY);
 		entities = new ArrayList<Entity>();
@@ -25,6 +27,7 @@ public class LevelScreen extends Screen implements ActionListener {
 		e.setScreenPosX(Game.windowWidth/2);
 		e.setScreenPosY(Game.windowHeight/2);
 		entities.add(e);
+		player = e;
 	}
 
 	public void drawEntities() {
@@ -142,5 +145,9 @@ public class LevelScreen extends Screen implements ActionListener {
 	{
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public Entity getPlayerEntity(){
+		return player;
 	}
 }
