@@ -27,9 +27,11 @@ public abstract class Entity extends PhysicsObject{
 	protected char[] colIndex;
 	protected char[] indexOrder;
 	private GPoint collisionTilePoint;
+	private GPoint lastFreePoint; // last location entity was not colliding
 	private boolean drawable;
 	private boolean grounded;
 	private boolean forced; // true if object is going to move
+	private boolean colliding;
 
 	public Entity(GImage i, Image[] initAnimation) {
 		super(i, initAnimation);
@@ -37,6 +39,7 @@ public abstract class Entity extends PhysicsObject{
 		setColPoint();
 		drawable = true;
 		forced = false;
+		colliding = false;
 	}
 
 	public Entity(GImage i) {
@@ -45,6 +48,7 @@ public abstract class Entity extends PhysicsObject{
 		setColPoint();
 		drawable = true;
 		forced = false;
+		colliding = false;
 	}
 	
 //	public Entity() {
@@ -114,6 +118,9 @@ public abstract class Entity extends PhysicsObject{
 		for(int i = 0; i < colPoints.length; i ++)
 			colPoints[i] = new CollisionPoint(0,0);
 		
+		//last free point 
+		lastFreePoint = new GPoint(getScreenPosX(), getScreenPosY());
+		
 		//index for every side of the object, counts how many collisions per side
 		colIndex = new char[4];
 		
@@ -159,7 +166,80 @@ public abstract class Entity extends PhysicsObject{
 
 			//if collision, add to side index
 			if(colPoints[i].getColliding())
+			{
+				colliding = true;
 				colIndex[Math.floorDiv(i, 2)] ++; 
+			}
+		}
+		
+		//fix indexing
+		
+		//get last free location
+		if(!colliding)
+			lastFreePoint.setLocation(getScreenPos());
+		else
+		{
+			//collision happened 
+			
+			//if a index 2 is there, there will be no error
+			boolean flag = false;
+			for(int i = 0; i < colIndex.length; i++)
+				if(colIndex[i] == 2)
+				{
+					flag = true;
+					break;
+				}
+			
+			if(!flag)
+			{
+				// check last free location
+				
+				//case 1: top left collision
+				if(colPoints[7].getColliding() 
+						&& colPoints[0].getColliding())
+				{
+					collisionTilePoint = Game.tilePosToScreen(colPoints[7].getTileX(), colPoints[7].getTileY());
+					if(screenObj.getWidth() <  Math.abs(collisionTilePoint.getX() + Game.tileWidth - (lastFreePoint.getX() + screenObj.getWidth())))
+					{
+						colIndex[3]++;
+					}
+				}
+				
+				//case 2: bot left collision
+				else if(colPoints[6].getColliding() 
+						&& colPoints[5].getColliding())
+				{
+					collisionTilePoint = Game.tilePosToScreen(colPoints[6].getTileX(), colPoints[6].getTileY());
+					if(screenObj.getWidth() <  Math.abs(collisionTilePoint.getX() + Game.tileWidth - (lastFreePoint.getX() + screenObj.getWidth())))
+					{
+						colIndex[3]++;
+					}
+				}
+				
+				//case 3: bot right collision
+				else if(colPoints[3].getColliding() 
+						&& colPoints[4].getColliding())
+				{
+					collisionTilePoint = Game.tilePosToScreen(colPoints[3].getTileX(), colPoints[3].getTileY());
+										
+					if(screenObj.getHeight() <  Math.abs(collisionTilePoint.getY() - lastFreePoint.getY()))
+					{
+						colIndex[2]++;
+					}
+				}
+				
+				//case 4: top right collision
+				else if(colPoints[1].getColliding() 
+						&& colPoints[2].getColliding())
+				{
+					collisionTilePoint = Game.tilePosToScreen(colPoints[1].getTileX(), colPoints[1].getTileY());
+					if(screenObj.getWidth() <  Math.abs(screenObj.getX() - collisionTilePoint.getX()))
+					{
+						colIndex[1]++;
+					}
+				}
+			}
+			
 		}
 		
 		//sort indexes
@@ -174,15 +254,18 @@ public abstract class Entity extends PhysicsObject{
 	
 	private void repositionAfterCol()
 	{
+		
+		//reset every frame
+		colliding = false;
+		
 		for(short i = 0; i < indexOrder.length; i ++)
 		{
 			//reset collision points to see if any more repositioning is needed
-			//TODO: Being called every 4 times a frame every time, make set location function, call only when location is set or moved
 			setColPoint();
 			checkForCollision();
 			
 			//if not collision on side, leave
-			if(colIndex[indexOrder[i]] == 0)
+			if(!colliding)
 				break;
 			
 			//Top Collision
