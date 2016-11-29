@@ -36,7 +36,7 @@ import acm.program.GraphicsProgram;
 
 public class Game extends GraphicsProgram implements ActionListener{
 	
-	public static boolean demo = true;
+	public boolean demo = false;
 	private Stack<Screen> storeScreen = new Stack<Screen>(); // store screen
 	private Stack<GameState> storeGameState = new Stack<GameState>(); // store game state
 	private boolean ifEnterPressed=false; //detecting if we press enter so that esc does not store previous screen
@@ -314,16 +314,15 @@ public class Game extends GraphicsProgram implements ActionListener{
 		if (back)
 		{
 			button1 = new GButton("Go Back(Esc)", 0, 0, 100, 50);
+			add(button1);
+			button1.addActionListener(this);
+			tmp.addGButton(button1);
+			tmp.getGButton().drawCursor();
 		}
-		else
-		{
-			button1 = new GButton("New User", windowWidth/2 + 50, 300, 100, 100);
-		}
-
-		add(button1);
-		button1.addActionListener(this);
-		tmp.addGButton(button1);
-		tmp.getGButton().drawCursor();
+		
+	
+		
+		
 
 	}
 
@@ -367,29 +366,41 @@ public class Game extends GraphicsProgram implements ActionListener{
 	private void loadUserSelect()
 	{
 		loadBasic(false);
-		addExistingUsers();
+		addUsers();
 		GLabel title = new GLabel("Welcome!", windowWidth/2, 50);
 		add(title);
-
+		
 
 	}
 
 	//helper function for the user select screen
-	private void addExistingUsers()
+	private void addUsers()
 	{
 		int levelX = windowWidth/tileWidth; 
 		int levelY = windowHeight/tileHeight;
+		int posX = 0;
+		
 		GuiScreen temp = new GuiScreen(levelX, levelY);
 		if(!profiles.isEmpty())
 		{
 			for(int i = 0; i < profiles.size(); i++)
 			{
-				int posX = i*100 + 150;
+				
+				posX = (i+1)*(windowWidth/(profiles.size()+3));
 				GButton user = new GButton(profiles.get(i).getName(), posX, 150, 100, 100);
+			
 				add(user);
 				temp.addGButton(user);
+				
+				user.addActionListener(this);
 			}
 		}
+		GButton newUser = new GButton("New User", posX+=100, 150, 100, 100);
+		add(newUser);
+		temp.addGButton(newUser);
+		newUser.addActionListener(this);
+		temp.getGButton().drawCursor();
+		currentScreen = temp;
 	}
 
 	private void addNewUser()
@@ -478,27 +489,39 @@ public class Game extends GraphicsProgram implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent event)
 	{	
+		//System.out.println(event.getActionCommand());
 		if("New User".equals(event.getActionCommand()))
 			addNewUser();
+		// load profiles
+
+		for(Profile p: profiles)
+		{
+			if(p.getName().equals(event.getActionCommand()))
+			{
+				System.out.println("Yo");
+				loadScreen(GameState.MainMenuScreen);
+			}
+		}
+		
 		if("New Run".equals(event.getActionCommand())){
 			newGameSelected=true;
 			loadScreen(GameState.MapSelect);
 		}
-		if(event.getActionCommand() != null && event.getActionCommand().contains("GMap")){
+		else if(event.getActionCommand() != null && event.getActionCommand().contains("GMap")){
 			loadScreen(GameState.GameScreen);
 		}
-		if("Credits".equals(event.getActionCommand()))
+		else if("Credits".equals(event.getActionCommand()))
 			loadScreen(GameState.CreditsScreen);
-		if("Options".equals(event.getActionCommand()))
+		else if("Options".equals(event.getActionCommand()))
 			loadScreen(GameState.OptionsScreen);
-		if("How To".equals(event.getActionCommand()))
+		else if("How To".equals(event.getActionCommand()))
 			loadScreen(GameState.HowToScreen);
-		if("Leaderboard".equals(event.getActionCommand())){
+		else if("Leaderboard".equals(event.getActionCommand())){
 			newGameSelected=false;
 			loadScreen(GameState.MapSelect);
 
 		}
-		if("Go Back(Esc)".equals(event.getActionCommand()))
+		else if("Go Back(Esc)".equals(event.getActionCommand()))
 			inputEsc();;
 		if(event.getActionCommand() != null && event.getActionCommand().contains("LMap")){
 			loadLeaderboards(event.getActionCommand());

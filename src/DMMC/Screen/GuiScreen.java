@@ -28,8 +28,6 @@ public class GuiScreen extends Screen implements ActionListener
 
 	//currscreen.inputUp() in GAME(move it) 
 
-
-
 	@Override
 	public void inputUp()
 	{
@@ -48,13 +46,14 @@ public class GuiScreen extends Screen implements ActionListener
 	public void inputLeft()
 	{
 		//System.out.println("now left");
-		updateCursorPos(2);	//??????
+		updateCursorPos(-1);
 	}
 
 	@Override
 	public void inputRight()
 	{
 		//System.out.println("now to the right");
+		updateCursorPos(1);
 	}
 
 	@Override
@@ -66,8 +65,7 @@ public class GuiScreen extends Screen implements ActionListener
 	@Override
 	public void inputEnter()
 	{
-
-		//System.out.println("enterrrr");
+		//System.out.println("enterrrr")a;
 		if(getGButton() != null){
 			GButton b = getGButton();
 			b.fireActionEvent(b.getGLabel().getLabel());
@@ -128,7 +126,10 @@ public class GuiScreen extends Screen implements ActionListener
 			double startY = b.getY();
 			double width = b.getWidth();
 			double h = b.getHeight();
-			if(x>=startX && y>=startY && x<=startX+width && y<=startY+h)
+			if(x >= startX 
+					&& y >= startY 
+					&& x <= startX+width 
+					&& y <= startY+h)
 				return b;
 
 		}
@@ -136,8 +137,11 @@ public class GuiScreen extends Screen implements ActionListener
 	}
 
 	public GButton getGButton(){ //returns button at current cursor
+		System.out.println("SIZE: " + gButtons.size());
 		if(gButtons.size()==0)
+		{
 			return null;
+		}
 		return gButtons.get(cursorPosX); //using cursor position now 
 	}
 
