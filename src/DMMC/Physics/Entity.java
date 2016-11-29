@@ -77,7 +77,8 @@ public abstract class Entity extends PhysicsObject{
 	public void update(){
 
 		//set desired velocity before collision
-		setAccY(Game.GRAVITY /Game.FPS);
+		if(!isWeightless())
+			setAccY(Game.GRAVITY /Game.FPS);
 		setVelX(getVelX() + getAccX());
 		setVelY(getVelY() + getAccY());
 		repositionAfterCol();
