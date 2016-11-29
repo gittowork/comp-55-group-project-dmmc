@@ -385,10 +385,13 @@ public class Game extends GraphicsProgram implements ActionListener{
 		{
 			for(int i = 0; i < profiles.size(); i++)
 			{
+				
 				posX = (i+1)*(windowWidth/(profiles.size()+3));
 				GButton user = new GButton(profiles.get(i).getName(), posX, 150, 100, 100);
+			
 				add(user);
 				temp.addGButton(user);
+				
 				user.addActionListener(this);
 			}
 		}
@@ -397,6 +400,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		temp.addGButton(newUser);
 		newUser.addActionListener(this);
 		temp.getGButton().drawCursor();
+		currentScreen = temp;
 	}
 
 	private void addNewUser()
@@ -485,27 +489,39 @@ public class Game extends GraphicsProgram implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent event)
 	{	
+		//System.out.println(event.getActionCommand());
 		if("New User".equals(event.getActionCommand()))
 			addNewUser();
+		// load profiles
+
+		for(Profile p: profiles)
+		{
+			if(p.getName().equals(event.getActionCommand()))
+			{
+				System.out.println("Yo");
+				loadScreen(GameState.MainMenuScreen);
+			}
+		}
+		
 		if("New Run".equals(event.getActionCommand())){
 			newGameSelected=true;
 			loadScreen(GameState.MapSelect);
 		}
-		if(event.getActionCommand() != null && event.getActionCommand().contains("GMap")){
+		else if(event.getActionCommand() != null && event.getActionCommand().contains("GMap")){
 			loadScreen(GameState.GameScreen);
 		}
-		if("Credits".equals(event.getActionCommand()))
+		else if("Credits".equals(event.getActionCommand()))
 			loadScreen(GameState.CreditsScreen);
-		if("Options".equals(event.getActionCommand()))
+		else if("Options".equals(event.getActionCommand()))
 			loadScreen(GameState.OptionsScreen);
-		if("How To".equals(event.getActionCommand()))
+		else if("How To".equals(event.getActionCommand()))
 			loadScreen(GameState.HowToScreen);
-		if("Leaderboard".equals(event.getActionCommand())){
+		else if("Leaderboard".equals(event.getActionCommand())){
 			newGameSelected=false;
 			loadScreen(GameState.MapSelect);
 
 		}
-		if("Go Back(Esc)".equals(event.getActionCommand()))
+		else if("Go Back(Esc)".equals(event.getActionCommand()))
 			inputEsc();;
 		if(event.getActionCommand() != null && event.getActionCommand().contains("LMap")){
 			loadLeaderboards(event.getActionCommand());
