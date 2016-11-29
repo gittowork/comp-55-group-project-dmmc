@@ -48,13 +48,14 @@ public class GuiScreen extends Screen implements ActionListener
 	public void inputLeft()
 	{
 		//System.out.println("now left");
-		updateCursorPos(2);	//??????
+		updateCursorPos(-1);
 	}
 
 	@Override
 	public void inputRight()
 	{
 		//System.out.println("now to the right");
+		updateCursorPos(1);
 	}
 
 	@Override

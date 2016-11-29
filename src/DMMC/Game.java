@@ -36,7 +36,7 @@ import acm.program.GraphicsProgram;
 
 public class Game extends GraphicsProgram implements ActionListener{
 	
-	public static boolean demo = true;
+	public boolean demo = false;
 	private Stack<Screen> storeScreen = new Stack<Screen>(); // store screen
 	private Stack<GameState> storeGameState = new Stack<GameState>(); // store game state
 	private boolean ifEnterPressed=false; //detecting if we press enter so that esc does not store previous screen
@@ -314,16 +314,15 @@ public class Game extends GraphicsProgram implements ActionListener{
 		if (back)
 		{
 			button1 = new GButton("Go Back(Esc)", 0, 0, 100, 50);
+			add(button1);
+			button1.addActionListener(this);
+			tmp.addGButton(button1);
+			tmp.getGButton().drawCursor();
 		}
-		else
-		{
-			button1 = new GButton("New User", windowWidth/2 + 50, 300, 100, 100);
-		}
-
-		add(button1);
-		button1.addActionListener(this);
-		tmp.addGButton(button1);
-		tmp.getGButton().drawCursor();
+		
+	
+		
+		
 
 	}
 
@@ -367,29 +366,36 @@ public class Game extends GraphicsProgram implements ActionListener{
 	private void loadUserSelect()
 	{
 		loadBasic(false);
-		addExistingUsers();
+		addUsers();
 		GLabel title = new GLabel("Welcome!", windowWidth/2, 50);
 		add(title);
-
+		
 
 	}
 
 	//helper function for the user select screen
-	private void addExistingUsers()
+	private void addUsers()
 	{
 		int levelX = windowWidth/tileWidth; 
 		int levelY = windowHeight/tileHeight;
+		int posX = 0;
 		GuiScreen temp = new GuiScreen(levelX, levelY);
 		if(!profiles.isEmpty())
 		{
 			for(int i = 0; i < profiles.size(); i++)
 			{
-				int posX = i*100 + 150;
+				posX = i*100 + 150;
 				GButton user = new GButton(profiles.get(i).getName(), posX, 150, 100, 100);
 				add(user);
 				temp.addGButton(user);
+				user.addActionListener(this);
 			}
 		}
+		GButton newUser = new GButton("New User", posX+=100, 150, 100, 100);
+		add(newUser);
+		temp.addGButton(newUser);
+		newUser.addActionListener(this);
+		temp.getGButton().drawCursor();
 	}
 
 	private void addNewUser()
