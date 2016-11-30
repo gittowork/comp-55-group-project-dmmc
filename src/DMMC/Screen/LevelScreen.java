@@ -17,6 +17,8 @@ public class LevelScreen extends Screen implements ActionListener {
 	
 	private int curWave;
 	
+	private Entity player;
+	
 	public LevelScreen(int sizeX, int sizeY) {
 		super(sizeX, sizeY);
 		entities = new ArrayList<Entity>();
@@ -25,6 +27,7 @@ public class LevelScreen extends Screen implements ActionListener {
 		e.setScreenPosX(Game.windowWidth/2);
 		e.setScreenPosY(Game.windowHeight/2);
 		entities.add(e);
+		player = e;
 	}
 
 	public void drawEntities() {
@@ -58,25 +61,16 @@ public class LevelScreen extends Screen implements ActionListener {
 	@Override
 	public void inputRight() 
 	{
-		for (Entity e: entities){
-			if (e instanceof Player){
-				e.setVelX(Entity.maxVelX);
-				e.setForced(true);
-				break;
-			}
-		}
+		player.setVelX(Entity.maxVelX);
+		player.setForced(true);
 	}
+
 	
 	@Override
 	public void inputLeft() 
 	{
-		for (Entity e: entities){
-			if (e instanceof Player){
-				e.setVelX(-Entity.maxVelX);
-				e.setForced(true);
-				break;
-			}
-		}
+		player.setVelX(-Entity.maxVelX);
+		player.setForced(true);
 	}
 
 	@Override
@@ -96,12 +90,8 @@ public class LevelScreen extends Screen implements ActionListener {
 	@Override
 	public void inputUp() 
 	{
-		for (Entity e: entities){
-			if (e instanceof Player 
-					&& e.isGrounded()){
-				e.setVelY(-6);
-				break;
-			}
+		if (player.isGrounded()){
+			player.setVelY(-6);
 		}
 	}
 
@@ -116,23 +106,13 @@ public class LevelScreen extends Screen implements ActionListener {
 	@Override
 	public void inputLeftReleased()
 	{
-		for (Entity e: entities){
-			if (e instanceof Player){
-				e.setForced(false);
-				break;
-			}
-		}
+		player.setForced(false);
 	}
 	
 	@Override
 	public void inputRightReleased()
 	{
-		for (Entity e: entities){
-			if (e instanceof Player){
-				e.setForced(false);
-				break;
-			}
-		}
+		player.setForced(false);
 	}
 
 	@Override
@@ -140,5 +120,9 @@ public class LevelScreen extends Screen implements ActionListener {
 	{
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public Entity getPlayerEntity(){
+		return player;
 	}
 }

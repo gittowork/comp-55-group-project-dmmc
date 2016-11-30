@@ -11,7 +11,7 @@ import sun.tools.jar.resources.jar;
 
 public abstract class Entity extends PhysicsObject{
 
-	private static int lastId = 0;
+	private static char lastId = 0;
 	private static final double colPointPadding = 1;
 	public static int maxVelX = 3;
 
@@ -39,7 +39,7 @@ public abstract class Entity extends PhysicsObject{
 		setColPoint();
 		drawable = true;
 		forced = false;
-		colliding = false;
+		id = lastId ++;
 	}
 
 	public Entity(GImage i) {
@@ -48,7 +48,7 @@ public abstract class Entity extends PhysicsObject{
 		setColPoint();
 		drawable = true;
 		forced = false;
-		colliding = false;
+		id = lastId ++;
 	}
 	
 //	public Entity() {
