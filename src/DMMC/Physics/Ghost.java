@@ -38,7 +38,6 @@ public class Ghost extends Entity {
 	@Override
 	public void behaviorAction() {
 		
-		
 	}
 
 }
