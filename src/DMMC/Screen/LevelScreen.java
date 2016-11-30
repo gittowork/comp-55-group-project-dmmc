@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import DMMC.Game;
 import DMMC.Physics.Entity;
+import DMMC.Physics.Ghost;
 import DMMC.Physics.Player;
 import acm.graphics.GImage;
 
@@ -23,10 +24,15 @@ public class LevelScreen extends Screen implements ActionListener {
 		super(sizeX, sizeY);
 		entities = new ArrayList<Entity>();
 		Entity e = new Player(new GImage("player-0.png"), Game.getAnime("player-0"));
+		Entity g = new Ghost(new GImage("ghost-0.png"), Game.getAnime("ghost-0"));
 		e.getScreenObj().setSize(e.getScreenObj().getSize().getWidth() * 2, e.getScreenObj().getSize().getHeight() * 2);
+		g.getScreenObj().setSize(e.getScreenObj().getSize().getWidth() * 2, e.getScreenObj().getSize().getHeight() * 2);
 		e.setScreenPosX(Game.windowWidth/2);
 		e.setScreenPosY(Game.windowHeight/2);
+		g.setScreenPosX(Game.windowWidth/2);
+		g.setScreenPosY(Game.windowHeight/2);
 		entities.add(e);
+		entities.add(g);
 		player = e;
 	}
 
