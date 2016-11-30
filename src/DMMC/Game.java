@@ -35,7 +35,7 @@ import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
 
 public class Game extends GraphicsProgram implements ActionListener{
-	
+
 	public boolean demo = false;
 	private Stack<Screen> storeScreen = new Stack<Screen>(); // store screen
 	private Stack<GameState> storeGameState = new Stack<GameState>(); // store game state
@@ -54,6 +54,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 	public static final int[] animationLengths = {
 			2
 	};
+	public static Entity player;
 
 	private static Screen currentScreen;
 
@@ -176,7 +177,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		currentScreen = new LevelScreen(levelX, levelY);
 		gameState=GameState.GameScreen;//sets current screen 
 		String arr[][] = new String[levelX][levelY];
-		
+
 		int[][] levelString = {
 				{1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -188,7 +189,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
 				{1,1,0,0,0,0,0,0,0,0,0,0,1,1},
 				{1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-				};
+		};
 		int[][] demoString = {
 				{1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -200,7 +201,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 				{1,0,0,0,1,0,0,0,0,1,0,0,0,1},
 				{1,0,0,0,0,0,1,1,0,0,0,0,0,1},
 				{1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-				};
+		};
 
 		//Set tile type array
 		for(int i=0;i<levelX;i++)
@@ -226,7 +227,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		LevelScreen temp = (LevelScreen)currentScreen;
 		for(Entity e: temp.getEntities())
 			add(e.getScreenObj());
-
+		player = temp.getPlayerEntity();
 	}
 
 
@@ -295,7 +296,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		else if(g== GameState.MapSelect)
 			loadMapScreen();
 	}
-	
+
 	//made this class because load credits, options, and leaderboards have the same code
 	private void loadBasic(Boolean back)
 	{
@@ -350,20 +351,20 @@ public class Game extends GraphicsProgram implements ActionListener{
 		tmp.addGButton(button3);
 		tmp.getGButton().drawCursor();
 	}
-	
-	
+
+
 	private void loadUserSelect()
 	{
 		loadBasic(false);
 		GImage giraffe = new GImage("warrior marshmallow riding giraffe.png", 0, 110);
 		giraffe.scale(0.5);
-		
+
 		add(giraffe);
-		
+
 		addUsers();
 		GLabel title = new GLabel("Welcome!", windowWidth/2, 50);
 		add(title);
-		
+
 
 	}
 
@@ -373,19 +374,19 @@ public class Game extends GraphicsProgram implements ActionListener{
 		int levelX = windowWidth/tileWidth; 
 		int levelY = windowHeight/tileHeight;
 		int posX = 0;
-		
+
 		GuiScreen temp = new GuiScreen(levelX, levelY);
 		if(!profiles.isEmpty())
 		{
 			for(int i = 0; i < profiles.size(); i++)
 			{
-				
+
 				posX = (i+1)*(windowWidth/(profiles.size()+3));
 				GButton user = new GButton(profiles.get(i).getName(), posX, 150, 100, 100);
-			
+
 				add(user);
 				temp.addGButton(user);
-				
+
 				user.addActionListener(this);
 			}
 		}
@@ -453,7 +454,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		GLabel label1 = new GLabel("Leaderboards", 0, 100);
 		add(label1);
 	}
-	
+
 	private void loadLeaderboards(String scores)
 	{
 		if(ifEnterPressed){
@@ -495,7 +496,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 				loadScreen(GameState.MainMenuScreen);
 			}
 		}
-		
+
 		if("New Run".equals(event.getActionCommand())){
 			newGameSelected=true;
 			loadScreen(GameState.MapSelect);
@@ -519,8 +520,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 		if(event.getActionCommand() != null && event.getActionCommand().contains("LMap")){
 			loadLeaderboards(event.getActionCommand());
 		}		
-		
-		
+
+
 		if(currentScreen instanceof LevelScreen)
 		{
 			timerIndex++;

@@ -78,7 +78,7 @@ public abstract class Entity extends PhysicsObject{
 
 		//set desired velocity before collision
 		if(!isWeightless())
-			setAccY(Game.GRAVITY /Game.FPS);
+			setAccY(Game.GRAVITY / Game.FPS);
 		setVelX(getVelX() + getAccX());
 		setVelY(getVelY() + getAccY());
 		repositionAfterCol();
@@ -89,6 +89,7 @@ public abstract class Entity extends PhysicsObject{
 		{
 			setVelX(getVelX() * 0.7);
 		}
+		behaviorAction();
 	}
 	
 	//gets an array of the indexes of colindex in order of its contents
@@ -195,46 +196,46 @@ public abstract class Entity extends PhysicsObject{
 			{
 				// check last free location
 				
-				//bot right collision
-				if(colPoints[3].getColliding() 
+				//case 1: top left collision
+				if(colPoints[7].getColliding() 
+						&& colPoints[0].getColliding())
+				{
+					collisionTilePoint = Game.tilePosToScreen(colPoints[7].getTileX(), colPoints[7].getTileY());
+					if(screenObj.getWidth() <  Math.abs(collisionTilePoint.getX() + Game.tileWidth - (lastFreePoint.getX() + screenObj.getWidth())))
+					{
+						colIndex[3]++;
+					}
+				}
+				
+				//case 2: bot left collision
+				else if(colPoints[6].getColliding() 
+						&& colPoints[5].getColliding())
+				{
+					collisionTilePoint = Game.tilePosToScreen(colPoints[6].getTileX(), colPoints[6].getTileY());
+					if(screenObj.getWidth() <  Math.abs(collisionTilePoint.getX() + Game.tileWidth - (lastFreePoint.getX() + screenObj.getWidth())))
+					{
+						colIndex[3]++;
+					}
+				}
+				
+				//case 3: bot right collision
+				else if(colPoints[3].getColliding() 
 						&& colPoints[4].getColliding())
 				{
 					collisionTilePoint = Game.tilePosToScreen(colPoints[3].getTileX(), colPoints[3].getTileY());
 										
-					if(screenObj.getHeight() < collisionTilePoint.getY() - lastFreePoint.getY())
+					if(screenObj.getHeight() <  Math.abs(collisionTilePoint.getY() - lastFreePoint.getY()))
 					{
 						colIndex[2]++;
 					}
 				}
 				
-				//top left collision
-				else if(colPoints[7].getColliding() 
-						&& colPoints[0].getColliding())
-				{
-					collisionTilePoint = Game.tilePosToScreen(colPoints[7].getTileX(), colPoints[7].getTileY());
-					if(screenObj.getWidth() <  lastFreePoint.getX() + screenObj.getWidth()  - (collisionTilePoint.getX() + Game.tileWidth))
-					{
-						colIndex[3]++;
-					}
-				}
-				
-				//bot left collision
-				else if(colPoints[6].getColliding() 
-						&& colPoints[5].getColliding())
-				{
-					collisionTilePoint = Game.tilePosToScreen(colPoints[6].getTileX(), colPoints[6].getTileY());
-					if(screenObj.getWidth() <  lastFreePoint.getX() + screenObj.getWidth()  - (collisionTilePoint.getX() + Game.tileWidth))
-					{
-						colIndex[3]++;
-					}
-				}
-				
-				//top right collision
+				//case 4: top right collision
 				else if(colPoints[1].getColliding() 
 						&& colPoints[2].getColliding())
 				{
 					collisionTilePoint = Game.tilePosToScreen(colPoints[1].getTileX(), colPoints[1].getTileY());
-					if(screenObj.getWidth() < collisionTilePoint.getX() - lastFreePoint.getX())
+					if(screenObj.getWidth() <  Math.abs(screenObj.getX() - collisionTilePoint.getX()))
 					{
 						colIndex[1]++;
 					}
