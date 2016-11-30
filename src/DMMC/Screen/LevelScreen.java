@@ -61,7 +61,6 @@ public class LevelScreen extends Screen implements ActionListener {
 	@Override
 	public void inputRight() 
 	{
-		System.out.println("SETT R");
 		for (Entity e: entities){
 			if (e instanceof Player){
 				e.setVelX(Entity.maxVelX);
@@ -74,7 +73,6 @@ public class LevelScreen extends Screen implements ActionListener {
 	@Override
 	public void inputLeft() 
 	{
-		System.out.println("SETT L");
 		for (Entity e: entities){
 			if (e instanceof Player){
 				e.setVelX(-Entity.maxVelX);

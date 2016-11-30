@@ -176,7 +176,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 		currentScreen = new LevelScreen(levelX, levelY);
 		gameState=GameState.GameScreen;//sets current screen 
 		String arr[][] = new String[levelX][levelY];
-		System.out.println(levelX + " : " + levelY);
 		
 		int[][] levelString = {
 				{1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -223,7 +222,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		/*************************** End of Drawing tiles on sample input ***************/		
 
 
-		System.out.println(gameState.toString());		
+		//System.out.println(gameState.toString());		
 		LevelScreen temp = (LevelScreen)currentScreen;
 		for(Entity e: temp.getEntities())
 			add(e.getScreenObj());
@@ -297,11 +296,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 			loadMapScreen();
 	}
 	
-	private void loadScreen(GameState g, String whichMap)
-	{
-		
-	}
-
 	//made this class because load credits, options, and leaderboards have the same code
 	private void loadBasic(Boolean back)
 	{
@@ -319,11 +313,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 			tmp.addGButton(button1);
 			tmp.getGButton().drawCursor();
 		}
-		
-	
-		
-		
-
 	}
 
 	private void loadMapScreen(){
@@ -498,7 +487,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 		{
 			if(p.getName().equals(event.getActionCommand()))
 			{
-				System.out.println("Yo");
 				loadScreen(GameState.MainMenuScreen);
 			}
 		}
@@ -522,7 +510,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 		}
 		else if("Go Back(Esc)".equals(event.getActionCommand()))
-			inputEsc();;
+			inputEsc();
 		if(event.getActionCommand() != null && event.getActionCommand().contains("LMap")){
 			loadLeaderboards(event.getActionCommand());
 		}		
