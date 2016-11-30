@@ -1,5 +1,10 @@
 package DMMC;
 
+/*
+ * ArrayList<string> a[] = new ArrayList<String>[]; 
+ * 
+ * */
+
 
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -47,6 +52,21 @@ public class Game extends GraphicsProgram implements ActionListener{
 	public static final int windowHeight = 500, windowWidth = 700;
 	public static final int tileHeight=50, tileWidth=50;
 	public static final int FPS = 60;
+		
+	static String[] UserSelectScreenData = {
+			"New Run",
+			"Leaderboard",  //all button names
+			"Options",
+			"How To",
+			"Credits",
+			"GMap1",
+			"GMap2",
+			"GMap3",
+			"LMap1",
+			"LMap2",
+			"LMap3"
+	};
+	
 	public static final String[] imageNames = {	
 			"player-0",
 			"player-1"
@@ -243,27 +263,22 @@ public class Game extends GraphicsProgram implements ActionListener{
 		currentScreen=tmp;
 		gameState=GameState.MainMenuScreen;
 		GLabel title = new GLabel("Super Siege Smores", windowWidth/2-50, windowHeight/6 -50);
-		GButton button1 = new GButton("New Run", windowWidth/2-50, 2*(windowHeight/6)-50, 100, 50);
-		GButton button2 = new GButton("Leaderboard", windowWidth/2-50, 3*(windowHeight/6)-50, 100, 50);
-		GButton button3 = new GButton("Options", windowWidth/2-50, 4*(windowHeight/6)-50, 100, 50);	
-		GButton button4 = new GButton("How To", windowWidth/2-50, 5*(windowHeight/6)-50, 100, 50);	
-		GButton button5 = new GButton("Credits", windowWidth/2-50, windowHeight-50, 100, 50);	
-		button1.addActionListener(this);
-		button2.addActionListener(this);
-		button3.addActionListener(this);
-		button4.addActionListener(this);
-		button5.addActionListener(this);
-		add(button1);
-		add(button2);
-		add(button3);
-		add(button4);
-		add(button5);
 		add(title);
-		tmp.addGButton(button1);
-		tmp.addGButton(button2);
-		tmp.addGButton(button3);
-		tmp.addGButton(button4);
-		tmp.addGButton(button5);
+		int buttonOffset=0;
+		int numberOfButton=5;
+		int posY=0;
+		int height = windowHeight/(numberOfButton+2);
+		for(int i = 0; i < numberOfButton; i++)
+		{
+			
+			posY = (i+1)*(windowHeight/(numberOfButton+2));
+			GButton button = new GButton(UserSelectScreenData[(buttonOffset+i)], windowWidth/2-50, posY, 100, height);
+		
+			add(button);
+			tmp.addGButton(button);
+			
+			button.addActionListener(this);
+		}
 		tmp.getGButton().drawCursor();
 	}
 
@@ -331,23 +346,27 @@ public class Game extends GraphicsProgram implements ActionListener{
 		}
 		currentScreen=tmp;
 		gameState=GameState.MapSelect;
-		String prefix = "L";
+		int buttonOffset=8;
 		if(newGameSelected)
-			prefix="G";
+			buttonOffset=5;
 		GLabel title = new GLabel("Maps", windowWidth/2-50, windowHeight/6 -50);
-		GButton button1 = new GButton(prefix+"Map1", windowWidth/2-50, 2*(windowHeight/6)-50, 100, 50);
-		GButton button2 = new GButton(prefix+"Map2", windowWidth/2-50, 3*(windowHeight/6)-50, 100, 50);
-		GButton button3 = new GButton(prefix+"Map3", windowWidth/2-50, 4*(windowHeight/6)-50, 100, 50);	
-		button1.addActionListener(this);
-		button2.addActionListener(this);
-		button3.addActionListener(this);
-		add(button1);
-		add(button2);
-		add(button3);
 		add(title);
-		tmp.addGButton(button1);
-		tmp.addGButton(button2);
-		tmp.addGButton(button3);
+		int numberOfButton=3;
+		int posY=0;
+		int height = windowHeight/(numberOfButton+2);
+		for(int i = 0; i < numberOfButton; i++)
+		{
+			
+			posY = (i+1)*(windowHeight/(numberOfButton+2));
+			GButton button = new GButton(UserSelectScreenData[(buttonOffset+i)], windowWidth/2-50, posY, 100, height);
+		
+			add(button);
+			tmp.addGButton(button);
+			
+			button.addActionListener(this);
+		}
+		tmp.getGButton().drawCursor();
+		
 		tmp.getGButton().drawCursor();
 	}
 	
@@ -357,9 +376,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		loadBasic(false);
 		GImage giraffe = new GImage("warrior marshmallow riding giraffe.png", 0, 110);
 		giraffe.scale(0.5);
-		
 		add(giraffe);
-		
 		addUsers();
 		GLabel title = new GLabel("Welcome!", windowWidth/2, 50);
 		add(title);
