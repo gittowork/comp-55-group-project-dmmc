@@ -355,6 +355,11 @@ public class Game extends GraphicsProgram implements ActionListener{
 	private void loadUserSelect()
 	{
 		loadBasic(false);
+		GImage giraffe = new GImage("warrior marshmallow riding giraffe.png", 0, 110);
+		giraffe.scale(0.5);
+		
+		add(giraffe);
+		
 		addUsers();
 		GLabel title = new GLabel("Welcome!", windowWidth/2, 50);
 		add(title);
