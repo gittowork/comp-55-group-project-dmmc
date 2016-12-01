@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
@@ -134,16 +136,18 @@ public class Game extends GraphicsProgram implements ActionListener{
 		this.resize(windowWidth, windowHeight);
 		profiles = new ArrayList<Profile>();
 
-		//add us to existing profiles
-		Profile maxine = new Profile("Maxine");
-		Profile pranav = new Profile("Peanut");
-		Profile malvika = new Profile("Malvika");
-		Profile brendan = new Profile("Brendan");
-		profiles.add(maxine);
-		profiles.add(pranav);
-		profiles.add(malvika);
-		profiles.add(brendan);
-
+		//read the profiles text file intead of hardcoding
+		try {
+			for (String line : Files.readAllLines(Paths.get("../media/profiles.txt")))
+			{
+				Profile user = new Profile(line);
+				profiles.add(user);
+			}
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			System.out.println("oh no");
+		}
+		
 		currentUser = -1;
 		animations = new HashMap<String, Image[]>();
 		gameState = GameState.Init;
@@ -161,14 +165,15 @@ public class Game extends GraphicsProgram implements ActionListener{
 				pics = new Image[animationLengths[i]];
 				for (int j = 0; j < animationLengths[i]; j++)
 				{
+					//read file
 					img = ImageIO.read(new File("../media/Images/" + imageNames[i][j] + ".png"));
 					pics[j] = img;
-					System.out.println(img.toString());
+					System.out.println(img.toString());	//test output
 				}
-				animations.put(imageNames[i][0], pics);	//the key isnt right and wont work for all
+				animations.put(imageNames[i][0], pics);	//Puts the array into the hashmap
 			}			
 		} catch (IOException e) {
-			System.out.println("oh no");
+			System.out.println("oh no");	//catch failure to read file
 		}
 	}
 
