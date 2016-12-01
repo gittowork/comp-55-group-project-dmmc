@@ -78,7 +78,7 @@ public abstract class Entity extends PhysicsObject{
 
 		//set desired velocity before collision
 		if(!isWeightless())
-			setAccY(Game.GRAVITY /Game.FPS);
+			setAccY(Game.GRAVITY / Game.FPS);
 		setVelX(getVelX() + getAccX());
 		setVelY(getVelY() + getAccY());
 		repositionAfterCol();
@@ -89,6 +89,7 @@ public abstract class Entity extends PhysicsObject{
 		{
 			setVelX(getVelX() * 0.7);
 		}
+		behaviorAction();
 	}
 	
 	//gets an array of the indexes of colindex in order of its contents
