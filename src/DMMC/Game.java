@@ -260,15 +260,19 @@ public class Game extends GraphicsProgram implements ActionListener{
 		gameState=GameState.MainMenuScreen;
 		GLabel title = new GLabel("Super Siege Smores", windowWidth/2-50, windowHeight/6 -50);
 		add(title);
-		int buttonOffset=0;
-		int numberOfButton=5;
+		
+		//in the previous version, there were a lot of added buttons.
+		//those buttons have been removed and added using a for loop.
+		
+		int buttonOffset=0; //loading button from offset index
+		int numberOfButton=5; //number of buttons for the screen 
 		int posY=0;
 		int height = windowHeight/(numberOfButton+2);
 		for(int i = 0; i < numberOfButton; i++)
 		{
-			
-			posY = (i+1)*(windowHeight/(numberOfButton+2));
-			GButton button = new GButton(UserSelectScreenData[(buttonOffset+i)], windowWidth/2-50, posY, 100, height);
+			//did not use math.floor because for int division, 10/3 is going to be 3 anyway
+			posY = (i+1)*(windowHeight/(numberOfButton+2)); //finding position
+			GButton button = new GButton(UserSelectScreenData[(buttonOffset+i)], windowWidth/2-50, posY, 100, height); 
 		
 			add(button);
 			tmp.addGButton(button);
@@ -342,6 +346,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		}
 		currentScreen=tmp;
 		gameState=GameState.MapSelect;
+		
 		int buttonOffset=8;
 		if(newGameSelected)
 			buttonOffset=5;
@@ -425,6 +430,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		}
 
 	}
+	//dont know if i should get rid of these functions since the labels are needed...
 
 	private void loadOptions()
 	{
