@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,8 +31,10 @@ import DMMC.Screen.LevelScreen;
 import DMMC.Screen.Screen;
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
+import acm.graphics.GObject;
 import acm.graphics.GPoint;
 import acm.graphics.GRect;
+import acm.graphics.GScalable;
 import acm.program.GraphicsProgram;
 
 public class Game extends GraphicsProgram implements ActionListener{
@@ -47,11 +50,13 @@ public class Game extends GraphicsProgram implements ActionListener{
 	public static final int windowHeight = 500, windowWidth = 700;
 	public static final int tileHeight=50, tileWidth=50;
 	public static final int FPS = 60;
-	public static final String[] imageNames = {	
-			"player-0",
-			"player-1"
-	};
+	public static final String[][] imageNames = {
+			{"player-0","player-1"},
+			{"ghost-0","ghost-1"}
+	};		//made this a 2d array so that when i load the files into the animation hashmap, its easier to call and organize
+	
 	public static final int[] animationLengths = {
+			2,
 			2
 	};
 	public static Entity player;
@@ -139,21 +144,22 @@ public class Game extends GraphicsProgram implements ActionListener{
 		timer.start();
 		timerIndex = 0;
 
-		Image img;
-		Image[] pics;
+		Image img;	//variable to temporarily hold the new picture being read in
+		Image[] pics;	//array of images to hold all the animation pics for each character
 		try {
 			for (int i = 0; i < animationLengths.length; i++)
 			{
 				pics = new Image[animationLengths[i]];
 				for (int j = 0; j < animationLengths[i]; j++)
 				{
-					img = ImageIO.read(new File("../media/Images/" + imageNames[j] + ".png"));
+					img = ImageIO.read(new File("../media/Images/" + imageNames[i][j] + ".png"));
 					pics[j] = img;
 					System.out.println(img.toString());
 				}
-				animations.put(imageNames[i], pics);	//the key isnt right and wont work for all
+				animations.put(imageNames[i][0], pics);	//the key isnt right and wont work for all
 			}			
 		} catch (IOException e) {
+			System.out.println("oh no");
 		}
 	}
 
@@ -356,7 +362,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 	private void loadUserSelect()
 	{
 		loadBasic(false);
-		GImage giraffe = new GImage("warrior marshmallow riding giraffe.png", 0, 110);
+		GImage giraffe = new GImage("../media/Images/warrior marshmallow riding giraffe.png");
 		giraffe.scale(0.5);
 
 		add(giraffe);
