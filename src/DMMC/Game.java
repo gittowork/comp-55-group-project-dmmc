@@ -103,7 +103,10 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 	public static GPoint tilePosToScreen(int x, int y)
 	{
-		return currentScreen.getTile(x, y).getScreenPos();
+		//if (currentScreen != null)
+			//return currentScreen.getTile(x, y).getScreenPos();
+		
+		return new GPoint(x * tileWidth, y * tileHeight);
 	}
 
 	public static boolean isPointOnSolid(GPoint p)
@@ -187,58 +190,60 @@ public class Game extends GraphicsProgram implements ActionListener{
 		// drawing tiles on the sample input
 		/********************************************************************/
 
-		int levelX = windowWidth/tileWidth;
-		int levelY = windowHeight/tileHeight;
-		if(ifEnterPressed){
-			storeGameState.push(gameState); //stores previous screens on stack 
-			storeScreen.push(currentScreen);
-		}
+//		int levelX = windowWidth/tileWidth;
+//		int levelY = windowHeight/tileHeight;
+//		if(ifEnterPressed){
+//			storeGameState.push(gameState); //stores previous screens on stack 
+//			storeScreen.push(currentScreen);
+//		}
+//
+//		currentScreen = new LevelScreen(levelX, levelY);
+//		gameState=GameState.GameScreen;//sets current screen 
+//		String arr[][] = new String[levelX][levelY];
+//
+//		int[][] levelString = {
+//				{1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+//				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//				{1,0,0,0,0,1,1,1,1,0,0,0,0,1},
+//				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//				{1,1,1,0,0,0,0,0,0,0,0,1,1,1},
+//				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//				{1,0,0,1,1,1,1,1,1,1,1,0,0,1},
+//				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//				{1,1,0,0,0,0,0,0,0,0,0,0,1,1},
+//				{1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+//		};
+//		int[][] demoString = {
+//				{1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+//				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//				{1,1,0,0,0,0,0,0,0,0,0,0,1,1},
+//				{1,0,1,0,0,0,0,0,0,0,0,1,0,1},
+//				{1,0,0,1,0,0,0,0,0,0,1,0,0,1},
+//				{1,0,0,0,1,0,0,0,0,1,0,0,0,1},
+//				{1,0,0,0,0,0,1,1,0,0,0,0,0,1},
+//				{1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+//		};
+//
+//		//Set tile type array
+//		for(int i=0;i<levelX;i++)
+//		{
+//			for(int j=0;j<levelY;j++)
+//			{
+//				if(!demo)
+//					arr[i][j] = Integer.toString(levelString[j][i]);
+//				else
+//					arr[i][j] = Integer.toString(demoString[j][i]);
+//			}
+//		}
+//
+//		currentScreen.initTiles(arr);
+		
+		currentScreen = new LevelScreen(0);
 
-		currentScreen = new LevelScreen(levelX, levelY);
-		gameState=GameState.GameScreen;//sets current screen 
-		String arr[][] = new String[levelX][levelY];
-
-		int[][] levelString = {
-				{1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-				{1,0,0,0,0,1,1,1,1,0,0,0,0,1},
-				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-				{1,1,1,0,0,0,0,0,0,0,0,1,1,1},
-				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-				{1,0,0,1,1,1,1,1,1,1,1,0,0,1},
-				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-				{1,1,0,0,0,0,0,0,0,0,0,0,1,1},
-				{1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-		};
-		int[][] demoString = {
-				{1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-				{1,1,0,0,0,0,0,0,0,0,0,0,1,1},
-				{1,0,1,0,0,0,0,0,0,0,0,1,0,1},
-				{1,0,0,1,0,0,0,0,0,0,1,0,0,1},
-				{1,0,0,0,1,0,0,0,0,1,0,0,0,1},
-				{1,0,0,0,0,0,1,1,0,0,0,0,0,1},
-				{1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-		};
-
-		//Set tile type array
-		for(int i=0;i<levelX;i++)
-		{
-			for(int j=0;j<levelY;j++)
-			{
-				if(!demo)
-					arr[i][j] = Integer.toString(levelString[j][i]);
-				else
-					arr[i][j] = Integer.toString(demoString[j][i]);
-			}
-		}
-
-		currentScreen.initTiles(arr);
-
-		for(int x = 0; x < levelX; x ++)
-			for(int y = 0; y < levelY; y ++)
+		for(int x = 0; x < currentScreen.levelSizeX; x ++)
+			for(int y = 0; y < currentScreen.levelSizeY; y ++)
 				add(currentScreen.getTitleMap()[x][y].getScreenObj());
 		/*************************** End of Drawing tiles on sample input ***************/		
 

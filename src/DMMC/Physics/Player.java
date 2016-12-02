@@ -5,13 +5,19 @@ import java.awt.Image;
 import acm.graphics.GImage;
 
 public class Player extends Entity {
+	
+	private static final int sizeX = 40;
+	private static final int sizeY = 40;
 
 	public Player(GImage i, Image[] initAnimation) {
 		super(i, initAnimation);
+		scaleScreenObj();
 	}
 
 	public Player(GImage i) {
 		super(i);
+		
+		scaleScreenObj();
 	}
 
 	@Override
@@ -35,6 +41,12 @@ public class Player extends Entity {
 	@Override
 	public void behaviorAction() {
 		
+	}
+	
+	@Override
+	protected void scaleScreenObj()
+	{
+		screenObj.setSize(sizeX, sizeY);
 	}
 
 }
