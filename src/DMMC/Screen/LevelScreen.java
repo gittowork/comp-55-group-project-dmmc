@@ -44,7 +44,7 @@ public class LevelScreen extends Screen implements ActionListener {
 				+ "11111111111111", // map layout
 				"3",				// num Entities
 				"0","2","2",		// add Entity [ID],[TilePosX],[TilePosY]
-				"2","9","9",			// add Entity [ID],[TilePosX],[TilePosY]
+				"1","6","2",			// add Entity [ID],[TilePosX],[TilePosY]
 				"1","7","2"
 			}/*,
 

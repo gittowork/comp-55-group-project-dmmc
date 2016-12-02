@@ -6,6 +6,7 @@ import DMMC.Physics.TileType;
 import acm.graphics.GImage;
 
 public abstract class Screen {
+	
 
 	protected Tile[][] tileMap;
 	public int levelSizeX;
