@@ -80,5 +80,9 @@ public abstract class Screen {
 	public abstract void inputLeftReleased();
 	
 	public abstract void inputRightReleased();
-
+	
+	public void clear()
+	{
+		tileMap = null;
+	}
 }

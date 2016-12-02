@@ -15,7 +15,6 @@ public abstract class Entity extends PhysicsObject{
 	private static final double colPointPadding = 1;
 	public static int maxVelX = 3;
 
-
 	protected GPoint velocity;
 	protected GPoint acceleration;
 	private char id;
@@ -86,9 +85,8 @@ public abstract class Entity extends PhysicsObject{
 		screenObj.move(getVelX(), getVelY());
 		
 		if(!forced && getVelX() != 0)
-		{
 			setVelX(getVelX() * 0.7);
-		}
+		
 		behaviorAction();
 	}
 	

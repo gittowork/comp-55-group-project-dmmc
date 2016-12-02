@@ -9,7 +9,6 @@ import DMMC.Physics.GButton;
 public class GuiScreen extends Screen implements ActionListener
 {
 	private int cursorPosX;				//which button the cursor is at
-	//private ArrayList<Button> button;	(stores the buttons on the screen)
 	private ArrayList<GButton> gButtons; //
 
 	public GuiScreen(int sizeX, int sizeY) 
@@ -137,7 +136,6 @@ public class GuiScreen extends Screen implements ActionListener
 	}
 
 	public GButton getGButton(){ //returns button at current cursor
-		System.out.println("SIZE: " + gButtons.size());
 		if(gButtons.size()==0)
 		{
 			return null;
@@ -155,5 +153,11 @@ public class GuiScreen extends Screen implements ActionListener
 	public void setCursorPos(int pos){
 		this.cursorPosX=pos;
 	}
-
+	
+	@Override
+	public void clear()
+	{
+		tileMap = null;
+		gButtons = null;
+	}
 }

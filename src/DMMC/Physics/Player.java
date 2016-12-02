@@ -2,12 +2,20 @@ package DMMC.Physics;
 
 import java.awt.Image;
 
+import com.sun.glass.ui.Window.Level;
+import com.sun.org.apache.regexp.internal.recompile;
+
+import DMMC.Game;
+import DMMC.Screen.LevelScreen;
+import DMMC.Screen.Screen;
 import acm.graphics.GImage;
 
 public class Player extends Entity {
 	
 	private static final int sizeX = 40;
 	private static final int sizeY = 40;
+	
+	private boolean entityColision;
 
 	public Player(GImage i, Image[] initAnimation) {
 		super(i, initAnimation);
@@ -40,7 +48,23 @@ public class Player extends Entity {
 
 	@Override
 	public void behaviorAction() {
+		//check for entity colisions
+		entityColision = false;
 		
+		//loop through every other col point
+		for(int i = 0; i < colPoints.length; i += 2)
+		{
+			LevelScreen s = (LevelScreen)Game.getCurScreen();
+			for(Entity e: s.getEntities())
+			{
+				if(e.getScreenObj().contains(colPoints[i])
+						&& Game.player != e)
+					entityColision = true;
+			}
+		}
+		
+		if(entityColision)
+			System.out.println("Ya dead");
 	}
 	
 	@Override

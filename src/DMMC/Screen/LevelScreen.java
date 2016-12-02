@@ -31,7 +31,7 @@ public class LevelScreen extends Screen implements ActionListener {
 			{
 				"14",				// map sizeX
 				"10",				// map sizeY
-				  "11111111111111"
+				"11111111111111"
 				+ "10000000000001"
 				+ "10000000000001"
 				+ "10000000000001"
@@ -83,26 +83,26 @@ public class LevelScreen extends Screen implements ActionListener {
 		//create tiles
 		initTiles(oneDChartoTwoDChar(levelData[levelID][2].toCharArray(), 
 				levelSizeX, levelSizeY));
-		
+
 		entities = new ArrayList<Entity>();
 
 		//add entities
 		int maxIndex = (Integer.parseInt(levelData[levelID][3]) * 3) + 4;
 		Entity e;
+		GPoint pos;
 		for(int i = 4; i < maxIndex; i += 3)
 		{
 			switch (Integer.parseInt(levelData[levelID][i])) {
 			case 0:
 				// Player
 				e =	new Player(new GImage("player-0.png"), Game.getAnime("player-0"));
-				
+
 				//set initial position
-				System.out.println(Integer.parseInt(levelData[levelID][i + 1]) + " : " + Integer.parseInt(levelData[levelID][i + 2]));
-				GPoint pos = Game.tilePosToScreen(Integer.parseInt(levelData[levelID][i + 1]),
-												  Integer.parseInt(levelData[levelID][i + 2]));
+				pos = Game.tilePosToScreen(Integer.parseInt(levelData[levelID][i + 1]),
+						Integer.parseInt(levelData[levelID][i + 2]));
 				e.setScreenPosX(pos.getX());
 				e.setScreenPosY(pos.getY());
-				
+
 				entities.add(e);
 				player = e;
 				break;
@@ -112,11 +112,14 @@ public class LevelScreen extends Screen implements ActionListener {
 			case 2:
 				// CaliFr
 				e = new Ghost(new GImage("ghost-0.png"), Game.getAnime("ghost-0"));
-				
+
 				//set initial position
-				e.setScreenPosX(Integer.parseInt(levelData[levelID][i + 1]));
-				e.setScreenPosY(Integer.parseInt(levelData[levelID][i + 2]));
-				
+				pos = Game.tilePosToScreen(Integer.parseInt(levelData[levelID][i + 1]),
+						Integer.parseInt(levelData[levelID][i + 2]));
+				e.setScreenPosX(pos.getX());
+				e.setScreenPosY(pos.getY());
+
+
 				entities.add(e);
 				break;
 			case 3:
@@ -231,11 +234,18 @@ public class LevelScreen extends Screen implements ActionListener {
 	private char[][] oneDChartoTwoDChar(char[] levelArray, int sizeX, int sizeY)
 	{
 		char[][] newArr = new char[sizeY][sizeX];
-		
+
 		for(int y = 0; y < sizeY; y ++)
 			for(int x = 0; x < sizeX; x ++)
 				newArr[y][x] = levelArray[(y * sizeX) + x];
-		
+
 		return newArr;
+	}
+
+	@Override
+	public void clear()
+	{
+		tileMap = null;
+		entities = null; 
 	}
 }
