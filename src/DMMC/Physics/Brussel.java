@@ -38,18 +38,15 @@ public class Brussel extends Entity{
 		lastVel = !lastVel;
 		movement = lastVel;
 
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void spawnAction() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void deathAction() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -94,6 +91,13 @@ public class Brussel extends Entity{
 
 			if(movement)
 			{
+				//check for wall collision
+				if(colIndex[3] != 0)
+				{
+					sideStuck = 3;
+					setVelX(0);
+				}
+				
 				//left
 				if(colIndex[0] == 0)
 				{
@@ -110,15 +114,19 @@ public class Brussel extends Entity{
 			{
 				//right
 				setVelX(getVelX() * -1);
+				
+				//check for wall collision
+				if(colIndex[1] != 0)
+				{
+					sideStuck = 1;
+					setVelX(0);
+				}
 
 				if(colIndex[0] == 0)
 				{
 					//change sides
 					sideStuck = 3;
 					setVelX(0);
-					
-					//System.out.println("SET");
-					//System.out.println("X: " + stuckTilePos.getX()/Game.tileWidth + " Y: " + stuckTilePos.getY()/Game.tileHeight);
 					
 					//set position
 					setScreenPosX(stuckTilePos.getX() + Game.tileWidth);
@@ -140,6 +148,13 @@ public class Brussel extends Entity{
 			
 			if(movement)
 			{
+				//check for wall collision
+				if(colIndex[0] != 0)
+				{
+					sideStuck = 0;
+					setVelY(0);
+				}
+				
 				//up
 				if(colIndex[1] == 0)
 				{
@@ -156,6 +171,13 @@ public class Brussel extends Entity{
 			{
 				//down
 				setVelY(getVelY() * -1);
+				
+				//check for wall collision
+				if(colIndex[2] != 0)
+				{
+					sideStuck = 2;
+					setVelY(0);
+				}
 
 				if(colIndex[1] == 0)
 				{
@@ -177,7 +199,7 @@ public class Brussel extends Entity{
 			//Bot stuck
 			setVelX(speed);
 
-			//store stuck tile
+			//store stuck tile				
 			if(colIndex[2] == 1)
 				//only one col point is triggered
 				stuckTilePos = Game.tilePosToScreen(colPoints[5 + switchToggle].getTileX(),
@@ -185,6 +207,13 @@ public class Brussel extends Entity{
 			
 			if(movement)
 			{
+				//check for wall collision
+				if(colIndex[1] != 0)
+				{
+					sideStuck = 1;
+					setVelX(0);
+				}
+				
 				//right
 				if(colIndex[2] == 0)
 				{
@@ -201,6 +230,13 @@ public class Brussel extends Entity{
 			{
 				//left
 				setVelX(getVelX() * -1);
+				
+				//check for wall collision
+				if(colIndex[3] != 0)
+				{
+					sideStuck = 3;
+					setVelX(0);
+				}
 
 				if(colIndex[2] == 0)
 				{
@@ -229,6 +265,13 @@ public class Brussel extends Entity{
 						
 			if(movement)
 			{
+				//check for wall collision
+				if(colIndex[2] != 0)
+				{
+					sideStuck = 2;
+					setVelY(0);
+				}
+				
 				//down
 				if(colIndex[3] == 0)
 				{
@@ -245,6 +288,13 @@ public class Brussel extends Entity{
 			{
 				//up
 				setVelY(getVelY() * -1);
+				
+				//check for wall collision
+				if(colIndex[0] != 0)
+				{
+					sideStuck = 0;
+					setVelY(0);
+				}
 
 				if(colIndex[3] == 0)
 				{

@@ -33,19 +33,20 @@ public class LevelScreen extends Screen implements ActionListener {
 				"14",				// map sizeX
 				"10",				// map sizeY
 				  "11111111111111"
-				+ "10000000000001"
-				+ "10000000000001"
-				+ "10000000000001"
-				+ "10000000000001"
+				+ "10011111111001"
+				+ "10010000001001"
+				+ "10010000001001"
+				+ "10011111111001"
 				+ "10000000000001"
 				+ "10000000000001"
 				+ "10011111111001"
 				+ "10000000000001"
 				+ "11111111111111", // map layout
-				"3",				// num Entities
+				"4",				// num Entities
 				"0","2","2",		// add Entity [ID],[TilePosX],[TilePosY]
-				"1","6","2",			// add Entity [ID],[TilePosX],[TilePosY]
-				"1","7","2"
+				"1","6","6",			// add Entity [ID],[TilePosX],[TilePosY]
+				"1","7","6",
+				"1","6","3"
 			}/*,
 
 			{
@@ -95,6 +96,7 @@ public class LevelScreen extends Screen implements ActionListener {
 		GPoint pos;
 		for(int i = 4; i < maxIndex; i += 3)
 		{
+			//TODO center entities on spawn
 			switch (Integer.parseInt(levelData[levelID][i])) {
 			case 0:
 				// Player
