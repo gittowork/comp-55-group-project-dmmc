@@ -14,7 +14,7 @@ public class Ghost extends Entity {
 	GImage Sprite;
 	static final String GHOST_FILE_PATH = "";
 	GPoint playerLoc;
-	private final double SPEED = .5;
+	private final double SPEED = 1.5;
 	
 	public Ghost(GImage i) {
 		super (i);
@@ -42,13 +42,28 @@ public class Ghost extends Entity {
 
 	@Override
 	public void behaviorAction() {
-		double xDifference, yDifference, angle;
-		playerLoc = new GPoint(Game.player.getScreenPos());
-		xDifference = getScreenPosX() - playerLoc.getX();
+		double xDifference,yDifference, angle, hypotnuse, ratio;
+		
+		playerLoc = Game.player.getScreenPos();
+		
+		xDifference = playerLoc.getX() - getScreenPosX();
+		
 		yDifference = playerLoc.getY() - getScreenPosY();
-		angle = Math.toDegrees(Math.atan(yDifference/xDifference));
-		getScreenObj().movePolar(SPEED, angle);
-		System.out.println(angle);
+		
+		hypotnuse =Math.pow(Math.pow(xDifference,2) + Math.pow(yDifference,2), (0.5));
+		if (hypotnuse != 0)
+			ratio = SPEED / hypotnuse;
+		else
+			ratio = 0;
+		xDifference *= ratio;
+		yDifference *= ratio;
+		
+//		if (xDifference <= 0){
+//			getScreenObj().setVelX()
+//		}
+		
+		//angle = Math.toDegrees(Math.atan(yDifference/xDifference));
+		getScreenObj().move(xDifference, yDifference);
+		System.out.println("X: " + xDifference + " Y: " + yDifference);
 	}
-
 }
