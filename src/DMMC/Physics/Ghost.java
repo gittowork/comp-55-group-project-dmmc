@@ -17,19 +17,9 @@ public class Ghost extends Entity {
 	private final double SPEED = 1.5;
 	private static final int sizeX = 50;
 	private static final int sizeY = 50;
-
 	
-	public Ghost(GImage i) {
-		super (i);
-		setWeightless(true);
-		setCollideable(false);
-		scaleScreenObj();
-	}
-	
-	public Ghost(GImage i, Image[] initAnimation){
-		super (i, initAnimation);
-		setWeightless(true);
-		setCollideable(false);		
+	public Ghost(){
+		super (new GImage("ghost-0.png"), Game.getAnime("ghost-0"), true, false);	
 		scaleScreenObj();
 	}
 
@@ -63,8 +53,8 @@ public class Ghost extends Entity {
 		xDifference *= ratio;
 		yDifference *= ratio;
 		
-		//angle = Math.toDegrees(Math.atan(yDifference/xDifference));
-		getScreenObj().move(xDifference, yDifference);
+		setVelX(xDifference);
+		setVelY(yDifference);
 	}
 	
 	@Override

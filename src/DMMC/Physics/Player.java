@@ -1,13 +1,7 @@
 package DMMC.Physics;
 
-import java.awt.Image;
-
-import com.sun.glass.ui.Window.Level;
-import com.sun.org.apache.regexp.internal.recompile;
-
 import DMMC.Game;
 import DMMC.Screen.LevelScreen;
-import DMMC.Screen.Screen;
 import acm.graphics.GImage;
 
 public class Player extends Entity {
@@ -17,14 +11,8 @@ public class Player extends Entity {
 	
 	private boolean entityColision;
 
-	public Player(GImage i, Image[] initAnimation) {
-		super(i, initAnimation);
-		scaleScreenObj();
-	}
-
-	public Player(GImage i) {
-		super(i);
-		
+	public Player() {
+		super(new GImage("player-0.png"), Game.getAnime("player-0"), false, true);
 		scaleScreenObj();
 	}
 
@@ -63,8 +51,8 @@ public class Player extends Entity {
 			}
 		}
 		
-		if(entityColision)
-			System.out.println("Ya dead");
+		if(entityColision);
+			//System.out.println("Ya dead");
 	}
 	
 	@Override

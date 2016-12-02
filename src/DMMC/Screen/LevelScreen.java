@@ -8,6 +8,7 @@ import com.sun.glass.ui.Window.Level;
 import com.sun.tracing.dtrace.ProviderAttributes;
 
 import DMMC.Game;
+import DMMC.Physics.Brussel;
 import DMMC.Physics.Entity;
 import DMMC.Physics.Ghost;
 import DMMC.Physics.Player;
@@ -31,7 +32,7 @@ public class LevelScreen extends Screen implements ActionListener {
 			{
 				"14",				// map sizeX
 				"10",				// map sizeY
-				"11111111111111"
+				  "11111111111111"
 				+ "10000000000001"
 				+ "10000000000001"
 				+ "10000000000001"
@@ -41,9 +42,10 @@ public class LevelScreen extends Screen implements ActionListener {
 				+ "10011111111001"
 				+ "10000000000001"
 				+ "11111111111111", // map layout
-				"2",				// num Entities
+				"3",				// num Entities
 				"0","2","2",		// add Entity [ID],[TilePosX],[TilePosY]
-				"2","9","9"			// add Entity [ID],[TilePosX],[TilePosY]
+				"2","9","9",			// add Entity [ID],[TilePosX],[TilePosY]
+				"1","7","2"
 			}/*,
 
 			{
@@ -62,8 +64,8 @@ public class LevelScreen extends Screen implements ActionListener {
 	public LevelScreen(int sizeX, int sizeY) {
 		super(sizeX, sizeY);
 		entities = new ArrayList<Entity>();
-		Entity e = new Player(new GImage("player-0.png"), Game.getAnime("player-0"));
-		Entity g = new Ghost(new GImage("ghost-0.png"), Game.getAnime("ghost-0"));
+		Entity e = new Player();
+		Entity g = new Ghost();
 		e.setScreenPosX(Game.windowWidth/2);
 		e.setScreenPosY(Game.windowHeight/2);
 		g.setScreenPosX(Game.windowWidth/2);
@@ -76,6 +78,7 @@ public class LevelScreen extends Screen implements ActionListener {
 
 	public LevelScreen(int levelID)
 	{
+		
 		//parse string from level data
 		super(Integer.parseInt(levelData[levelID][0]),
 				Integer.parseInt(levelData[levelID][1]));
@@ -95,31 +98,39 @@ public class LevelScreen extends Screen implements ActionListener {
 			switch (Integer.parseInt(levelData[levelID][i])) {
 			case 0:
 				// Player
-				e =	new Player(new GImage("player-0.png"), Game.getAnime("player-0"));
+				e =	new Player();
 
 				//set initial position
 				pos = Game.tilePosToScreen(Integer.parseInt(levelData[levelID][i + 1]),
 						Integer.parseInt(levelData[levelID][i + 2]));
-				e.setScreenPosX(pos.getX());
-				e.setScreenPosY(pos.getY());
+				
+				e.setScreenPos(pos);
 
 				entities.add(e);
 				player = e;
 				break;
 			case 1:
 				// Sprout
+				e = new Brussel();
+				
+				//set initial position
+				pos = Game.tilePosToScreen(Integer.parseInt(levelData[levelID][i + 1]),
+						Integer.parseInt(levelData[levelID][i + 2]));
+				
+				e.setScreenPos(pos);
+				entities.add(e);
+
 				break;
 			case 2:
 				// CaliFr
-				e = new Ghost(new GImage("ghost-0.png"), Game.getAnime("ghost-0"));
+				e = new Ghost();
 
 				//set initial position
 				pos = Game.tilePosToScreen(Integer.parseInt(levelData[levelID][i + 1]),
 						Integer.parseInt(levelData[levelID][i + 2]));
-				e.setScreenPosX(pos.getX());
-				e.setScreenPosY(pos.getY());
-
-
+				
+				e.setScreenPos(pos);
+				
 				entities.add(e);
 				break;
 			case 3:
