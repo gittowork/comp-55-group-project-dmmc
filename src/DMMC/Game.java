@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -129,14 +130,14 @@ public class Game extends GraphicsProgram implements ActionListener{
 	private Timer timer;
 	Entity e;
 	private int timerIndex;
-
+	GImage giraffe;
 
 	public void init()
 	{
 		this.resize(windowWidth, windowHeight);
 		profiles = new ArrayList<Profile>();
-
-		//read the profiles text file intead of hardcoding
+		giraffe =  new GImage("../media/Images/warrior.png");
+		//read the profiles text file instead of hardcoding
 		try {
 			for (String line : Files.readAllLines(Paths.get("../media/profiles.txt")))
 			{
@@ -255,7 +256,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		removeAll();
 		int levelX = windowWidth/tileWidth;
 		int levelY = windowHeight/tileHeight;
-		GuiScreen tmp = new GuiScreen(levelX, levelY); //peek returns whatever is on top of the stack
+		GuiScreen tmp = new GuiScreen(levelX, levelY, giraffe); //peek returns whatever is on top of the stack
 		if(!storeGameState.empty() && storeGameState.peek()==GameState.MainMenuScreen){ // checking if top screen is the screen we are loading 
 			storeGameState.pop(); 
 			GuiScreen tmp1=(GuiScreen)storeScreen.pop();   //if yes, set previous cursor pos
@@ -320,9 +321,11 @@ public class Game extends GraphicsProgram implements ActionListener{
 	private void loadBasic(Boolean back)
 	{
 		removeAll();
+		
+		
 		int levelX = windowWidth/tileWidth;
 		int levelY = windowHeight/tileHeight;
-		GuiScreen tmp = new GuiScreen(levelX, levelY);
+		GuiScreen tmp = new GuiScreen(levelX, levelY, giraffe);
 		currentScreen=tmp;
 		GButton button1;
 		if (back)
@@ -332,6 +335,14 @@ public class Game extends GraphicsProgram implements ActionListener{
 			button1.addActionListener(this);
 			tmp.addGButton(button1);
 			tmp.getGButton().drawCursor();
+		}
+		System.out.println(currentScreen.getSizeX());
+		for(int x = 0; x < currentScreen.getSizeX(); x ++)
+		{
+			for(int y = 0; y < currentScreen.getSizeY(); y ++)
+			{
+				add(currentScreen.getTile(x, y).getScreenObj());
+			}
 		}
 	}
 
@@ -381,16 +392,9 @@ public class Game extends GraphicsProgram implements ActionListener{
 	private void loadUserSelect()
 	{
 		loadBasic(false);
-		GImage giraffe = new GImage("../media/Images/warrior marshmallow riding giraffe.png");
-		giraffe.scale(0.5);
-
-		add(giraffe);
-
 		addUsers();
 		GLabel title = new GLabel("Welcome!", windowWidth/2, 50);
 		add(title);
-
-
 	}
 
 	//helper function for the user select screen
@@ -425,14 +429,29 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 	private void addNewUser()
 	{
-		//if user presses cancel, null pointer exception
-		String name = new String(JOptionPane.showInputDialog("Type in Name: "));
+		//also do we want to write on text file every time a new user logs in?
+		String name = "";
+		
+		name = JOptionPane.showInputDialog("Type in Name: ");
+		
 		if (name != null)
 		{
 			loadScreen(GameState.MainMenuScreen);
 			Profile newUser = new Profile(name);
 			profiles.add(newUser);
+			try
+			{
+			    String filename = "profiles.txt";
+			    FileWriter fw = new FileWriter(filename,true); //the true will append the new data
+			    fw.write(name + "\n");//appends the string to the file
+			    fw.close();
+			}
+			catch(IOException ioe)
+			{
+			    System.err.println("IOException: " + ioe.getMessage());
+			}
 		}
+		
 
 	}
 	//dont know if i should get rid of these functions since the labels are needed...
@@ -520,6 +539,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			if(p.getName().equals(event.getActionCommand()))
 			{
 				loadScreen(GameState.MainMenuScreen);
+				currentUser = profiles.indexOf(p);
 			}
 		}
 

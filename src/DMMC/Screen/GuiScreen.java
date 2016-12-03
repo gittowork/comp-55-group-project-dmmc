@@ -3,8 +3,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+
+import com.sun.javafx.geom.PickRay;
+
 import DMMC.Physics.Button;
 import DMMC.Physics.GButton;
+import acm.graphics.GImage;
+
 
 public class GuiScreen extends Screen implements ActionListener
 {
@@ -14,11 +19,20 @@ public class GuiScreen extends Screen implements ActionListener
 
 	public GuiScreen(int sizeX, int sizeY) 
 	{
-		super(sizeX, sizeY);	
+		super(sizeX, sizeY);
+		
+		
 		cursorPosX = 0;
 		//ArrayList<Button> button = new ArrayList<Button>();	
 		gButtons=new ArrayList<GButton>();
-
+		
+	}
+	
+	public GuiScreen(int sizeX, int sizeY, GImage pic)
+	{
+		super(sizeX, sizeY, pic);
+		cursorPosX = 0;
+		gButtons = new ArrayList<GButton>();
 	}
 
 	public void updateButtonList()
@@ -76,7 +90,7 @@ public class GuiScreen extends Screen implements ActionListener
 	{
 //			if(getGButton() != null ){
 //				GButton b = getGButton();
-//				if("Go Back(Esc)".equals(b.getGLabel().getLabel()))
+//				if)("Go Back(Esc)".equals(b.getGLabel().getLabel()))
 //					b.fireActionEvent(b.getGLabel().getLabel());
 //		}
 		

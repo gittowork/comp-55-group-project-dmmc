@@ -1,10 +1,12 @@
 package DMMC.Physics;
 
 
+
 public enum TileType {
 	Air("Air",false),
 	Dirt("Dirt", true),
 	Button("Button", true);
+	
 	//...
 	
 	private String name;
