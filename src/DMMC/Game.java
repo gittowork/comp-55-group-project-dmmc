@@ -47,6 +47,9 @@ public class Game extends GraphicsProgram implements ActionListener{
 	public static final int windowHeight = 500, windowWidth = 700;
 	public static final int tileHeight=50, tileWidth=50;
 	public static final int FPS = 60;
+	
+	private int mapIndex=0;
+	
 		
 	static String[] UserSelectScreenData = {
 			"New Run",
@@ -196,7 +199,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 	private void loadNewGame(){
 		
-		currentScreen = new LevelScreen(0);
+		currentScreen = new LevelScreen(mapIndex);
 
 		for(int x = 0; x < currentScreen.levelSizeX; x ++)
 			for(int y = 0; y < currentScreen.levelSizeY; y ++)
@@ -485,7 +488,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 	{	
 		if("New User".equals(event.getActionCommand())){
 			addNewUser();
-			playMainSound();
 
 		}
 		
@@ -502,39 +504,34 @@ public class Game extends GraphicsProgram implements ActionListener{
 		if("New Run".equals(event.getActionCommand())){
 			newGameSelected=true;
 			loadScreen(GameState.MapSelect);
-			playMainSound();
 
 		}
 		else if(event.getActionCommand() != null && event.getActionCommand().contains("GMap")){
+			mapIndex=Integer.parseInt(event.getActionCommand().substring(event.getActionCommand().length()-1))-1;
 			loadScreen(GameState.GameScreen);
 			playSoundForMap(event.getActionCommand());
 		}
 		else if("Credits".equals(event.getActionCommand())){
 			loadScreen(GameState.CreditsScreen);
-			playMainSound();
 
 		}
 		else if("Options".equals(event.getActionCommand())){
 			loadScreen(GameState.OptionsScreen);
-			playMainSound();
 
 		}
 		else if("How To".equals(event.getActionCommand())){
 			loadScreen(GameState.HowToScreen);
-			playMainSound();
 
 		}
 		else if("Leaderboard".equals(event.getActionCommand())){
 			newGameSelected=false;
 			loadScreen(GameState.MapSelect);
-			playMainSound();
 
 		}
 		else if("Go Back(Esc)".equals(event.getActionCommand()))
 			inputEsc();
 		if(event.getActionCommand() != null && event.getActionCommand().contains("LMap")){
 			loadLeaderboards(event.getActionCommand());
-			playMainSound();
 
 		}		
 
