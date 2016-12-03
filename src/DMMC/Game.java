@@ -145,6 +145,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 	GImage giraffe;
 	GImage howto;
 	GImage credits;
+	GImage leaderboards;
 
 	public void init()
 	{
@@ -153,6 +154,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		giraffe =  new GImage("../media/Images/warrior.png");
 		howto = new GImage("../media/Images/howto.png");
 		credits = new GImage("../media/Images/credits.png");
+		leaderboards = new GImage("../media/Images/leaderboards.png");
 		//read the profiles text file instead of hardcoding
 		try {
 			for (String line : Files.readAllLines(Paths.get("../media/profiles.txt")))
@@ -452,9 +454,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 			storeGameState.push(gameState);
 			storeScreen.push(currentScreen);
 		}
-		loadBasic(true, giraffe);
-		GLabel label1 = new GLabel("Leaderboards", 0, 100);
-		add(label1);
+		loadBasic(true, leaderboards);
+		
 	}
 
 	private void loadLeaderboards(String scores)
@@ -463,9 +464,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 			storeGameState.push(gameState);
 			storeScreen.push(currentScreen);
 		}
-		loadBasic(true, giraffe);
-		GLabel label1 = new GLabel("Leaderboards: "+ scores, 0, 100);
-		add(label1);
+		loadBasic(true, leaderboards);
+		
 	}
 
 	public void run()
