@@ -80,4 +80,22 @@ public class AudioPlayer {
 			mp.pause();
 		}
 	}
+	public void playSoundInLoop(String folder, String filename) {
+		MediaPlayer mPlayer = findSound(folder, filename);
+		if(mPlayer == null) {
+			mPlayer = createMediaPlayer(folder, filename);
+		}
+		if(mPlayer.getCycleDuration().lessThanOrEqualTo(mPlayer.getCurrentTime())) {
+			mPlayer.seek(Duration.ZERO);
+		}
+		final MediaPlayer ref = mPlayer;
+		ref.setOnEndOfMedia(new  Runnable() {
+			public void run() {
+				ref.seek(Duration.ZERO); //setting seek of audio to zero: the time from which audio play starts (playback time)
+				
+			}
+		});
+		mPlayer.play();
+	}	
+	
 }

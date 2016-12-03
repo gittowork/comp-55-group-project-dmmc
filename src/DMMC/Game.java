@@ -339,7 +339,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 		addUsers();
 		GLabel title = new GLabel("Welcome!", windowWidth/2, 50);
 		add(title);
-
+		AudioPlayer player = AudioPlayer.getInstance(); //audio 
+		player.playSoundInLoop("../sounds", "UserSound.mp3"); //calling new funct in AudioPlayer
 
 	}
 
