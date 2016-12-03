@@ -12,7 +12,7 @@ public class Brussel extends Entity{
 
 	private static final int sizeX = 30;
 	private static final int sizeY = 30;
-	static boolean lastVel = true; // used to toggle movement
+	static boolean lastVel = false; // used to toggle movement
 
 	/*
 	 * -1: null
@@ -141,7 +141,7 @@ public class Brussel extends Entity{
 			//Right  stuck
 			setVelY(-speed);
 					
-			if(colIndex[1] == 3)
+			if(colIndex[1] == 1)
 				//only one col point is triggered
 				stuckTilePos = Game.tilePosToScreen(colPoints[3 + switchToggle].getTileX(),
 						colPoints[3 + switchToggle].getTileY());
