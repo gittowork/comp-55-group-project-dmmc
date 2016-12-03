@@ -64,13 +64,17 @@ public class Game extends GraphicsProgram implements ActionListener{
 	
 
 	public static final String[][] imageNames = {
-			{"player-0","player-1"},
-			{"ghost-0","ghost-1"}
+			{"player-0","player-1", "player-2", "player-3", "player-4", "player-5", "player-6", "player-7"},
+			{"ghost-0","ghost-1"},
+			{"brussel-0"},
+			{"corn-0"},
 	};		//made this a 2d array so that when i load the files into the animation hashmap, its easier to call and organize
 	
 	public static final int[] animationLengths = {
+			8,
 			2,
-			2
+			1,
+			1
 	};
 	public static Entity player;
 	private static Screen currentScreen;
