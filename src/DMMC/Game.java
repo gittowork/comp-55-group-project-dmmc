@@ -144,6 +144,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 	private int timerIndex;
 	GImage giraffe;
 	GImage howto;
+	GImage credits;
 
 	public void init()
 	{
@@ -151,6 +152,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		profiles = new ArrayList<Profile>();
 		giraffe =  new GImage("../media/Images/warrior.png");
 		howto = new GImage("../media/Images/howto.png");
+		credits = new GImage("../media/Images/credits.png");
 		//read the profiles text file instead of hardcoding
 		try {
 			for (String line : Files.readAllLines(Paths.get("../media/profiles.txt")))
@@ -431,9 +433,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 			storeGameState.push(gameState);
 			storeScreen.push(currentScreen);
 		}
-		loadBasic(true, giraffe);
-		GLabel label = new GLabel("Programmers: Malvika Sriram, Pranav Thirunavukkarasu, Maxine Lien, Brendan Ahdoot", 0, 100);
-		add (label);
+		loadBasic(true, credits);
+		
 	}
 
 	private void loadHowTo() 
