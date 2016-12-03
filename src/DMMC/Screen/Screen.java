@@ -43,7 +43,7 @@ public abstract class Screen {
 		{
 			for(int y = 0; y < getSizeY(); y ++)
 			{
-				tileMap[x][y] = new Tile(new GImage("empty.png"), TileType.Air);
+				tileMap[x][y] = new Tile(new GImage("empty.PNG"), TileType.Air);
 			}
 		}
 	}
