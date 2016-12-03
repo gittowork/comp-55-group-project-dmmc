@@ -32,6 +32,7 @@ import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GPoint;
 import acm.program.GraphicsProgram;
+import javafx.scene.media.MediaPlayer;
 
 public class Game extends GraphicsProgram implements ActionListener{
 
@@ -72,7 +73,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 			2
 	};
 	public static Entity player;
-
 	private static Screen currentScreen;
 
 	// False = X; True = Y
@@ -104,13 +104,21 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 	public static GPoint tilePosToScreen(int x, int y)
 	{
-		return currentScreen.getTile(x, y).getScreenPos();
+		//if (currentScreen != null)
+			//return currentScreen.getTile(x, y).getScreenPos();
+		
+		return new GPoint(x * tileWidth, y * tileHeight);
 	}
 
 	public static boolean isPointOnSolid(GPoint p)
 	{
 		//gets tile from point p using ScreePostToTile, gets type, checks isSolid
 		return (currentScreen.getTile(screenPosToTile(p.getX(), false), screenPosToTile(p.getY(), true)).getType().isSolid());
+	}
+	
+	public static Screen getCurScreen()
+	{
+		return currentScreen;
 	}
 
 	//False = X; True = Y
@@ -141,11 +149,9 @@ public class Game extends GraphicsProgram implements ActionListener{
 		try {
 			for (String line : Files.readAllLines(Paths.get("../media/profiles.txt")))
 			{
-				Profile user = new Profile(line);
-				profiles.add(user);
+				profiles.add(new Profile(line));
 			}
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			System.out.println("oh no");
 		}
 		
@@ -184,76 +190,22 @@ public class Game extends GraphicsProgram implements ActionListener{
 	}
 
 
-	private void loadNewGame(){ //when a user clicks new run, loads game.
-		// drawing tiles on the sample input
-		/********************************************************************/
+	private void loadNewGame(){
+		
+		currentScreen = new LevelScreen(0);
 
-		int levelX = windowWidth/tileWidth;
-		int levelY = windowHeight/tileHeight;
-		if(ifEnterPressed){
-			storeGameState.push(gameState); //stores previous screens on stack 
-			storeScreen.push(currentScreen);
-		}
-
-		currentScreen = new LevelScreen(levelX, levelY);
-		gameState=GameState.GameScreen;//sets current screen 
-		String arr[][] = new String[levelX][levelY];
-
-		int[][] levelString = {
-				{1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-				{1,0,0,0,0,1,1,1,1,0,0,0,0,1},
-				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-				{1,1,1,0,0,0,0,0,0,0,0,1,1,1},
-				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-				{1,0,0,1,1,1,1,1,1,1,1,0,0,1},
-				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-				{1,1,0,0,0,0,0,0,0,0,0,0,1,1},
-				{1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-		};
-		int[][] demoString = {
-				{1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-				{1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-				{1,1,0,0,0,0,0,0,0,0,0,0,1,1},
-				{1,0,1,0,0,0,0,0,0,0,0,1,0,1},
-				{1,0,0,1,0,0,0,0,0,0,1,0,0,1},
-				{1,0,0,0,1,0,0,0,0,1,0,0,0,1},
-				{1,0,0,0,0,0,1,1,0,0,0,0,0,1},
-				{1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-		};
-
-		//Set tile type array
-		for(int i=0;i<levelX;i++)
-		{
-			for(int j=0;j<levelY;j++)
-			{
-				if(!demo)
-					arr[i][j] = Integer.toString(levelString[j][i]);
-				else
-					arr[i][j] = Integer.toString(demoString[j][i]);
-			}
-		}
-
-		currentScreen.initTiles(arr);
-
-		for(int x = 0; x < levelX; x ++)
-			for(int y = 0; y < levelY; y ++)
+		for(int x = 0; x < currentScreen.levelSizeX; x ++)
+			for(int y = 0; y < currentScreen.levelSizeY; y ++)
 				add(currentScreen.getTitleMap()[x][y].getScreenObj());
-		/*************************** End of Drawing tiles on sample input ***************/		
 
-
-		//System.out.println(gameState.toString());		
 		LevelScreen temp = (LevelScreen)currentScreen;
 		for(Entity e: temp.getEntities())
 			add(e.getScreenObj());
 		player = temp.getPlayerEntity();
 	}
 
-
 	private void loadMainMenu(){
-		removeAll();
+
 		int levelX = windowWidth/tileWidth;
 		int levelY = windowHeight/tileHeight;
 		GuiScreen tmp = new GuiScreen(levelX, levelY, giraffe); //peek returns whatever is on top of the stack
@@ -294,7 +246,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 	//hardcoded load screen for the buttons on each screen
 	private void loadScreen(GameState g)
 	{
-
+		clearCurScreen();
 		//this is the hardcoded part. for now, we're just gunna have an if statement 
 		//for every screen and then put buttons in manually like i have
 		if (g == GameState.UserSelectScreen)
@@ -347,7 +299,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 	}
 
 	private void loadMapScreen(){
-		removeAll();
 		int levelX = windowWidth/tileWidth;
 		int levelY = windowHeight/tileHeight;
 		GuiScreen tmp = new GuiScreen(levelX, levelY);
@@ -395,6 +346,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		addUsers();
 		GLabel title = new GLabel("Welcome!", windowWidth/2, 50);
 		add(title);
+
 	}
 
 	//helper function for the user select screen
@@ -519,21 +471,21 @@ public class Game extends GraphicsProgram implements ActionListener{
 		//if you're making the main menu, just change the gamestate to MainMenuScreen and then just load it
 		gameState = GameState.UserSelectScreen;
 		loadScreen(gameState);
-
-		//note: you might want to comment out all of pranav's stuff so its not in the way lol
+		playMainSound();
 
 
 	}
 
-	//dont need for keyboard
 	@Override
 	public void actionPerformed(ActionEvent event)
 	{	
-		//System.out.println(event.getActionCommand());
-		if("New User".equals(event.getActionCommand()))
+		if("New User".equals(event.getActionCommand())){
 			addNewUser();
-		// load profiles
+			playMainSound();
 
+		}
+		
+		// load profiles
 		for(Profile p: profiles)
 		{
 			if(p.getName().equals(event.getActionCommand()))
@@ -546,25 +498,40 @@ public class Game extends GraphicsProgram implements ActionListener{
 		if("New Run".equals(event.getActionCommand())){
 			newGameSelected=true;
 			loadScreen(GameState.MapSelect);
+			playMainSound();
+
 		}
 		else if(event.getActionCommand() != null && event.getActionCommand().contains("GMap")){
 			loadScreen(GameState.GameScreen);
+			playSoundForMap(event.getActionCommand());
 		}
-		else if("Credits".equals(event.getActionCommand()))
+		else if("Credits".equals(event.getActionCommand())){
 			loadScreen(GameState.CreditsScreen);
-		else if("Options".equals(event.getActionCommand()))
+			playMainSound();
+
+		}
+		else if("Options".equals(event.getActionCommand())){
 			loadScreen(GameState.OptionsScreen);
-		else if("How To".equals(event.getActionCommand()))
+			playMainSound();
+
+		}
+		else if("How To".equals(event.getActionCommand())){
 			loadScreen(GameState.HowToScreen);
+			playMainSound();
+
+		}
 		else if("Leaderboard".equals(event.getActionCommand())){
 			newGameSelected=false;
 			loadScreen(GameState.MapSelect);
+			playMainSound();
 
 		}
 		else if("Go Back(Esc)".equals(event.getActionCommand()))
 			inputEsc();
 		if(event.getActionCommand() != null && event.getActionCommand().contains("LMap")){
 			loadLeaderboards(event.getActionCommand());
+			playMainSound();
+
 		}		
 
 
@@ -584,26 +551,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 		}
 
 	}
-
-
-	//the following function is for mouse use. code was used to test the screen. Use if needed. 
-	/*
-	@Override
-	public void mousePressed(MouseEvent e)
-	{
-
-		if(currentScreen instanceof GuiScreen){
-			GuiScreen tmp = (GuiScreen) currentScreen;
-			if(tmp.getGButton(e.getX(),e.getY()) != null){
-				GButton b = tmp.getGButton(e.getX(),e.getY());
-				b.fireActionEvent(b.getGLabel().getLabel());
-			}
-		}
-
-		System.out.println("X: " + screenPosToTile(e.getX(), false));
-		System.out.println("Y: " + screenPosToTile(e.getY(), true));
-	}
-	 */
 
 	public void keyPressed(KeyEvent e)
 	{
@@ -653,5 +600,39 @@ public class Game extends GraphicsProgram implements ActionListener{
 	{
 		if(!storeGameState.empty())
 			loadScreen(storeGameState.peek());
+		playMainSound();
+	}
+	
+	private void clearCurScreen()
+	{
+		removeAll();
+		if(currentScreen != null)
+			currentScreen.clear();
+	}
+	
+	private void playMainSound(){
+		AudioPlayer player = AudioPlayer.getInstance();
+		if(player.getMediaPlayer("../sounds", "UserSound.mp3").getStatus() != MediaPlayer.Status.PLAYING){
+			player.stopAllSounds();
+			player.playSoundInLoop("../sounds", "UserSound.mp3");
+		}
+	}
+	
+	private void playSoundForMap(String mapName){
+		AudioPlayer player = AudioPlayer.getInstance();
+		String fileName = "";
+		if("GMap1".equals(mapName)){
+			fileName = "Map1Song.mp3";
+		}
+		else if("GMap2".equals(mapName)){
+			fileName = "Map2Song.mp3";
+		}
+		else
+			fileName= "Map3Song.mp3";
+		
+		if(player.getMediaPlayer("../sounds", fileName).getStatus() != MediaPlayer.Status.PLAYING){
+			player.stopAllSounds();
+			player.playSoundInLoop("../sounds", fileName); 
+		}
 	}
 }

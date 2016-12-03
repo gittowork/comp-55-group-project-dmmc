@@ -46,12 +46,16 @@ public abstract class PhysicsObject {
 		if(curAnimeIndex != -1)
 		{
 			screenObj.setImage(curAnimation[curAnimeIndex++]);
-			screenObj.setSize(this.getScreenObj().getSize().getWidth()*2, this.getScreenObj().getSize().getWidth()*2);
+			scaleScreenObj();
 		}
-			
 		
 		//loop back to first image
 		if(curAnimeIndex == curAnimation.length)
 			curAnimeIndex = 0;
+	}
+	
+	protected void scaleScreenObj()
+	{
+		screenObj.setSize(this.getScreenObj().getSize().getWidth()*2, this.getScreenObj().getSize().getWidth()*2);
 	}
 }

@@ -15,17 +15,12 @@ public class Ghost extends Entity {
 	static final String GHOST_FILE_PATH = "";
 	GPoint playerLoc;
 	private final double SPEED = 1.5;
+	private static final int sizeX = 50;
+	private static final int sizeY = 50;
 	
-	public Ghost(GImage i) {
-		super (i);
-		setWeightless(true);
-		setCollideable(false);
-	}
-	
-	public Ghost(GImage i, Image[] initAnimation){
-		super (i, initAnimation);
-		setWeightless(true);
-		setCollideable(false);
+	public Ghost(){
+		super (new GImage("ghost-0.png"), Game.getAnime("ghost-0"), true, false);	
+		scaleScreenObj();
 	}
 
 	@Override
@@ -42,12 +37,11 @@ public class Ghost extends Entity {
 
 	@Override
 	public void behaviorAction() {
-		double xDifference,yDifference, angle, hypotnuse, ratio;
+		double xDifference,yDifference, hypotnuse, ratio;
 		
 		playerLoc = Game.player.getScreenPos();
 		
 		xDifference = playerLoc.getX() - getScreenPosX();
-		
 		yDifference = playerLoc.getY() - getScreenPosY();
 		
 		hypotnuse =Math.pow(Math.pow(xDifference,2) + Math.pow(yDifference,2), (0.5));
@@ -55,15 +49,17 @@ public class Ghost extends Entity {
 			ratio = SPEED / hypotnuse;
 		else
 			ratio = 0;
+		
 		xDifference *= ratio;
 		yDifference *= ratio;
 		
-//		if (xDifference <= 0){
-//			getScreenObj().setVelX()
-//		}
-		
-		//angle = Math.toDegrees(Math.atan(yDifference/xDifference));
-		getScreenObj().move(xDifference, yDifference);
-		System.out.println("X: " + xDifference + " Y: " + yDifference);
+		setVelX(xDifference);
+		setVelY(yDifference);
+	}
+	
+	@Override
+	protected void scaleScreenObj()
+	{
+		screenObj.setSize(sizeX, sizeY);
 	}
 }

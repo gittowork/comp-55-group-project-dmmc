@@ -11,10 +11,11 @@ import DMMC.Physics.TileType;
 import acm.graphics.GImage;
 
 public abstract class Screen {
+	
 
-	private Tile[][] tileMap;
-	private int levelSizeX;
-	private int levelSizeY;
+	protected Tile[][] tileMap;
+	public int levelSizeX;
+	public int levelSizeY;
 
 	public Screen(int sizeX, int sizeY)
 	{
@@ -61,22 +62,24 @@ public abstract class Screen {
 	}
 
 
-	public void initTiles(String arr[][]) 
+	public void initTiles(char arr[][]) 
 	{
-		int X = Math.min(arr.length, levelSizeX);
-		int Y = Math.min(arr[0].length, levelSizeY);
 
-		for(int i = 0; i < X; i++)
+		for(int i = 0; i < levelSizeX; i++)
 		{
-			for(int j = 0; j < Y; j++)
+			for(int j = 0; j < levelSizeY; j++)
 			{
-				switch (arr[i][j]) 
+				switch (arr[j][i]) 
 				{
-				case "1":
+
+				case '1':
 					tileMap[i][j] = new Tile(new GImage("background.PNG"), TileType.Dirt);
+
 					break;
-				case "0":
+
+				case '0':
 					tileMap[i][j] = new Tile(new GImage("tile.PNG"), TileType.Air);
+
 					break;
 				default:
 					tileMap[i][j] = new Tile(new GImage("tile.PNG"), TileType.Air);
@@ -111,5 +114,9 @@ public abstract class Screen {
 	public abstract void inputLeftReleased();
 	
 	public abstract void inputRightReleased();
-
+	
+	public void clear()
+	{
+		tileMap = null;
+	}
 }

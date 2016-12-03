@@ -34,6 +34,24 @@ public class AudioPlayer {
 		mPlayer.play();
 	}
 	
+	
+	public void playSoundInLoop(String folder, String filename) {
+		MediaPlayer mPlayer = findSound(folder, filename);
+		if(mPlayer == null) {
+			mPlayer = createMediaPlayer(folder, filename);
+		}
+		if(mPlayer.getCycleDuration().lessThanOrEqualTo(mPlayer.getCurrentTime())) {
+			mPlayer.seek(Duration.ZERO);
+		}
+		final MediaPlayer ref = mPlayer;
+		ref.setOnEndOfMedia(new  Runnable() {
+			public void run() {
+				ref.seek(Duration.ZERO);
+			}
+		});
+		mPlayer.play();
+	}
+	
 	private MediaPlayer createMediaPlayer(String folder, String filename) {
 		Media sound = new Media(buildResourcePath(folder, filename));
 		MediaPlayer mPlayer = new MediaPlayer(sound);
@@ -80,4 +98,18 @@ public class AudioPlayer {
 			mp.pause();
 		}
 	}
+	
+	public void stopAllSounds(){
+		for(MediaPlayer mp : players)
+			mp.stop();
+	}
+	
+	public MediaPlayer getMediaPlayer(String folder, String filename) {
+		MediaPlayer mPlayer = findSound(folder, filename);
+		if(mPlayer == null) {
+			mPlayer = createMediaPlayer(folder, filename);
+		}
+		return mPlayer;
+	}
+	
 }
