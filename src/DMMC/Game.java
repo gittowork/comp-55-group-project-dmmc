@@ -143,12 +143,14 @@ public class Game extends GraphicsProgram implements ActionListener{
 	Entity e;
 	private int timerIndex;
 	GImage giraffe;
+	GImage howto;
 
 	public void init()
 	{
 		this.resize(windowWidth, windowHeight);
 		profiles = new ArrayList<Profile>();
 		giraffe =  new GImage("../media/Images/warrior.png");
+		howto = new GImage("../media/Images/howto.png");
 		//read the profiles text file instead of hardcoding
 		try {
 			for (String line : Files.readAllLines(Paths.get("../media/profiles.txt")))
@@ -274,14 +276,14 @@ public class Game extends GraphicsProgram implements ActionListener{
 	}
 
 	//made this class because load credits, options, and leaderboards have the same code
-	private void loadBasic(Boolean back)
+	private void loadBasic(Boolean back, GImage bg)
 	{
 		removeAll();
 		
 		
 		int levelX = windowWidth/tileWidth;
 		int levelY = windowHeight/tileHeight;
-		GuiScreen tmp = new GuiScreen(levelX, levelY, giraffe);
+		GuiScreen tmp = new GuiScreen(levelX, levelY, bg);
 		currentScreen=tmp;
 		GButton button1;
 		if (back)
@@ -346,7 +348,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 	private void loadUserSelect()
 	{
-		loadBasic(false);
+		loadBasic(false, giraffe);
 		addUsers();
 		GLabel title = new GLabel("Welcome!", windowWidth/2, 50);
 		add(title);
@@ -418,7 +420,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			storeGameState.push(gameState);
 			storeScreen.push(currentScreen);
 		}
-		loadBasic(true);
+		loadBasic(true, giraffe);
 		GLabel label = new GLabel("Game Music Volume: ", 0, 100);
 		add(label);
 	}
@@ -429,7 +431,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			storeGameState.push(gameState);
 			storeScreen.push(currentScreen);
 		}
-		loadBasic(true);
+		loadBasic(true, giraffe);
 		GLabel label = new GLabel("Programmers: Malvika Sriram, Pranav Thirunavukkarasu, Maxine Lien, Brendan Ahdoot", 0, 100);
 		add (label);
 	}
@@ -440,9 +442,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			storeGameState.push(gameState);
 			storeScreen.push(currentScreen);
 		}
-		loadBasic(true);
-		GLabel label1 = new GLabel("How to Play Super S'more Seige:", 0, 100);
-		add(label1);
+		loadBasic(true, howto);
 	}
 
 	private void loadLeaderboards()
@@ -451,7 +451,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			storeGameState.push(gameState);
 			storeScreen.push(currentScreen);
 		}
-		loadBasic(true);
+		loadBasic(true, giraffe);
 		GLabel label1 = new GLabel("Leaderboards", 0, 100);
 		add(label1);
 	}
@@ -462,7 +462,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			storeGameState.push(gameState);
 			storeScreen.push(currentScreen);
 		}
-		loadBasic(true);
+		loadBasic(true, giraffe);
 		GLabel label1 = new GLabel("Leaderboards: "+ scores, 0, 100);
 		add(label1);
 	}
