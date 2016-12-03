@@ -31,6 +31,7 @@ import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GPoint;
 import acm.program.GraphicsProgram;
+import javafx.scene.media.MediaPlayer;
 
 public class Game extends GraphicsProgram implements ActionListener{
 
@@ -339,8 +340,9 @@ public class Game extends GraphicsProgram implements ActionListener{
 		addUsers();
 		GLabel title = new GLabel("Welcome!", windowWidth/2, 50);
 		add(title);
-		AudioPlayer player = AudioPlayer.getInstance(); //audio 
-		player.playSoundInLoop("../sounds", "UserSound.mp3"); //calling new funct in AudioPlayer
+		
+		
+
 
 	}
 
@@ -451,6 +453,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		//if you're making the main menu, just change the gamestate to MainMenuScreen and then just load it
 		gameState = GameState.UserSelectScreen;
 		loadScreen(gameState);
+		playMainSound();
 
 
 	}
@@ -458,8 +461,11 @@ public class Game extends GraphicsProgram implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent event)
 	{	
-		if("New User".equals(event.getActionCommand()))
+		if("New User".equals(event.getActionCommand())){
 			addNewUser();
+			playMainSound();
+
+		}
 		
 		// load profiles
 		for(Profile p: profiles)
@@ -473,25 +479,40 @@ public class Game extends GraphicsProgram implements ActionListener{
 		if("New Run".equals(event.getActionCommand())){
 			newGameSelected=true;
 			loadScreen(GameState.MapSelect);
+			playMainSound();
+
 		}
 		else if(event.getActionCommand() != null && event.getActionCommand().contains("GMap")){
 			loadScreen(GameState.GameScreen);
+			playSoundForMap(event.getActionCommand());
 		}
-		else if("Credits".equals(event.getActionCommand()))
+		else if("Credits".equals(event.getActionCommand())){
 			loadScreen(GameState.CreditsScreen);
-		else if("Options".equals(event.getActionCommand()))
+			playMainSound();
+
+		}
+		else if("Options".equals(event.getActionCommand())){
 			loadScreen(GameState.OptionsScreen);
-		else if("How To".equals(event.getActionCommand()))
+			playMainSound();
+
+		}
+		else if("How To".equals(event.getActionCommand())){
 			loadScreen(GameState.HowToScreen);
+			playMainSound();
+
+		}
 		else if("Leaderboard".equals(event.getActionCommand())){
 			newGameSelected=false;
 			loadScreen(GameState.MapSelect);
+			playMainSound();
 
 		}
 		else if("Go Back(Esc)".equals(event.getActionCommand()))
 			inputEsc();
 		if(event.getActionCommand() != null && event.getActionCommand().contains("LMap")){
 			loadLeaderboards(event.getActionCommand());
+			playMainSound();
+
 		}		
 
 
@@ -560,6 +581,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 	{
 		if(!storeGameState.empty())
 			loadScreen(storeGameState.peek());
+		playMainSound();
 	}
 	
 	private void clearCurScreen()
@@ -567,5 +589,31 @@ public class Game extends GraphicsProgram implements ActionListener{
 		removeAll();
 		if(currentScreen != null)
 			currentScreen.clear();
+	}
+	
+	private void playMainSound(){
+		AudioPlayer player = AudioPlayer.getInstance();
+		if(player.getMediaPlayer("../sounds", "UserSound.mp3").getStatus() != MediaPlayer.Status.PLAYING){
+			player.stopAllSounds();
+			player.playSoundInLoop("../sounds", "UserSound.mp3");
+		}
+	}
+	
+	private void playSoundForMap(String mapName){
+		AudioPlayer player = AudioPlayer.getInstance();
+		String fileName = "";
+		if("GMap1".equals(mapName)){
+			fileName = "Map1Song.mp3";
+		}
+		else if("GMap2".equals(mapName)){
+			fileName = "Map2Song.mp3";
+		}
+		else
+			fileName= "Map3Song.mp3";
+		
+		if(player.getMediaPlayer("../sounds", fileName).getStatus() != MediaPlayer.Status.PLAYING){
+			player.stopAllSounds();
+			player.playSoundInLoop("../sounds", fileName); 
+		}
 	}
 }
