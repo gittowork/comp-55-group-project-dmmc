@@ -49,6 +49,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 	public static final int FPS = 60;
 	
 	private int mapIndex=0;
+	private boolean gameSoundOff=false;//to check if sound is on or off in if statem.
 	
 		
 	static String[] UserSelectScreenData = {
@@ -430,8 +431,29 @@ public class Game extends GraphicsProgram implements ActionListener{
 			storeScreen.push(currentScreen);
 		}
 		loadBasic(true, giraffe);
-		GLabel label = new GLabel("Game Music Volume: ", 0, 100);
-		add(label);
+		//GLabel label = new GLabel("Game Music Volume: ", 0, 100);
+		final GuiScreen tmp = (GuiScreen)currentScreen;
+		String prefix = gameSoundOff?"On":"Off";
+		final GButton sound = new GButton(prefix+" Game Sound", windowWidth/2-50, 10, 100, 50); //button to turn game sound on/off 
+		sound.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gameSoundOff=!gameSoundOff; 
+				if(gameSoundOff){
+					sound.getGLabel().setLabel("Game Sound On"); 
+					AudioPlayer player = AudioPlayer.getInstance();
+					player.stopAllSounds();
+				}
+				else{
+					sound.getGLabel().setLabel("Game Sound Off");
+					playMainSound();
+				}
+				
+			}
+		});
+		add(sound);
+		tmp.addGButton(sound);
 	}
 
 	private void loadCredits() 
@@ -615,6 +637,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 	}
 	
 	private void playMainSound(){
+		if(gameSoundOff)
+			return;
 		AudioPlayer player = AudioPlayer.getInstance();
 		if(player.getMediaPlayer("../sounds", "UserSound.mp3").getStatus() != MediaPlayer.Status.PLAYING){
 			player.stopAllSounds();
@@ -623,6 +647,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 	}
 	
 	private void playSoundForMap(String mapName){
+		if(gameSoundOff)
+			return;
 		AudioPlayer player = AudioPlayer.getInstance();
 		String fileName = "";
 		if("GMap1".equals(mapName)){
