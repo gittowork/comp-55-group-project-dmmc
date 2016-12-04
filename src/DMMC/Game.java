@@ -67,17 +67,19 @@ public class Game extends GraphicsProgram implements ActionListener{
 	
 
 	public static final String[][] imageNames = {
-			{"player-0","player-1", "player-2", "player-3", "player-4", "player-5", "player-6", "player-7"},
+			{"player-0","player-1", "player-2", "player-3", "player-4", "player-5", "player-6", "player-7", "player-8"},
 			{"ghost-0","ghost-1"},
 			{"brussel-0"},
-			{"corn-0"},
+			{"corn-0", "corn-1", "corn-2"},
+			{"kernel-0", "kernel-1"}
 	};		//made this a 2d array so that when i load the files into the animation hashmap, its easier to call and organize
 	
 	public static final int[] animationLengths = {
-			8,
+			9,
 			2,
 			1,
-			1
+			3,
+			2
 	};
 	public static Entity player;
 	private static Screen currentScreen;
@@ -544,11 +546,11 @@ public class Game extends GraphicsProgram implements ActionListener{
 			for(Entity e: temp.getEntities())
 			{
 				e.update();
-				if (timerIndex == 60)
+				/*if (timerIndex == 60)
 				{
 					e.iterAnimantion();	//the animation shouldn't be in timer.
 					timerIndex = 0;
-				}
+				}*/
 			}
 		}
 

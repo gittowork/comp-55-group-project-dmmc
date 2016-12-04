@@ -218,6 +218,7 @@ public class LevelScreen extends Screen implements ActionListener {
 	{
 		player.setVelX(Entity.maxVelX);
 		player.setForced(true);
+		
 	}
 
 
