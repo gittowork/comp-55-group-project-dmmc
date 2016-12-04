@@ -30,7 +30,7 @@ public class Brussel extends Entity{
 
 	// false for left, true for right
 	public Brussel() {
-		super(new GImage("ghost-0.png"), Game.getAnime("ghost-0"), false, true);
+		super(new GImage("brussel-0.png"), Game.getAnime("brussel-0"), false, true);
 		scaleScreenObj();
 
 		sideStuck = -1;
