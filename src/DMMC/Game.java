@@ -47,11 +47,11 @@ public class Game extends GraphicsProgram implements ActionListener{
 	public static final int windowHeight = 500, windowWidth = 700;
 	public static final int tileHeight=50, tileWidth=50;
 	public static final int FPS = 60;
-	
+
 	private int mapIndex=0;
 	private boolean gameSoundOff=false;//to check if sound is on or off in if statem.
-	
-		
+
+
 	static String[] UserSelectScreenData = {
 			"New Run",
 			"Leaderboard",  //all button names
@@ -65,7 +65,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			"LMap2",
 			"LMap3"
 	};
-	
+
 
 	public static final String[][] imageNames = {
 			{"player-0","player-1", "player-2", "player-3", "player-4", "player-5", "player-6", "player-7", "player-8"},
@@ -74,7 +74,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			{"corn-0", "corn-1", "corn-2"},
 			{"kernel-0", "kernel-1"}
 	};		//made this a 2d array so that when i load the files into the animation hashmap, its easier to call and organize
-	
+
 	public static final int[] animationLengths = {
 			9,
 			2,
@@ -115,8 +115,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 	public static GPoint tilePosToScreen(int x, int y)
 	{
 		//if (currentScreen != null)
-			//return currentScreen.getTile(x, y).getScreenPos();
-		
+		//return currentScreen.getTile(x, y).getScreenPos();
+
 		return new GPoint(x * tileWidth, y * tileHeight);
 	}
 
@@ -125,7 +125,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		//gets tile from point p using ScreePostToTile, gets type, checks isSolid
 		return (currentScreen.getTile(screenPosToTile(p.getX(), false), screenPosToTile(p.getY(), true)).getType().isSolid());
 	}
-	
+
 	public static Screen getCurScreen()
 	{
 		return currentScreen;
@@ -168,9 +168,9 @@ public class Game extends GraphicsProgram implements ActionListener{
 				profiles.add(new Profile(line));
 			}
 		} catch (IOException e1) {
-			System.out.println("oh no");
+			System.err.println("Profiles file not found");
 		}
-		
+
 		currentUser = -1;
 		animations = new HashMap<String, Image[]>();
 		gameState = GameState.Init;
@@ -182,22 +182,25 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 		Image img;	//variable to temporarily hold the new picture being read in
 		Image[] pics;	//array of images to hold all the animation pics for each character
-		try {
-			for (int i = 0; i < animationLengths.length; i++)
+
+		for (int i = 0; i < animationLengths.length; i++)
+		{
+			pics = new Image[animationLengths[i]];
+			for (int j = 0; j < animationLengths[i]; j++)
 			{
-				pics = new Image[animationLengths[i]];
-				for (int j = 0; j < animationLengths[i]; j++)
+				//read file
+				try 
 				{
-					//read file
 					img = ImageIO.read(new File("../media/Images/" + imageNames[i][j] + ".png"));
 					pics[j] = img;
 					System.out.println(img.toString());	//test output
 				}
-				animations.put(imageNames[i][0], pics);	//Puts the array into the hashmap
-			}			
-		} catch (IOException e) {
-			System.out.println("oh no");	//catch failure to read file
-		}
+				catch (IOException e) {
+					System.err.println("Could not find image: " + imageNames[i][j]);
+				}
+			}
+			animations.put(imageNames[i][0], pics);	//Puts the array into the hashmap
+		}			
 	}
 
 	public static Image[] getAnime(String k)
@@ -207,7 +210,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 
 	private void loadNewGame(){
-		
+
 		currentScreen = new LevelScreen(mapIndex);
 
 		for(int x = 0; x < currentScreen.levelSizeX; x ++)
@@ -234,10 +237,10 @@ public class Game extends GraphicsProgram implements ActionListener{
 		gameState=GameState.MainMenuScreen;
 		GLabel title = new GLabel("Super Siege Smores", windowWidth/2-50, windowHeight/6 -50);
 		add(title);
-		
+
 		//in the previous version, there were a lot of added buttons.
 		//those buttons have been removed and added using a for loop.
-		
+
 		int buttonOffset=0; //loading button from offset index
 		int numberOfButton=5; //number of buttons for the screen 
 		int posY=0;
@@ -247,10 +250,10 @@ public class Game extends GraphicsProgram implements ActionListener{
 			//did not use math.floor because for int division, 10/3 is going to be 3 anyway
 			posY = (i+1)*(windowHeight/(numberOfButton+2)); //finding position
 			GButton button = new GButton(UserSelectScreenData[(buttonOffset+i)], windowWidth/2-50, posY, 100, height); 
-		
+
 			add(button);
 			tmp.addGButton(button);
-			
+
 			button.addActionListener(this);
 		}
 		tmp.getGButton().drawCursor();
@@ -289,8 +292,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 	private void loadBasic(Boolean back, GImage bg)
 	{
 		removeAll();
-		
-		
+
+
 		int levelX = windowWidth/tileWidth;
 		int levelY = windowHeight/tileHeight;
 		GuiScreen tmp = new GuiScreen(levelX, levelY, bg);
@@ -329,7 +332,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		}
 		currentScreen=tmp;
 		gameState=GameState.MapSelect;
-		
+
 		int buttonOffset=8;
 		if(newGameSelected)
 			buttonOffset=5;
@@ -340,17 +343,17 @@ public class Game extends GraphicsProgram implements ActionListener{
 		int height = windowHeight/(numberOfButton+2);
 		for(int i = 0; i < numberOfButton; i++)
 		{
-			
+
 			posY = (i+1)*(windowHeight/(numberOfButton+2));
 			GButton button = new GButton(UserSelectScreenData[(buttonOffset+i)], windowWidth/2-50, posY, 100, height);
-		
+
 			add(button);
 			tmp.addGButton(button);
-			
+
 			button.addActionListener(this);
 		}
 		tmp.getGButton().drawCursor();
-		
+
 		//reason for cursor bug:
 		//tmp.getGButton().drawCursor();
 	}
@@ -399,9 +402,9 @@ public class Game extends GraphicsProgram implements ActionListener{
 	{
 		//also do we want to write on text file every time a new user logs in?
 		String name = "";
-		
+
 		name = JOptionPane.showInputDialog("Type in Name: ");
-		
+
 		if (name != null)
 		{
 			loadScreen(GameState.MainMenuScreen);
@@ -409,17 +412,17 @@ public class Game extends GraphicsProgram implements ActionListener{
 			profiles.add(newUser);
 			try
 			{
-			    String filename = "profiles.txt";
-			    FileWriter fw = new FileWriter(filename,true); //the true will append the new data
-			    fw.write(name + "\n");//appends the string to the file
-			    fw.close();
+				String filename = "profiles.txt";
+				FileWriter fw = new FileWriter(filename,true); //the true will append the new data
+				fw.write(name + "\n");//appends the string to the file
+				fw.close();
 			}
 			catch(IOException ioe)
 			{
-			    System.err.println("IOException: " + ioe.getMessage());
+				System.err.println("IOException: " + ioe.getMessage());
 			}
 		}
-		
+
 
 	}
 	//dont know if i should get rid of these functions since the labels are needed...
@@ -436,7 +439,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		String prefix = gameSoundOff?"On":"Off";
 		final GButton sound = new GButton(prefix+" Game Sound", windowWidth/2-50, 10, 100, 50); //button to turn game sound on/off 
 		sound.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gameSoundOff=!gameSoundOff; 
@@ -449,7 +452,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 					sound.getGLabel().setLabel("Game Sound Off");
 					playMainSound();
 				}
-				
+
 			}
 		});
 		add(sound);
@@ -463,7 +466,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			storeScreen.push(currentScreen);
 		}
 		loadBasic(true, credits);
-		
+
 	}
 
 	private void loadHowTo() 
@@ -482,7 +485,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			storeScreen.push(currentScreen);
 		}
 		loadBasic(true, leaderboards);
-		
+
 	}
 
 	private void loadLeaderboards(String scores)
@@ -492,7 +495,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			storeScreen.push(currentScreen);
 		}
 		loadBasic(true, leaderboards);
-		
+
 	}
 
 	public void run()
@@ -515,7 +518,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			addNewUser();
 
 		}
-		
+
 		// load profiles
 		for(Profile p: profiles)
 		{
@@ -628,14 +631,14 @@ public class Game extends GraphicsProgram implements ActionListener{
 			loadScreen(storeGameState.peek());
 		playMainSound();
 	}
-	
+
 	private void clearCurScreen()
 	{
 		removeAll();
 		if(currentScreen != null)
 			currentScreen.clear();
 	}
-	
+
 	private void playMainSound(){
 		if(gameSoundOff)
 			return;
@@ -645,7 +648,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			player.playSoundInLoop("../sounds", "UserSound.mp3");
 		}
 	}
-	
+
 	private void playSoundForMap(String mapName){
 		if(gameSoundOff)
 			return;
@@ -659,7 +662,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		}
 		else
 			fileName= "Map3Song.mp3";
-		
+
 		if(player.getMediaPlayer("../sounds", fileName).getStatus() != MediaPlayer.Status.PLAYING){
 			player.stopAllSounds();
 			player.playSoundInLoop("../sounds", fileName); 
