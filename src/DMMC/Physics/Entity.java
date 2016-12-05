@@ -33,8 +33,8 @@ public abstract class Entity extends PhysicsObject{
 	private boolean colliding;
 
 	
-	public Entity(GImage i, Image[] initAnimation, boolean w, boolean c) {
-		super(i, initAnimation);
+	public Entity(Image[] initAnimation, boolean w, boolean c) {
+		super(initAnimation);
 		drawable = true;
 		forced = false;
 		collidable = c;
@@ -47,38 +47,11 @@ public abstract class Entity extends PhysicsObject{
 			setColPoint();
 	}
 	
-	public Entity(GImage i, boolean w, boolean c) {
-		super(i);
-		drawable = true;
-		forced = false;
-		collidable = c;
-		weightless = w;
-		id = lastId ++;
-		
-		initPoints();
-		
-		if(collidable)
-			setColPoint();
-	}
-	
-	public Entity(GImage i, Image[] initAnimation) {
-		super(i, initAnimation);
+	public Entity(Image[] initAnimation) {
+		super(initAnimation);
 		drawable = true;
 		forced = false;
 		collidable = true;
-		id = lastId ++;
-		
-		initPoints();
-		
-		if(collidable)
-			setColPoint();
-	}
-
-	public Entity(GImage i) {
-		super(i);
-		collidable = true;
-		drawable = true;
-		forced = false;
 		id = lastId ++;
 		
 		initPoints();

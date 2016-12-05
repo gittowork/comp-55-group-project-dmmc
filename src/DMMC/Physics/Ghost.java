@@ -19,7 +19,7 @@ public class Ghost extends Entity {
 	private static final int sizeY = 50;
 	
 	public Ghost(){
-		super (new GImage("ghost-0.png"), Game.getAnime("ghost-0"), true, false);	
+		super (Game.getAnime("ghost-idle"), true, false);	
 		scaleScreenObj();
 	}
 

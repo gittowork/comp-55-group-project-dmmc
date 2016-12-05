@@ -12,7 +12,7 @@ public class Player extends Entity {
 	private boolean entityColision;
 
 	public Player() {
-		super(new GImage("player-0.png"), Game.getAnime("player-0"), false, true);
+		super(Game.getAnime("player-dead"), false, true);
 		scaleScreenObj();
 	}
 

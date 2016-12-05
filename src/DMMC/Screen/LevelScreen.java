@@ -242,6 +242,7 @@ public class LevelScreen extends Screen{
 		}
 		else 
 			player.setForced(false);
+		
 		for(Entity e: getEntities())
 			e.update();
 	}

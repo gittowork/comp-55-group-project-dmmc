@@ -2,6 +2,7 @@ package DMMC.Physics;
 
 import java.awt.Image;
 
+import DMMC.Game;
 import acm.graphics.GImage;
 import acm.graphics.GPoint;
 
@@ -11,19 +12,20 @@ public abstract class PhysicsObject {
 	protected Image[] curAnimation;
 	protected int curAnimeIndex;
 	
-	public PhysicsObject(GImage i, Image[] initAnimation) 
+	public PhysicsObject(Image[] initAnimation) 
 	{
-		screenObj = i;
+		screenObj = new GImage(initAnimation[0]);
 		curAnimation = initAnimation;
 		curAnimeIndex = 0;
 	}
 	
-	public PhysicsObject(GImage i)
+	public PhysicsObject(GImage i) 
 	{
 		screenObj = i;
 		curAnimation = null;
-		curAnimeIndex = -1;
+		curAnimeIndex = 0;
 	}
+	
 
 	public double getScreenPosX(){return screenObj.getX();}
 	public double getScreenPosY(){return screenObj.getY();}
@@ -34,10 +36,17 @@ public abstract class PhysicsObject {
 	public void setScreenPosY(double y){screenObj.setLocation(getScreenPosX(), y);}
 	public void setScreenPos(GPoint p){screenObj.setLocation(p);}
 	
-	public void setAnimation(Image[] anime)
+	public void setAnimation(String animeKey)
 	{
-		curAnimeIndex = -1;
-		curAnimation = anime;
+		Image[] images = Game.getAnime(animeKey);
+		
+		if(images != null)
+		{
+			curAnimeIndex = 0;
+			curAnimation = images;
+		}
+		else 
+			curAnimeIndex = -1;
 	}
 	
 	//Called every few seconds in Level.java using Timer

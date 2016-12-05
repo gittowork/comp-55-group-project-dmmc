@@ -23,6 +23,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
+import com.sun.xml.internal.ws.policy.EffectiveAlternativeSelector;
+
 import DMMC.Physics.Entity;
 import DMMC.Physics.GButton;
 import DMMC.Screen.GuiScreen;
@@ -68,19 +70,32 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 
 	public static final String[][] imageNames = {
-			{"player-0","player-1", "player-2", "player-3", "player-4", "player-5", "player-6", "player-7", "player-8"},
-			{"ghost-0","ghost-1"},
-			{"brussel-0"},
-			{"corn-0", "corn-1", "corn-2"},
-			{"kernel-0", "kernel-1"}
+			{"player-idle-right", "player-1"},
+			{"player-idle-left", "player-4"},
+			{"player-run-right", "player-0", "player-1", "player-2"},
+			{"player-run-left", "player-3", "player-4", "player-5"},
+			{"player-attack-right", "player-8"},
+			{"player-attack-left", "player-7"},
+			{"player-dead", "player-6"},
+			
+			{"ghost-idle","ghost-0","ghost-1"},
+			
+			{"brussel-up","brussel-0"},
+			{"brussel-right","brussel-0"},
+			{"brussel-down","brussel-0"},
+			{"brussel-left","brussel-0"},
+			
+			{"corn-idle", "corn-0"},
+			
+			{"kernel-run", "kernel-0"}
 	};		//made this a 2d array so that when i load the files into the animation hashmap, its easier to call and organize
 
 	public static final int[] animationLengths = {
-			9,
-			2,
-			1,
-			3,
-			2
+			1,1,3,3,1,1,1, 	//player
+			2,				//ghost
+			1,1,1,1,		//brussel
+			1,				//corn
+			1				//kernel
 	};
 	public static Entity player;
 	private static Screen currentScreen;
@@ -179,20 +194,17 @@ public class Game extends GraphicsProgram implements ActionListener{
 		timer.start();
 		timerIndex = 0;
 
-		Image img;	//variable to temporarily hold the new picture being read in
 		Image[] pics;	//array of images to hold all the animation pics for each character
 
 		for (int i = 0; i < animationLengths.length; i++)
 		{
 			pics = new Image[animationLengths[i]];
-			for (int j = 0; j < animationLengths[i]; j++)
+			for (int j = 1; j <= animationLengths[i]; j++)
 			{
 				//read file
 				try 
 				{
-					img = ImageIO.read(new File("../media/Images/" + imageNames[i][j] + ".png"));
-					pics[j] = img;
-					System.out.println(img.toString());	//test output
+					pics[j - 1] = ImageIO.read(new File("../media/Images/" + imageNames[i][j] + ".png"));;
 				}
 				catch (IOException e) {
 					System.err.println("Could not find image: " + imageNames[i][j]);
@@ -204,7 +216,13 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 	public static Image[] getAnime(String k)
 	{
-		return animations.get(k);
+		if(animations.containsKey(k))
+			return animations.get(k);
+		else
+		{
+			System.err.println("No Animation: " + k);
+			return null;
+		}
 	}
 
 

@@ -9,9 +9,9 @@ import acm.graphics.GRect;
 
 public class Button extends Tile {
 
-	public Button(GImage i, Image[] initAnimation, TileType t) 
+	public Button(GImage i, TileType t) 
 	{
-		super(i, initAnimation, t);
+		super(i, t);
 		// TODO Auto-generated constructor stub
 		GRect button = new GRect(200,50);
 	}
