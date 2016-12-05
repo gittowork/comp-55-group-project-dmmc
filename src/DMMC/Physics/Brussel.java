@@ -29,8 +29,8 @@ public class Brussel extends Entity{
 	private GPoint stuckTilePos;
 
 	// false for left, true for right
-	public Brussel() {
-		super("brussel-bot", false, true);
+	public Brussel(int id) {
+		super("brussel-bot",id, false, true);
 		scaleScreenObj();
 
 		sideStuck = -1;

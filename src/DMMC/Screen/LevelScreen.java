@@ -2,8 +2,11 @@ package DMMC.Screen;
 
 import java.util.ArrayList;
 
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.sound.midi.VoiceStatus;
+
 
 import DMMC.Game;
 import DMMC.Physics.Brussel;
@@ -11,6 +14,7 @@ import DMMC.Physics.Entity;
 import DMMC.Physics.GButton;
 import DMMC.Physics.Ghost;
 import DMMC.Physics.Player;
+import DMMC.Physics.Sword;
 import acm.graphics.GPoint;
 
 public class LevelScreen extends Screen{
@@ -20,16 +24,17 @@ public class LevelScreen extends Screen{
 	private int curWave;
 	private int frameNum = 0;
 	private Entity player;
-
+	private boolean updateNeeded; // if eneties need to be added to screen
 	// bit field, 8 bites in a byte, only using 4 for each key (up,left,right,x)
 	private byte keysPressed; 	// fired every time key down
 	private byte keysDown; 		// fired once key down
+
 	private GButton pauseButton;  LevelScreen(int sizeX, int sizeY) { //new pause button on game screen
 		super(sizeX, sizeY);
 		keysDown = 0;
 		entities = new ArrayList<Entity>();
-		Entity e = new Player();
-		Entity g = new Ghost();
+		Entity e = new Player(1); //what happened here?
+		Entity g = new Ghost(2);
 		e.setScreenPosX(Game.windowWidth/2);
 		e.setScreenPosY(Game.windowHeight/2);
 		g.setScreenPosX(Game.windowWidth/2);
@@ -39,6 +44,9 @@ public class LevelScreen extends Screen{
 		player = e;
 
 	}
+
+
+
 
 	public LevelScreen(int levelID)
 	{		
@@ -66,7 +74,7 @@ public class LevelScreen extends Screen{
 			switch (Integer.parseInt(levelData[i])) {
 			case 0:
 				// Player
-				e =	new Player();
+				e =	new Player(entities.size());
 
 				//set initial position
 				pos = Game.tilePosToScreen(Integer.parseInt(levelData[i + 1]),
@@ -75,11 +83,11 @@ public class LevelScreen extends Screen{
 				e.setScreenPos(pos);
 
 				entities.add(e);
-				player = e;
+				player = (Player)e;
 				break;
 			case 1:
 				// Sprout
-				e = new Brussel();
+				e = new Brussel(entities.size());
 
 				//set initial position
 				pos = Game.tilePosToScreen(Integer.parseInt(levelData[i + 1]),
@@ -91,7 +99,7 @@ public class LevelScreen extends Screen{
 				break;
 			case 2:
 				// CaliFr
-				e = new Ghost();
+				e = new Ghost(entities.size());
 
 				//set initial position
 				pos = Game.tilePosToScreen(Integer.parseInt(levelData[i + 1]),
@@ -114,8 +122,83 @@ public class LevelScreen extends Screen{
 		}
 	}
 
+	
+	public void setNeedsUpdating(boolean u){updateNeeded = u;}
+	
+	public boolean needsUpdating(){return updateNeeded;}
+	
 	public ArrayList<Entity> getEntities(){
 		return entities;
+	}
+	
+	public void spawnEntity(int type, double posX, double posY)
+	{
+		Entity e;
+		GPoint pos;
+		
+		switch (type) {
+		case 0:
+			// Player
+			e =	new Player(entities.size());
+
+			//set initial position
+			e.setScreenPos(new GPoint(posX, posY));
+
+			entities.add(e);
+			player = e;
+			break;
+		case 1:
+			// Sprout
+			e = new Brussel(entities.size());
+
+			//set initial position
+			e.setScreenPos(new GPoint(posX, posY));
+			
+			entities.add(e);
+
+			break;
+		case 2:
+			// CaliFr
+			e = new Ghost(entities.size());
+
+			//set initial position
+			e.setScreenPos(new GPoint(posX, posY));
+
+			entities.add(e);
+			break;
+		case 3:
+			// CornMg
+			break;
+		case 4:
+			// CornCn
+			break;
+		case 5:
+			//sword
+			String facing = "left";
+			
+			if(player.getCurAnimationName().contains("right"))
+				facing = "right";
+
+			e = new Sword(entities.size(), facing);
+			e.setScreenPos(new GPoint(posX, posY));
+
+			entities.add(e);
+			break;
+		default:
+			System.err.println("INVALID ENTITY");
+			break;
+		}
+		
+		//add to draw
+		updateNeeded = true;
+		
+	}
+	
+	public void destroyEntity(int id) 
+	{
+		//Note: all Entities will stay in the list EVEN if destroyed until end of wave
+		entities.get(id).setLiving(false);
+		updateNeeded = true;
 	}
 
 	@Override
@@ -236,7 +319,8 @@ public class LevelScreen extends Screen{
 		playerControls();
 
 		for(Entity e: getEntities())
-			e.update();
+			if(e.isLiving())
+				e.update();
 		
 		frameNum ++;
 		
@@ -253,33 +337,32 @@ public class LevelScreen extends Screen{
 
 	private void playerControls()
 	{
+		
 		//keys down
 		if(keysDown != 0)
 		{
 			if((keysDown & 1) == 1)
 			{
 				// Right
-				System.out.println("R");
 				player.setAnimation("player-run-right");
 
 			}
 			if((keysDown & 2) == 2)
 			{
 				//UP
-				System.out.println("U");
 
 			}
 			if((keysDown & 4) == 4)
 			{
 				// Left
-				System.out.println("L");
 				player.setAnimation("player-run-left");
 
 			}
 			if((keysDown & 8) == 8)
 			{
 				// X
-
+				if(!Sword.onePresent)
+					spawnEntity(5, 0, 0); // note: position set in spawn
 			}
 			
 			keysDown = 0;

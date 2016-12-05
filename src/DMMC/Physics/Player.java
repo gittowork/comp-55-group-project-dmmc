@@ -11,10 +11,11 @@ public class Player extends Entity {
 	
 	private boolean entityColision;
 
-	public Player() {
-		super("player-dead", false, true);
-		scaleScreenObj();
+	public Player(int id) {
+		super("player-idle-right",id, false, true);
+		scaleScreenObj();		
 	}
+
 
 	@Override
 	public void spawnAction() {

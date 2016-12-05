@@ -25,8 +25,11 @@ import javax.swing.Timer;
 
 import com.sun.xml.internal.ws.policy.EffectiveAlternativeSelector;
 
+import DMMC.Physics.Brussel;
 import DMMC.Physics.Entity;
 import DMMC.Physics.GButton;
+import DMMC.Physics.Ghost;
+import DMMC.Physics.Player;
 import DMMC.Screen.GuiScreen;
 import DMMC.Screen.LevelScreen;
 import DMMC.Screen.Screen;
@@ -88,6 +91,9 @@ public class Game extends GraphicsProgram implements ActionListener{
 			
 			{"kernel-run", "kernel-0"},
 			
+			{"sword-left", "sword-0"},
+			{"sword-right", "sword-1"},
+			
 			{"default", "empty"}
 	};		//made this a 2d array so that when i load the files into the animation hashmap, its easier to call and organize
 
@@ -97,6 +103,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			1,1,1,1,		//brussel
 			1,				//corn
 			1,				//kernel
+			1,1,			//sword
 			1				//default
 	};
 	public static Entity player;
@@ -337,7 +344,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 	private void loadBasic(Boolean back, GImage bg)
 	{
 		removeAll();
-
 
 		int levelX = windowWidth/tileWidth;
 		int levelY = windowHeight/tileHeight;
@@ -615,8 +621,27 @@ public class Game extends GraphicsProgram implements ActionListener{
 		if(currentScreen instanceof LevelScreen)
 		{
 			LevelScreen temp = (LevelScreen)currentScreen;
+
 			if(!gamePaused)  //when not gamepaused, screen is updated(freeze screen)
 				temp.update();
+
+			//temp.update(); //may be repeated code
+			
+			if(temp.needsUpdating())
+			{
+				for(Entity e: temp.getEntities())
+					if(e.isLiving())
+						//keep if alive
+						add(e.getScreenObj());
+					else 
+						//remove else
+						remove(e.getScreenObj());
+				
+				
+				temp.setNeedsUpdating(false);
+			}
+			
+
 		}
 
 	}
@@ -656,8 +681,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 	
 	public void keyReleased(KeyEvent e)
 	{
-		//System.out.println("Key released: " + e.getKeyCode());
-
 		switch (e.getKeyCode())
 		{
 		case KeyEvent.VK_LEFT:
@@ -677,6 +700,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		}
 
 	}
+	
 	public void inputEsc()
 	{
 		if(!storeGameState.empty())
