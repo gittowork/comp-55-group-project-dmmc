@@ -30,7 +30,7 @@ public class Brussel extends Entity{
 
 	// false for left, true for right
 	public Brussel() {
-		super(Game.getAnime("brussel-down"), false, true);
+		super(Game.getAnime("brussel-bot"), false, true);
 		scaleScreenObj();
 
 		sideStuck = -1;
@@ -82,6 +82,7 @@ public class Brussel extends Entity{
 		case 0:
 			//Top  stuck
 			setVelX(-speed);
+			setAnimation("brussel-top");
 			
 			//store stuck tile
 			if(colIndex[0] == 1)
@@ -140,6 +141,7 @@ public class Brussel extends Entity{
 		case 1:
 			//Right  stuck
 			setVelY(-speed);
+			setAnimation("brussel-right");
 					
 			if(colIndex[1] == 1)
 				//only one col point is triggered
@@ -198,6 +200,7 @@ public class Brussel extends Entity{
 		case 2:
 			//Bot stuck
 			setVelX(speed);
+			setAnimation("brussel-bot");
 
 			//store stuck tile				
 			if(colIndex[2] == 1)
@@ -257,6 +260,7 @@ public class Brussel extends Entity{
 		case 3:
 			//Left  stuck
 			setVelY(speed);
+			setAnimation("brussel-left");
 			
 			if(colIndex[3] == 1)
 				//only one col point is triggered

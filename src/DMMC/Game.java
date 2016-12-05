@@ -80,10 +80,10 @@ public class Game extends GraphicsProgram implements ActionListener{
 			
 			{"ghost-idle","ghost-0","ghost-1"},
 			
-			{"brussel-up","brussel-0"},
-			{"brussel-right","brussel-0"},
-			{"brussel-down","brussel-0"},
-			{"brussel-left","brussel-0"},
+			{"brussel-top","brussel-0"},
+			{"brussel-right","brussel-1"},
+			{"brussel-bot","brussel-2"},
+			{"brussel-left","brussel-3"},
 			
 			{"corn-idle", "corn-0"},
 			

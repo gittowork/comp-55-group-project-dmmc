@@ -44,6 +44,7 @@ public abstract class PhysicsObject {
 		{
 			curAnimeIndex = 0;
 			curAnimation = images;
+			iterAnimantion();
 		}
 		else 
 			curAnimeIndex = -1;
