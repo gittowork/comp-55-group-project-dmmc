@@ -2,9 +2,13 @@ package DMMC.Screen;
 
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import DMMC.Game;
 import DMMC.Physics.Brussel;
 import DMMC.Physics.Entity;
+import DMMC.Physics.GButton;
 import DMMC.Physics.Ghost;
 import DMMC.Physics.Player;
 import acm.graphics.GPoint;
@@ -20,8 +24,7 @@ public class LevelScreen extends Screen{
 	// bit field, 8 bites in a byte, only using 4 for each key (up,left,right,x)
 	private byte keysPressed; 	// fired every time key down
 	private byte keysDown; 		// fired once key down
-
-	public LevelScreen(int sizeX, int sizeY) {
+	private GButton pauseButton;  LevelScreen(int sizeX, int sizeY) { //new pause button on game screen
 		super(sizeX, sizeY);
 		keysDown = 0;
 		entities = new ArrayList<Entity>();
@@ -150,8 +153,12 @@ public class LevelScreen extends Screen{
 	@Override
 	public void inputEnter() 
 	{
-		// TODO Auto-generated method stub
-
+		
+		if(pauseButton != null){	
+			pauseButton.fireActionEvent(pauseButton.getGLabel().getLabel());
+		}
+		
+		
 	}
 
 	@Override
@@ -203,6 +210,8 @@ public class LevelScreen extends Screen{
 	public void inputEsc() 
 	{
 		// TODO Auto-generated method stub
+		
+		
 
 	}
 
@@ -319,5 +328,9 @@ public class LevelScreen extends Screen{
 		}
 		else 
 			player.setForced(false);
+	}
+	
+	public void setPauseButton(GButton b){
+		this.pauseButton=b;
 	}
 }

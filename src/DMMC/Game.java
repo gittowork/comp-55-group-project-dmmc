@@ -249,6 +249,18 @@ public class Game extends GraphicsProgram implements ActionListener{
 		GButton button = new GButton("Pause", 50 , 50, 50, 50);
 		add(button);
 		button.drawCursor();
+		button.addActionListener(this);
+		((LevelScreen)currentScreen).setPauseButton(button);
+	}
+	
+	private void showPauseDialog(){ //two buttons added to continue and exit game, check whether user clicked cont or exit
+		String[] buttons = { "Exit", "Continue"};    
+		int returnValue = JOptionPane.showOptionDialog(null, "Press exit to go to main menu\nPress continue to continue", "Options",
+				JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[0]);
+		if(returnValue==0){
+			removeAll();
+			loadMainMenu(); 
+		}
 	}
 
 	private void loadMainMenu(){
@@ -545,6 +557,10 @@ public class Game extends GraphicsProgram implements ActionListener{
 		if("New User".equals(event.getActionCommand())){
 			addNewUser();
 
+		}
+		
+		if("Pause".equals(event.getActionCommand())){
+			showPauseDialog();
 		}
 
 		// load profiles
