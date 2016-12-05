@@ -13,8 +13,9 @@ public class Player extends Entity {
 
 	public Player(int id) {
 		super("player-idle-right",id, false, true);
-		scaleScreenObj();
+		scaleScreenObj();		
 	}
+
 
 	@Override
 	public void spawnAction() {

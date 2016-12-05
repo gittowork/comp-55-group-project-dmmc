@@ -91,6 +91,9 @@ public class Game extends GraphicsProgram implements ActionListener{
 			
 			{"kernel-run", "kernel-0"},
 			
+			{"sword-left", "sword-0"},
+			{"sword-right", "sword-1"},
+			
 			{"default", "empty"}
 	};		//made this a 2d array so that when i load the files into the animation hashmap, its easier to call and organize
 
@@ -100,6 +103,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			1,1,1,1,		//brussel
 			1,				//corn
 			1,				//kernel
+			1,1,			//sword
 			1				//default
 	};
 	public static Entity player;
@@ -591,11 +595,12 @@ public class Game extends GraphicsProgram implements ActionListener{
 			
 			if(temp.needsUpdating())
 			{
-				//put all of alive
 				for(Entity e: temp.getEntities())
 					if(e.isLiving())
+						//keep if alive
 						add(e.getScreenObj());
 					else 
+						//remove else
 						remove(e.getScreenObj());
 				
 				

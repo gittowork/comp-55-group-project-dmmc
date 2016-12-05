@@ -35,6 +35,7 @@ public abstract class PhysicsObject {
 	public GPoint getScreenPos(){return screenObj.getLocation();}
 	public GImage getScreenObj(){return screenObj;}
 	public int getAnimationSpeed(){return animationSpeed;}
+	public String getCurAnimationName(){return animationName;}
 	
 	public void setScreenPosX(double x){screenObj.setLocation(x, getScreenPosY());}
 	public void setScreenPosY(double y){screenObj.setLocation(getScreenPosX(), y);}

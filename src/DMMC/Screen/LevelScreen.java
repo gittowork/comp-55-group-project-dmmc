@@ -9,6 +9,7 @@ import DMMC.Physics.Brussel;
 import DMMC.Physics.Entity;
 import DMMC.Physics.Ghost;
 import DMMC.Physics.Player;
+import DMMC.Physics.Sword;
 import acm.graphics.GPoint;
 
 public class LevelScreen extends Screen{
@@ -59,7 +60,7 @@ public class LevelScreen extends Screen{
 				e.setScreenPos(pos);
 
 				entities.add(e);
-				player = e;
+				player = (Player)e;
 				break;
 			case 1:
 				// Sprout
@@ -107,7 +108,7 @@ public class LevelScreen extends Screen{
 		return entities;
 	}
 	
-	public void spawnEntity(int type, int posX, int posY)
+	public void spawnEntity(int type, double posX, double posY)
 	{
 		Entity e;
 		GPoint pos;
@@ -118,9 +119,7 @@ public class LevelScreen extends Screen{
 			e =	new Player(entities.size());
 
 			//set initial position
-			pos = Game.tilePosToScreen(posX,posY);
-
-			e.setScreenPos(pos);
+			e.setScreenPos(new GPoint(posX, posY));
 
 			entities.add(e);
 			player = e;
@@ -130,9 +129,8 @@ public class LevelScreen extends Screen{
 			e = new Brussel(entities.size());
 
 			//set initial position
-			pos = Game.tilePosToScreen(posX,posY);
-
-			e.setScreenPos(pos);
+			e.setScreenPos(new GPoint(posX, posY));
+			
 			entities.add(e);
 
 			break;
@@ -141,9 +139,7 @@ public class LevelScreen extends Screen{
 			e = new Ghost(entities.size());
 
 			//set initial position
-			pos = Game.tilePosToScreen(posX,posY);
-
-			e.setScreenPos(pos);
+			e.setScreenPos(new GPoint(posX, posY));
 
 			entities.add(e);
 			break;
@@ -152,6 +148,18 @@ public class LevelScreen extends Screen{
 			break;
 		case 4:
 			// CornCn
+			break;
+		case 5:
+			//sword
+			String facing = "left";
+			
+			if(player.getCurAnimationName().contains("right"))
+				facing = "right";
+
+			e = new Sword(entities.size(), facing);
+			e.setScreenPos(new GPoint(posX, posY));
+
+			entities.add(e);
 			break;
 		default:
 			System.err.println("INVALID ENTITY");
@@ -282,7 +290,8 @@ public class LevelScreen extends Screen{
 		playerControls();
 
 		for(Entity e: getEntities())
-			e.update();
+			if(e.isLiving())
+				e.update();
 		
 		frameNum ++;
 		
@@ -323,7 +332,8 @@ public class LevelScreen extends Screen{
 			if((keysDown & 8) == 8)
 			{
 				// X
-				destroyEntity(1);
+				if(!Sword.onePresent)
+					spawnEntity(5, 0, 0); // note: position set in spawn
 			}
 			
 			keysDown = 0;
