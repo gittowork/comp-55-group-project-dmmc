@@ -229,6 +229,12 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 
 	private void loadNewGame(){
+		
+		
+		if(ifEnterPressed){
+			storeGameState.push(gameState);
+			storeScreen.push(currentScreen);
+		}
 
 		currentScreen = new LevelScreen(mapIndex);
 
@@ -240,6 +246,9 @@ public class Game extends GraphicsProgram implements ActionListener{
 		for(Entity e: temp.getEntities())
 			add(e.getScreenObj());
 		player = temp.getPlayerEntity();
+		GButton button = new GButton("Pause", 50 , 50, 50, 50);
+		add(button);
+		button.drawCursor();
 	}
 
 	private void loadMainMenu(){
