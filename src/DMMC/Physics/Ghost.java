@@ -18,8 +18,8 @@ public class Ghost extends Entity {
 	private static final int sizeX = 50;
 	private static final int sizeY = 50;
 	
-	public Ghost(){
-		super ("ghost-idle", true, false);	
+	public Ghost(int id){
+		super ("ghost-idle",id, true, false);	
 		scaleScreenObj();
 	}
 

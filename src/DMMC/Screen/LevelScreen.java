@@ -2,6 +2,8 @@ package DMMC.Screen;
 
 import java.util.ArrayList;
 
+import javax.sound.midi.VoiceStatus;
+
 import DMMC.Game;
 import DMMC.Physics.Brussel;
 import DMMC.Physics.Entity;
@@ -16,26 +18,11 @@ public class LevelScreen extends Screen{
 	private int curWave;
 	private int frameNum = 0;
 	private Entity player;
-
+	private boolean updateNeeded; // if eneties need to be added to screen
 	// bit field, 8 bites in a byte, only using 4 for each key (up,left,right,x)
 	private byte keysPressed; 	// fired every time key down
 	private byte keysDown; 		// fired once key down
 
-	public LevelScreen(int sizeX, int sizeY) {
-		super(sizeX, sizeY);
-		keysDown = 0;
-		entities = new ArrayList<Entity>();
-		Entity e = new Player();
-		Entity g = new Ghost();
-		e.setScreenPosX(Game.windowWidth/2);
-		e.setScreenPosY(Game.windowHeight/2);
-		g.setScreenPosX(Game.windowWidth/2);
-		g.setScreenPosY(Game.windowHeight/2);
-		entities.add(e);
-		entities.add(g);
-		player = e;
-
-	}
 
 	public LevelScreen(int levelID)
 	{		
@@ -63,7 +50,7 @@ public class LevelScreen extends Screen{
 			switch (Integer.parseInt(levelData[i])) {
 			case 0:
 				// Player
-				e =	new Player();
+				e =	new Player(entities.size());
 
 				//set initial position
 				pos = Game.tilePosToScreen(Integer.parseInt(levelData[i + 1]),
@@ -76,7 +63,7 @@ public class LevelScreen extends Screen{
 				break;
 			case 1:
 				// Sprout
-				e = new Brussel();
+				e = new Brussel(entities.size());
 
 				//set initial position
 				pos = Game.tilePosToScreen(Integer.parseInt(levelData[i + 1]),
@@ -88,7 +75,7 @@ public class LevelScreen extends Screen{
 				break;
 			case 2:
 				// CaliFr
-				e = new Ghost();
+				e = new Ghost(entities.size());
 
 				//set initial position
 				pos = Game.tilePosToScreen(Integer.parseInt(levelData[i + 1]),
@@ -111,8 +98,76 @@ public class LevelScreen extends Screen{
 		}
 	}
 
+	
+	public void setNeedsUpdating(boolean u){updateNeeded = u;}
+	
+	public boolean needsUpdating(){return updateNeeded;}
+	
 	public ArrayList<Entity> getEntities(){
 		return entities;
+	}
+	
+	public void spawnEntity(int type, int posX, int posY)
+	{
+		Entity e;
+		GPoint pos;
+		
+		switch (type) {
+		case 0:
+			// Player
+			e =	new Player(entities.size());
+
+			//set initial position
+			pos = Game.tilePosToScreen(posX,posY);
+
+			e.setScreenPos(pos);
+
+			entities.add(e);
+			player = e;
+			break;
+		case 1:
+			// Sprout
+			e = new Brussel(entities.size());
+
+			//set initial position
+			pos = Game.tilePosToScreen(posX,posY);
+
+			e.setScreenPos(pos);
+			entities.add(e);
+
+			break;
+		case 2:
+			// CaliFr
+			e = new Ghost(entities.size());
+
+			//set initial position
+			pos = Game.tilePosToScreen(posX,posY);
+
+			e.setScreenPos(pos);
+
+			entities.add(e);
+			break;
+		case 3:
+			// CornMg
+			break;
+		case 4:
+			// CornCn
+			break;
+		default:
+			System.err.println("INVALID ENTITY");
+			break;
+		}
+		
+		//add to draw
+		updateNeeded = true;
+		
+	}
+	
+	public void destroyEntity(int id) 
+	{
+		//Note: all Entities will stay in the list EVEN if destroyed until end of wave
+		entities.get(id).setLiving(false);
+		updateNeeded = true;
 	}
 
 	@Override
@@ -244,33 +299,31 @@ public class LevelScreen extends Screen{
 
 	private void playerControls()
 	{
+		
 		//keys down
 		if(keysDown != 0)
 		{
 			if((keysDown & 1) == 1)
 			{
 				// Right
-				System.out.println("R");
 				player.setAnimation("player-run-right");
 
 			}
 			if((keysDown & 2) == 2)
 			{
 				//UP
-				System.out.println("U");
 
 			}
 			if((keysDown & 4) == 4)
 			{
 				// Left
-				System.out.println("L");
 				player.setAnimation("player-run-left");
 
 			}
 			if((keysDown & 8) == 8)
 			{
 				// X
-
+				destroyEntity(1);
 			}
 			
 			keysDown = 0;

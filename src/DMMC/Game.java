@@ -25,8 +25,11 @@ import javax.swing.Timer;
 
 import com.sun.xml.internal.ws.policy.EffectiveAlternativeSelector;
 
+import DMMC.Physics.Brussel;
 import DMMC.Physics.Entity;
 import DMMC.Physics.GButton;
+import DMMC.Physics.Ghost;
+import DMMC.Physics.Player;
 import DMMC.Screen.GuiScreen;
 import DMMC.Screen.LevelScreen;
 import DMMC.Screen.Screen;
@@ -312,7 +315,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 	{
 		removeAll();
 
-
 		int levelX = windowWidth/tileWidth;
 		int levelY = windowHeight/tileHeight;
 		GuiScreen tmp = new GuiScreen(levelX, levelY, bg);
@@ -586,6 +588,20 @@ public class Game extends GraphicsProgram implements ActionListener{
 		{
 			LevelScreen temp = (LevelScreen)currentScreen;
 			temp.update();
+			
+			if(temp.needsUpdating())
+			{
+				//put all of alive
+				for(Entity e: temp.getEntities())
+					if(e.isLiving())
+						add(e.getScreenObj());
+					else 
+						remove(e.getScreenObj());
+				
+				
+				temp.setNeedsUpdating(false);
+			}
+			
 		}
 
 	}
@@ -625,8 +641,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 	
 	public void keyReleased(KeyEvent e)
 	{
-		//System.out.println("Key released: " + e.getKeyCode());
-
 		switch (e.getKeyCode())
 		{
 		case KeyEvent.VK_LEFT:
@@ -646,6 +660,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		}
 
 	}
+	
 	public void inputEsc()
 	{
 		if(!storeGameState.empty())

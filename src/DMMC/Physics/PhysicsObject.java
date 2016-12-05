@@ -18,7 +18,7 @@ public abstract class PhysicsObject {
 	{
 		screenObj = new GImage(Game.getAnime("default")[0]);
 		setAnimation(animationKey);		
-		animationSpeed = 30;
+		animationSpeed = 3;
 	}
 	
 	public PhysicsObject(GImage i) 
@@ -56,13 +56,23 @@ public abstract class PhysicsObject {
 		// index is -1 if no animation is loaded
 		if(curAnimeIndex != -1)
 		{
+			
+//			if(this instanceof Player)
+//				System.out.println("SET: " + curAnimeIndex + " AT: " + System.currentTimeMillis());
+			
 			screenObj.setImage(curAnimation[curAnimeIndex++]);
 			scaleScreenObj();
+			
+			
 		}
 		
 		//loop back to first image
 		if(curAnimeIndex == curAnimation.length)
+		{
+//			if(this instanceof Player)
+//				System.out.println("RESET: " + curAnimeIndex);
 			curAnimeIndex = 0;
+		}
 	}
 	
 	protected void scaleScreenObj()

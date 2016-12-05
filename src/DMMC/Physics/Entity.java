@@ -3,6 +3,7 @@ package DMMC.Physics;
 import java.awt.Image;
 
 import com.sun.javafx.sg.prism.web.NGWebView;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 import DMMC.Game;
 import acm.graphics.GImage;
@@ -11,13 +12,12 @@ import sun.tools.jar.resources.jar;
 
 public abstract class Entity extends PhysicsObject{
 
-	private static byte lastId = 0;
 	private static final double colPointPadding = 1;
 	public static int maxVelX = 3;
 
 	protected GPoint velocity;
 	protected GPoint acceleration;
-	private byte id;
+	private int id; // should match position in entity list
 	protected byte curHealth;
 	protected byte maxHealth;
 	protected boolean weightless;
@@ -30,14 +30,16 @@ public abstract class Entity extends PhysicsObject{
 	private boolean grounded;
 	private boolean forced; // true if object is going to move
 	private boolean colliding;
+	protected boolean living;
 
 	
-	public Entity(String animationKey, boolean w, boolean c) {
+	public Entity(String animationKey,int ID, boolean w, boolean c) {
 		super(animationKey);
 		forced = false;
 		collidable = c;
 		weightless = w;
-		id = lastId ++;
+		id = ID;
+		living = true;
 		
 		initPoints();
 		
@@ -45,11 +47,12 @@ public abstract class Entity extends PhysicsObject{
 			setColPoint();
 	}
 	
-	public Entity(String animationKey) {
+	public Entity(String animationKey, int ID) {
 		super(animationKey);
 		forced = false;
 		collidable = true;
-		id = lastId ++;
+		id = ID;
+		living = true;
 		
 		initPoints();
 		
@@ -61,11 +64,12 @@ public abstract class Entity extends PhysicsObject{
 	public double getVelY(){return velocity.getY();}
 	public double getAccX(){return acceleration.getX();}
 	public double getAccY(){return acceleration.getY();}
-	public byte getId(){return id;}
+	public int getId(){return id;}
 	public boolean isWeightless() {return weightless;}
 	public boolean isCollideable() {return collidable;}
 	public boolean isGrounded(){return grounded;}
 	public boolean isForced(){return forced;}
+	public boolean isLiving(){return living;}
 
 	public void setVelX(double x){ velocity.setLocation(x,getVelY());}
 	public void setVelY(double y){ velocity.setLocation(getVelX(),y);}
@@ -74,6 +78,7 @@ public abstract class Entity extends PhysicsObject{
 	public void setWeightless(boolean b){weightless = b;}
 	public void setCollideable(boolean b){collidable = b;} 
 	public void setForced(boolean f){forced = f;}
+	public void setLiving(boolean l){living = l;}
 
 	public void update(){
 
