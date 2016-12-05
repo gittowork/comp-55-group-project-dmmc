@@ -52,7 +52,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 	private int mapIndex=0;
 	private boolean gameSoundOff=false;//to check if sound is on or off in if statem.
-
+	private boolean gamePaused = false; //to check if game is paused or not
 
 	static String[] UserSelectScreenData = {
 			"New Run",
@@ -253,14 +253,19 @@ public class Game extends GraphicsProgram implements ActionListener{
 		((LevelScreen)currentScreen).setPauseButton(button);
 	}
 	
-	private void showPauseDialog(){ //two buttons added to continue and exit game, check whether user clicked cont or exit
+	private void showPauseDialog(){
+		gamePaused=true;
 		String[] buttons = { "Exit", "Continue"};    
 		int returnValue = JOptionPane.showOptionDialog(null, "Press exit to go to main menu\nPress continue to continue", "Options",
 				JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[0]);
 		if(returnValue==0){
+			storeGameState=new Stack<GameState>();
+			storeScreen=new Stack<Screen>();
 			removeAll();
-			loadMainMenu(); 
+			loadMainMenu();
+			playMainSound(); //to get back to main menu song, and not have the game song keep playing after exiting.
 		}
+		gamePaused=false;
 	}
 
 	private void loadMainMenu(){
@@ -610,7 +615,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 		if(currentScreen instanceof LevelScreen)
 		{
 			LevelScreen temp = (LevelScreen)currentScreen;
-			temp.update();
+			if(!gamePaused)  //when not gamepaused, screen is updated(freeze screen)
+				temp.update();
 		}
 
 	}
