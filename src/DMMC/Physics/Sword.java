@@ -8,7 +8,7 @@ public class Sword extends Entity {
 
 	private static final int sizeX = 20;
 	private static final int sizeY = 5;	
-	private static final int maxLife = 15; // num of frames
+	public static final int maxLife = 15; // num of frames
 	
 	public static boolean onePresent = false;
 	
@@ -64,7 +64,9 @@ public class Sword extends Entity {
 
 		for(int i = 0; i < colPoints.length; i += 2)
 			for(Entity e: temp.getEntities())
-				if(e.isLiving() && !(e instanceof Player) && !(e instanceof Sword))
+				if(e.isLiving() 
+						&& !(e instanceof Player) 
+						&& !(e instanceof Sword))
 					if(e.getScreenObj().contains(colPoints[i]))
 						//destroy entity
 						temp.destroyEntity(e.getId());

@@ -361,8 +361,15 @@ public class LevelScreen extends Screen{
 			if((keysDown & 8) == 8)
 			{
 				// X
+				String dir = "left";
+				if(player.getCurAnimationName().contains("right"))
+					dir = "right";
+				
 				if(!Sword.onePresent)
+				{
+					player.setAnimation("player-attack-" + dir);
 					spawnEntity(5, 0, 0); // note: position set in spawn
+				}
 			}
 			
 			keysDown = 0;
