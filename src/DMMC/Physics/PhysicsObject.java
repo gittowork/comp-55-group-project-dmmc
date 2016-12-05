@@ -12,11 +12,13 @@ public abstract class PhysicsObject {
 	protected Image[] curAnimation;
 	protected int curAnimeIndex;
 	protected String animationName;
+	protected int animationSpeed; // 1 - 60, higher the number, slower the animation
 	
 	public PhysicsObject(String animationKey) 
 	{
 		screenObj = new GImage(Game.getAnime("default")[0]);
 		setAnimation(animationKey);		
+		animationSpeed = 30;
 	}
 	
 	public PhysicsObject(GImage i) 
@@ -24,6 +26,7 @@ public abstract class PhysicsObject {
 		screenObj = i;
 		curAnimation = Game.getAnime("default");
 		curAnimeIndex = -1;
+		animationSpeed = -1;
 	}
 	
 
@@ -31,10 +34,12 @@ public abstract class PhysicsObject {
 	public double getScreenPosY(){return screenObj.getY();}
 	public GPoint getScreenPos(){return screenObj.getLocation();}
 	public GImage getScreenObj(){return screenObj;}
+	public int getAnimationSpeed(){return animationSpeed;}
 	
 	public void setScreenPosX(double x){screenObj.setLocation(x, getScreenPosY());}
 	public void setScreenPosY(double y){screenObj.setLocation(getScreenPosX(), y);}
 	public void setScreenPos(GPoint p){screenObj.setLocation(p);}
+	public void setAnimationSpeed(int s){animationSpeed = s;}
 	
 	public void setAnimation(String animeKey)
 	{

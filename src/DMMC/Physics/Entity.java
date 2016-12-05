@@ -27,7 +27,6 @@ public abstract class Entity extends PhysicsObject{
 	protected byte[] indexOrder;
 	private GPoint collisionTilePoint;
 	private GPoint lastFreePoint; // last location entity was not colliding
-	private boolean drawable;
 	private boolean grounded;
 	private boolean forced; // true if object is going to move
 	private boolean colliding;
@@ -35,7 +34,6 @@ public abstract class Entity extends PhysicsObject{
 	
 	public Entity(String animationKey, boolean w, boolean c) {
 		super(animationKey);
-		drawable = true;
 		forced = false;
 		collidable = c;
 		weightless = w;
@@ -49,7 +47,6 @@ public abstract class Entity extends PhysicsObject{
 	
 	public Entity(String animationKey) {
 		super(animationKey);
-		drawable = true;
 		forced = false;
 		collidable = true;
 		id = lastId ++;
@@ -59,11 +56,6 @@ public abstract class Entity extends PhysicsObject{
 		if(collidable)
 			setColPoint();
 	}
-
-	//	public Entity() {
-	//		super();
-	//		drawable = false;
-	//	}
 
 	public double getVelX(){return velocity.getX();}
 	public double getVelY(){return velocity.getY();}

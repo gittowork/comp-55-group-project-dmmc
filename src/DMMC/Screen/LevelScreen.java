@@ -14,11 +14,13 @@ public class LevelScreen extends Screen{
 
 	private ArrayList <Entity> entities; 
 	private int curWave;
+	private int frameNum = 0;
 	private Entity player;
-	
+
 	// bit field, 8 bites in a byte, only using 4 for each key (up,left,right,x)
-	private byte keysDown;
-	
+	private byte keysPressed; 	// fired every time key down
+	private byte keysDown; 		// fired once key down
+
 	public LevelScreen(int sizeX, int sizeY) {
 		super(sizeX, sizeY);
 		keysDown = 0;
@@ -40,7 +42,7 @@ public class LevelScreen extends Screen{
 		//parse string from level data
 		super(Integer.parseInt(LevelData.getData(levelID)[0]),
 				Integer.parseInt(LevelData.getData(levelID)[1]));
-		
+
 		keysDown = 0;
 		String[] levelData = LevelData.getData(levelID);
 
@@ -66,7 +68,7 @@ public class LevelScreen extends Screen{
 				//set initial position
 				pos = Game.tilePosToScreen(Integer.parseInt(levelData[i + 1]),
 						Integer.parseInt(levelData[i + 2]));
-				
+
 				e.setScreenPos(pos);
 
 				entities.add(e);
@@ -75,11 +77,11 @@ public class LevelScreen extends Screen{
 			case 1:
 				// Sprout
 				e = new Brussel();
-				
+
 				//set initial position
 				pos = Game.tilePosToScreen(Integer.parseInt(levelData[i + 1]),
 						Integer.parseInt(levelData[i + 2]));
-				
+
 				e.setScreenPos(pos);
 				entities.add(e);
 
@@ -91,9 +93,9 @@ public class LevelScreen extends Screen{
 				//set initial position
 				pos = Game.tilePosToScreen(Integer.parseInt(levelData[i + 1]),
 						Integer.parseInt(levelData[i + 2]));
-				
+
 				e.setScreenPos(pos);
-				
+
 				entities.add(e);
 				break;
 			case 3:
@@ -116,26 +118,33 @@ public class LevelScreen extends Screen{
 	@Override
 	public void inputRight() 
 	{
-
-		if((keysDown & 1) != 1)
+		if((keysPressed & 1) != 1)
+		{
+			keysPressed += 1;
 			keysDown += 1;
-		
+		}
 	}
 
 
 	@Override
 	public void inputLeft() 
 	{
-		if((keysDown & 4) != 4)
+		if((keysPressed & 4) != 4)
+		{
+			keysPressed += 4;
 			keysDown += 4;
-		
+		}
+
 	}
 
 	@Override
 	public void inputX() 
 	{
-		if((keysDown & 8) != 8)
+		if((keysPressed & 8) != 8)
+		{
+			keysPressed += 8;
 			keysDown += 8;
+		}	
 	}
 
 	@Override
@@ -148,9 +157,12 @@ public class LevelScreen extends Screen{
 	@Override
 	public void inputUp() 
 	{
-		if((keysDown & 2) != 2)
+		if((keysPressed & 2) != 2)
+		{
+			keysPressed += 2;
 			keysDown += 2;
-		
+		}
+
 	}
 
 	@Override
@@ -164,28 +176,28 @@ public class LevelScreen extends Screen{
 	@Override
 	public void inputLeftReleased()
 	{
-		keysDown -= 4;
-		
+		keysPressed -= 4;
+
 	}
 
 	@Override
 	public void inputRightReleased()
 	{
-		keysDown -= 1;
-		
+		keysPressed -= 1;
+
 	}
-	
+
 	@Override
 	public void inputUpReleased()
 	{
-		keysDown -= 2;
+		keysPressed -= 2;
 	}
 	@Override
 	public void inputXReleased()
 	{
-		keysDown -= 8;
+		keysPressed -= 8;
 	}
-	
+
 
 	@Override
 	public void inputEsc() 
@@ -208,53 +220,19 @@ public class LevelScreen extends Screen{
 
 		return newArr;
 	}
-	
+
 	@Override
 	public void update() 
 	{	
-		if(keysDown != 0)
-		{
-			if((keysDown & 1) == 1)
-			{
-				// Move Right
-				player.setVelX(Entity.maxVelX);
-				player.setAnimation("player-run-right");
-				player.setForced(true);
-			}
-			if((keysDown & 2) == 2)
-			{
-				//Jump
-				if(player.isGrounded())
-					player.setVelY(-6);
-				player.setForced(true);
+		playerControls();
 
-			}
-			if((keysDown & 4) == 4)
-			{
-				//Move Left
-				player.setVelX(-Entity.maxVelX);
-				player.setAnimation("player-run-left");
-				player.setForced(true);
-
-			}
-			if((keysDown & 8) == 8)
-			{
-				//Attack	
-				if((keysDown & 1) == 1)
-				{
-					//right
-				}
-				else
-				{
-					//left
-				}
-			}
-		}
-		else 
-			player.setForced(false);
-		
 		for(Entity e: getEntities())
 			e.update();
+		
+		frameNum ++;
+		
+		if(frameNum == 61)
+			frameNum = 0;
 	}
 
 	@Override
@@ -262,5 +240,84 @@ public class LevelScreen extends Screen{
 	{
 		tileMap = null;
 		entities = null; 
+	}
+
+	private void playerControls()
+	{
+		//keys down
+		if(keysDown != 0)
+		{
+			if((keysDown & 1) == 1)
+			{
+				// Right
+				System.out.println("R");
+				player.setAnimation("player-run-right");
+
+			}
+			if((keysDown & 2) == 2)
+			{
+				//UP
+				System.out.println("U");
+
+			}
+			if((keysDown & 4) == 4)
+			{
+				// Left
+				System.out.println("L");
+				player.setAnimation("player-run-left");
+
+			}
+			if((keysDown & 8) == 8)
+			{
+				// X
+
+			}
+			
+			keysDown = 0;
+			System.out.println();
+		}
+
+		//keys pressed 
+		if(keysPressed != 0)
+		{
+			if((keysPressed & 1) == 1)
+			{
+				// Move Right
+				player.setVelX(Entity.maxVelX);
+				
+				//iterate animation
+				if(frameNum % player.getAnimationSpeed() == 0)
+					player.iterAnimantion();
+				
+				player.setForced(true);
+			}
+			if((keysPressed & 2) == 2)
+			{
+				//Jump
+				if(player.isGrounded())
+					player.setVelY(-6);
+				player.setForced(true);
+
+			}
+			if((keysPressed & 4) == 4)
+			{
+				//Move Left
+				player.setVelX(-Entity.maxVelX);
+				
+				//iterate animation
+				if(frameNum % player.getAnimationSpeed() == 0)
+					player.iterAnimantion();
+				
+				player.setForced(true);
+
+			}
+			if((keysPressed & 8) == 8)
+			{
+				//Attack	
+				
+			}
+		}
+		else 
+			player.setForced(false);
 	}
 }

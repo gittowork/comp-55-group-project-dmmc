@@ -68,7 +68,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 			"LMap3"
 	};
 
-
 	public static final String[][] imageNames = {
 			{"player-idle-right", "player-1"},
 			{"player-idle-left", "player-4"},
