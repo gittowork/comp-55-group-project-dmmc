@@ -87,7 +87,9 @@ public class Game extends GraphicsProgram implements ActionListener{
 			
 			{"corn-idle", "corn-0"},
 			
-			{"kernel-run", "kernel-0"}
+			{"kernel-run", "kernel-0"},
+			
+			{"default", "empty"}
 	};		//made this a 2d array so that when i load the files into the animation hashmap, its easier to call and organize
 
 	public static final int[] animationLengths = {
@@ -95,7 +97,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 			2,				//ghost
 			1,1,1,1,		//brussel
 			1,				//corn
-			1				//kernel
+			1,				//kernel
+			1				//default
 	};
 	public static Entity player;
 	private static Screen currentScreen;
@@ -221,7 +224,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		else
 		{
 			System.err.println("No Animation: " + k);
-			return null;
+			return animations.get("default");
 		}
 	}
 

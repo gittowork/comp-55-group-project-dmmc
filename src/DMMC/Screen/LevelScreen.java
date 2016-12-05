@@ -218,6 +218,7 @@ public class LevelScreen extends Screen{
 			{
 				// Move Right
 				player.setVelX(Entity.maxVelX);
+				player.setAnimation("player-run-right");
 				player.setForced(true);
 			}
 			if((keysDown & 2) == 2)
@@ -232,12 +233,21 @@ public class LevelScreen extends Screen{
 			{
 				//Move Left
 				player.setVelX(-Entity.maxVelX);
+				player.setAnimation("player-run-left");
 				player.setForced(true);
 
 			}
 			if((keysDown & 8) == 8)
 			{
 				//Attack	
+				if((keysDown & 1) == 1)
+				{
+					//right
+				}
+				else
+				{
+					//left
+				}
 			}
 		}
 		else 

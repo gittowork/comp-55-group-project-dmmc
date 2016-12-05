@@ -11,19 +11,19 @@ public abstract class PhysicsObject {
 	protected GImage screenObj;
 	protected Image[] curAnimation;
 	protected int curAnimeIndex;
+	protected String animationName;
 	
-	public PhysicsObject(Image[] initAnimation) 
+	public PhysicsObject(String animationKey) 
 	{
-		screenObj = new GImage(initAnimation[0]);
-		curAnimation = initAnimation;
-		curAnimeIndex = 0;
+		screenObj = new GImage(Game.getAnime("default")[0]);
+		setAnimation(animationKey);		
 	}
 	
 	public PhysicsObject(GImage i) 
 	{
 		screenObj = i;
-		curAnimation = null;
-		curAnimeIndex = 0;
+		curAnimation = Game.getAnime("default");
+		curAnimeIndex = -1;
 	}
 	
 
@@ -40,14 +40,10 @@ public abstract class PhysicsObject {
 	{
 		Image[] images = Game.getAnime(animeKey);
 		
-		if(images != null)
-		{
-			curAnimeIndex = 0;
-			curAnimation = images;
-			iterAnimantion();
-		}
-		else 
-			curAnimeIndex = -1;
+		curAnimeIndex = 0;
+		curAnimation = images;
+		animationName = animeKey;
+		iterAnimantion();
 	}
 	
 	//Called every few seconds in Level.java using Timer

@@ -33,8 +33,8 @@ public abstract class Entity extends PhysicsObject{
 	private boolean colliding;
 
 	
-	public Entity(Image[] initAnimation, boolean w, boolean c) {
-		super(initAnimation);
+	public Entity(String animationKey, boolean w, boolean c) {
+		super(animationKey);
 		drawable = true;
 		forced = false;
 		collidable = c;
@@ -47,8 +47,8 @@ public abstract class Entity extends PhysicsObject{
 			setColPoint();
 	}
 	
-	public Entity(Image[] initAnimation) {
-		super(initAnimation);
+	public Entity(String animationKey) {
+		super(animationKey);
 		drawable = true;
 		forced = false;
 		collidable = true;
