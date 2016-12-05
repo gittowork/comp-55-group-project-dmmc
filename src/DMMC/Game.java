@@ -175,7 +175,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 		animations = new HashMap<String, Image[]>();
 		gameState = GameState.Init;
 		timer = new Timer((int)(1000/FPS), this);	
-		addMouseListeners();
 		addKeyListeners();
 		timer.start();
 		timerIndex = 0;
@@ -563,20 +562,10 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 		}		
 
-
 		if(currentScreen instanceof LevelScreen)
 		{
-			timerIndex++;
 			LevelScreen temp = (LevelScreen)currentScreen;
-			for(Entity e: temp.getEntities())
-			{
-				e.update();
-				/*if (timerIndex == 60)
-				{
-					e.iterAnimantion();	//the animation shouldn't be in timer.
-					timerIndex = 0;
-				}*/
-			}
+			temp.update();
 		}
 
 	}
@@ -605,13 +594,19 @@ public class Game extends GraphicsProgram implements ActionListener{
 		case KeyEvent.VK_DOWN:
 			currentScreen.inputDown();
 			break;
+		case KeyEvent.VK_X:
+			currentScreen.inputX();
+			break;
 		default:
 			break;
 		}
 
 	}
+	
 	public void keyReleased(KeyEvent e)
 	{
+		//System.out.println("Key released: " + e.getKeyCode());
+
 		switch (e.getKeyCode())
 		{
 		case KeyEvent.VK_LEFT:
@@ -619,6 +614,12 @@ public class Game extends GraphicsProgram implements ActionListener{
 			break;
 		case KeyEvent.VK_RIGHT:
 			currentScreen.inputRightReleased();
+			break;
+		case KeyEvent.VK_UP:
+			currentScreen.inputUpReleased();
+			break;
+		case KeyEvent.VK_X:
+			currentScreen.inputXReleased();
 			break;
 		default:
 			break;

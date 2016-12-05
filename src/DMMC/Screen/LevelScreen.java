@@ -1,106 +1,27 @@
 package DMMC.Screen;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
-import com.sun.glass.ui.Window.Level;
-import com.sun.tracing.dtrace.ProviderAttributes;
 
 import DMMC.Game;
 import DMMC.Physics.Brussel;
 import DMMC.Physics.Entity;
 import DMMC.Physics.Ghost;
 import DMMC.Physics.Player;
-import acm.graphics.GImage;
 import acm.graphics.GPoint;
 
-public class LevelScreen extends Screen implements ActionListener {
+public class LevelScreen extends Screen{
 
-	/*
-	 * Entity IDs
-	 * 
-	 * Player: 0
-	 * Sprout: 1
-	 * CaliFr: 2
-	 * CornMg: 3
-	 * CornCn: 4
-	 * 
-	 * */
-
-	static String[][] levelData = {
-			{
-				"14",				// map sizeX
-				"10",				// map sizeY
-				  "11111111111111"
-				+ "10000000000001"
-				+ "11100000000111"
-				+ "10000000000001"
-				+ "11100000000111"
-				+ "10000000000001"
-				+ "11100000000111"
-				+ "10000000000001"
-				+ "11100000000111"
-				+ "11111111111111", // map layout
-				"4",				// num Entities
-				"0","2","2",		// add Entity [ID],[TilePosX],[TilePosY]
-				"1","6","6",			// add Entity [ID],[TilePosX],[TilePosY]
-				"1","7","6",
-				"1","6","3"
-			},
-			
-
-			{
-				"14",				
-				"10",				
-				  "11111111111111"
-				+ "10000000000001"
-				+ "10000001110001"
-				+ "10000000000001"
-				+ "11111100000111"
-				+ "10000000000001"
-				+ "11100001111111"
-				+ "10000000000001"
-				+ "11100000000111"
-				+ "11111111111111", 
-				"4",				
-				"0","2","3",		
-				"1","6","6",			
-				"1","7","6",
-				"1","6","3"
-			},
-			
-
-			{
-				"14",				
-				"10",				
-				  "11111111111111"
-				+ "10000000000001"
-				+ "11110000000001"
-				+ "10000000000001"
-				+ "11111100001111"
-				+ "10000000000001"
-				+ "11100001111111"
-				+ "10000000000001"
-				+ "10000000000111"
-				+ "11111111111111", 
-				"4",				
-				"0","2","11",		
-				"1","4","4",			
-				"1","7","6",
-				"1","7","2"
-			}
-
-			 
-	};
 
 	private ArrayList <Entity> entities; 
-	private short frameNum; 
 	private int curWave;
 	private Entity player;
-
+	
+	// bit field, 8 bites in a byte, only using 4 for each key (up,left,right,x)
+	private byte keysDown;
+	
 	public LevelScreen(int sizeX, int sizeY) {
 		super(sizeX, sizeY);
+		keysDown = 0;
 		entities = new ArrayList<Entity>();
 		Entity e = new Player();
 		Entity g = new Ghost();
@@ -115,33 +36,36 @@ public class LevelScreen extends Screen implements ActionListener {
 	}
 
 	public LevelScreen(int levelID)
-	{
-		
+	{		
 		//parse string from level data
-		super(Integer.parseInt(levelData[levelID][0]),
-				Integer.parseInt(levelData[levelID][1]));
+		super(Integer.parseInt(LevelData.getData(levelID)[0]),
+				Integer.parseInt(LevelData.getData(levelID)[1]));
+		
+		keysDown = 0;
+		String[] levelData = LevelData.getData(levelID);
+
 
 		//create tiles
-		initTiles(oneDChartoTwoDChar(levelData[levelID][2].toCharArray(), 
+		initTiles(oneDChartoTwoDChar(levelData[2].toCharArray(), 
 				levelSizeX, levelSizeY));
 
 		entities = new ArrayList<Entity>();
 
 		//add entities
-		int maxIndex = (Integer.parseInt(levelData[levelID][3]) * 3) + 4;
+		int maxIndex = (Integer.parseInt(levelData[3]) * 3) + 4;
 		Entity e;
 		GPoint pos;
 		for(int i = 4; i < maxIndex; i += 3)
 		{
 			//TODO center entities on spawn
-			switch (Integer.parseInt(levelData[levelID][i])) {
+			switch (Integer.parseInt(levelData[i])) {
 			case 0:
 				// Player
 				e =	new Player();
 
 				//set initial position
-				pos = Game.tilePosToScreen(Integer.parseInt(levelData[levelID][i + 1]),
-						Integer.parseInt(levelData[levelID][i + 2]));
+				pos = Game.tilePosToScreen(Integer.parseInt(levelData[i + 1]),
+						Integer.parseInt(levelData[i + 2]));
 				
 				e.setScreenPos(pos);
 
@@ -153,8 +77,8 @@ public class LevelScreen extends Screen implements ActionListener {
 				e = new Brussel();
 				
 				//set initial position
-				pos = Game.tilePosToScreen(Integer.parseInt(levelData[levelID][i + 1]),
-						Integer.parseInt(levelData[levelID][i + 2]));
+				pos = Game.tilePosToScreen(Integer.parseInt(levelData[i + 1]),
+						Integer.parseInt(levelData[i + 2]));
 				
 				e.setScreenPos(pos);
 				entities.add(e);
@@ -165,8 +89,8 @@ public class LevelScreen extends Screen implements ActionListener {
 				e = new Ghost();
 
 				//set initial position
-				pos = Game.tilePosToScreen(Integer.parseInt(levelData[levelID][i + 1]),
-						Integer.parseInt(levelData[levelID][i + 2]));
+				pos = Game.tilePosToScreen(Integer.parseInt(levelData[i + 1]),
+						Integer.parseInt(levelData[i + 2]));
 				
 				e.setScreenPos(pos);
 				
@@ -185,30 +109,6 @@ public class LevelScreen extends Screen implements ActionListener {
 		}
 	}
 
-	public void drawEntities() {
-		// TODO Auto-generated method stub
-
-	}
-
-
-	public void collisionUpdate() {
-		// TODO Auto-generated method stub
-
-	}
-
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public short getFrame() 
-	{
-		return frameNum;
-
-	}
-
 	public ArrayList<Entity> getEntities(){
 		return entities;
 	}
@@ -216,8 +116,9 @@ public class LevelScreen extends Screen implements ActionListener {
 	@Override
 	public void inputRight() 
 	{
-		player.setVelX(Entity.maxVelX);
-		player.setForced(true);
+
+		if((keysDown & 1) != 1)
+			keysDown += 1;
 		
 	}
 
@@ -225,15 +126,16 @@ public class LevelScreen extends Screen implements ActionListener {
 	@Override
 	public void inputLeft() 
 	{
-		player.setVelX(-Entity.maxVelX);
-		player.setForced(true);
+		if((keysDown & 4) != 4)
+			keysDown += 4;
+		
 	}
 
 	@Override
-	public void inputZ() 
+	public void inputX() 
 	{
-		// TODO Auto-generated method stub
-
+		if((keysDown & 8) != 8)
+			keysDown += 8;
 	}
 
 	@Override
@@ -246,9 +148,9 @@ public class LevelScreen extends Screen implements ActionListener {
 	@Override
 	public void inputUp() 
 	{
-		if (player.isGrounded()){
-			player.setVelY(-6);
-		}
+		if((keysDown & 2) != 2)
+			keysDown += 2;
+		
 	}
 
 	@Override
@@ -262,14 +164,28 @@ public class LevelScreen extends Screen implements ActionListener {
 	@Override
 	public void inputLeftReleased()
 	{
-		player.setForced(false);
+		keysDown -= 4;
+		
 	}
 
 	@Override
 	public void inputRightReleased()
 	{
-		player.setForced(false);
+		keysDown -= 1;
+		
 	}
+	
+	@Override
+	public void inputUpReleased()
+	{
+		keysDown -= 2;
+	}
+	@Override
+	public void inputXReleased()
+	{
+		keysDown -= 8;
+	}
+	
 
 	@Override
 	public void inputEsc() 
@@ -291,6 +207,43 @@ public class LevelScreen extends Screen implements ActionListener {
 				newArr[y][x] = levelArray[(y * sizeX) + x];
 
 		return newArr;
+	}
+	
+	@Override
+	public void update() 
+	{	
+		if(keysDown != 0)
+		{
+			if((keysDown & 1) == 1)
+			{
+				// Move Right
+				player.setVelX(Entity.maxVelX);
+				player.setForced(true);
+			}
+			if((keysDown & 2) == 2)
+			{
+				//Jump
+				if(player.isGrounded())
+					player.setVelY(-6);
+				player.setForced(true);
+
+			}
+			if((keysDown & 4) == 4)
+			{
+				//Move Left
+				player.setVelX(-Entity.maxVelX);
+				player.setForced(true);
+
+			}
+			if((keysDown & 8) == 8)
+			{
+				//Attack	
+			}
+		}
+		else 
+			player.setForced(false);
+		for(Entity e: getEntities())
+			e.update();
 	}
 
 	@Override
