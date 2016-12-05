@@ -255,8 +255,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 	
 	private void showPauseDialog(){
 		gamePaused=true;
-		String[] buttons = { "Exit", "Continue"};    
-		int returnValue = JOptionPane.showOptionDialog(null, "Press exit to go to main menu\nPress continue to continue", "Options",
+		String[] buttons = { "Exit", "Continue"};    //exit and continue for pop ups 
+		int returnValue = JOptionPane.showOptionDialog(null, "Press exit to go to main menu, and continue to keep playing the game!", "Options",
 				JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[0]);
 		if(returnValue==0){
 			storeGameState=new Stack<GameState>();
