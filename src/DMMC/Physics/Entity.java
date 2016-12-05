@@ -18,8 +18,6 @@ public abstract class Entity extends PhysicsObject{
 	protected GPoint velocity;
 	protected GPoint acceleration;
 	private int id; // should match position in entity list
-	protected byte curHealth;
-	protected byte maxHealth;
 	protected boolean weightless;
 	protected boolean collidable;
 	protected CollisionPoint[] colPoints;

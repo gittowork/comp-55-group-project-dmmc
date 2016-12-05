@@ -23,7 +23,7 @@ public class LevelScreen extends Screen{
 	private ArrayList <Entity> entities; 
 	private int curWave;
 	private int frameNum = 0;
-	private Entity player;
+	private Player player;
 	private boolean updateNeeded; // if eneties need to be added to screen
 	// bit field, 8 bites in a byte, only using 4 for each key (up,left,right,x)
 	private byte keysPressed; 	// fired every time key down
@@ -41,7 +41,7 @@ public class LevelScreen extends Screen{
 		g.setScreenPosY(Game.windowHeight/2);
 		entities.add(e);
 		entities.add(g);
-		player = e;
+		player = (Player)e;
 
 	}
 
@@ -66,59 +66,13 @@ public class LevelScreen extends Screen{
 
 		//add entities
 		int maxIndex = (Integer.parseInt(levelData[3]) * 3) + 4;
-		Entity e;
-		GPoint pos;
+		
 		for(int i = 4; i < maxIndex; i += 3)
 		{
-			//TODO center entities on spawn
-			switch (Integer.parseInt(levelData[i])) {
-			case 0:
-				// Player
-				e =	new Player(entities.size());
-
-				//set initial position
-				pos = Game.tilePosToScreen(Integer.parseInt(levelData[i + 1]),
-						Integer.parseInt(levelData[i + 2]));
-
-				e.setScreenPos(pos);
-
-				entities.add(e);
-				player = (Player)e;
-				break;
-			case 1:
-				// Sprout
-				e = new Brussel(entities.size());
-
-				//set initial position
-				pos = Game.tilePosToScreen(Integer.parseInt(levelData[i + 1]),
-						Integer.parseInt(levelData[i + 2]));
-
-				e.setScreenPos(pos);
-				entities.add(e);
-
-				break;
-			case 2:
-				// CaliFr
-				e = new Ghost(entities.size());
-
-				//set initial position
-				pos = Game.tilePosToScreen(Integer.parseInt(levelData[i + 1]),
-						Integer.parseInt(levelData[i + 2]));
-
-				e.setScreenPos(pos);
-
-				entities.add(e);
-				break;
-			case 3:
-				// CornMg
-				break;
-			case 4:
-				// CornCn
-				break;
-			default:
-				System.err.println("INVALID ENTITY");
-				break;
-			}
+			spawnEntity(Integer.parseInt(levelData[i]),
+							Integer.parseInt(levelData[i + 1]) * Game.tileWidth,
+							Integer.parseInt(levelData[i + 2]) * Game.tileHeight,
+							Player.maxLives);
 		}
 	}
 
@@ -131,40 +85,25 @@ public class LevelScreen extends Screen{
 		return entities;
 	}
 	
-	public void spawnEntity(int type, double posX, double posY)
+	public void spawnEntity(int type, int posX, int posY, int playerHealth)
 	{
-		Entity e;
-		GPoint pos;
 		
 		switch (type) {
 		case 0:
 			// Player
-			e =	new Player(entities.size());
-
-			//set initial position
-			e.setScreenPos(new GPoint(posX, posY));
-
-			entities.add(e);
-			player = e;
+			entities.add(new Player(entities.size(), playerHealth));
+			
+			//save pointer to player
+			player = (Player)entities.get(entities.size() - 1);
+			
 			break;
 		case 1:
-			// Sprout
-			e = new Brussel(entities.size());
-
-			//set initial position
-			e.setScreenPos(new GPoint(posX, posY));
-			
-			entities.add(e);
-
+			//Brussel
+			entities.add(new Brussel(entities.size()));
 			break;
 		case 2:
 			// CaliFr
-			e = new Ghost(entities.size());
-
-			//set initial position
-			e.setScreenPos(new GPoint(posX, posY));
-
-			entities.add(e);
+			entities.add(new Ghost(entities.size()));
 			break;
 		case 3:
 			// CornMg
@@ -175,19 +114,19 @@ public class LevelScreen extends Screen{
 		case 5:
 			//sword
 			String facing = "left";
-			
 			if(player.getCurAnimationName().contains("right"))
 				facing = "right";
 
-			e = new Sword(entities.size(), facing);
-			e.setScreenPos(new GPoint(posX, posY));
-
-			entities.add(e);
+			entities.add(new Sword(entities.size(), facing));
+			
 			break;
 		default:
 			System.err.println("INVALID ENTITY");
 			break;
 		}
+		
+		//set initial position
+		entities.get(entities.size() - 1).setScreenPos(new GPoint(posX, posY));
 		
 		//add to draw
 		updateNeeded = true;
@@ -338,6 +277,8 @@ public class LevelScreen extends Screen{
 	private void playerControls()
 	{
 		
+		//System.out.println("GameState: " + gameState());
+		
 		//keys down
 		if(keysDown != 0)
 		{
@@ -368,7 +309,7 @@ public class LevelScreen extends Screen{
 				if(!Sword.onePresent)
 				{
 					player.setAnimation("player-attack-" + dir);
-					spawnEntity(5, 0, 0); // note: position set in spawn
+					spawnEntity(5, 0, 0, player.getCurLives()); // note: position set in spawn
 				}
 			}
 			
@@ -422,5 +363,32 @@ public class LevelScreen extends Screen{
 	
 	public void setPauseButton(GButton b){
 		this.pauseButton=b;
+	}
+	
+	/*
+	 * 0: nothing
+	 * 1: next wave
+	 * 2: reset cur wave
+	 * 3: game over
+	 * */
+	private int gameState()
+	{
+		//next wave default
+		int state = 1;
+		
+		for(Entity e: entities)
+		{
+			if(e.isLiving() 
+					&& !(e instanceof Player) 
+					&& !(e instanceof Sword))
+				state = 0; // enemy is still alive
+			if(!player.isLiving())
+				state = 2;
+			if(player.getCurLives() == 0)
+				state = 3;
+		}
+			
+		
+		return state;
 	}
 }

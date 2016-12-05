@@ -8,15 +8,25 @@ public class Player extends Entity {
 	
 	private static final int sizeX = 40;
 	private static final int sizeY = 40;
-	
+	public static final int maxLives = 3;
 	
 	private boolean entityColision;
 	private int attackTime = 0;
+	private int curLives;
+	
+	public Player(int id, int lives) {
+		super("player-idle-right",id, false, true);
+		scaleScreenObj();		
+		curLives = lives;
+	}
 	
 	public Player(int id) {
 		super("player-idle-right",id, false, true);
 		scaleScreenObj();		
+		curLives = maxLives;
 	}
+	
+	public int getCurLives() {return curLives;}
 
 
 	@Override
@@ -46,16 +56,21 @@ public class Player extends Entity {
 		for(int i = 0; i < colPoints.length; i += 2)
 		{
 			LevelScreen s = (LevelScreen)Game.getCurScreen();
+			
 			for(Entity e: s.getEntities())
-			{
 				if(e.getScreenObj().contains(colPoints[i])
-						&& Game.player != e)
+						&& !(e instanceof Player)
+						&& !(e instanceof Sword)
+						&& e.isLiving())
 					entityColision = true;
-			}
 		}
 		
-		if(entityColision);
-			//System.out.println("Ya dead");
+		if(entityColision)
+		{
+			setLiving(false);
+			curLives --;
+			System.out.println("curLives: " + curLives);
+		}
 		
 		if(getCurAnimationName().contains("attack"))
 			attackTime ++;

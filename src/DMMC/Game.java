@@ -205,18 +205,18 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 		Image[] pics;	//array of images to hold all the animation pics for each character
 
-		for (int i = 0; i < animationLengths.length; i++)
+		for (int i = 0; i < imageNames.length; i++)
 		{
-			pics = new Image[animationLengths[i]];
-			for (int j = 1; j <= animationLengths[i]; j++)
+			pics = new Image[imageNames[i].length - 1];
+			for (int j = 0; j < imageNames[i].length - 1; j++)
 			{
 				//read file
 				try 
 				{
-					pics[j - 1] = ImageIO.read(new File("../media/Images/" + imageNames[i][j] + ".png"));;
+					pics[j] = ImageIO.read(new File("../media/Images/" + imageNames[i][j + 1] + ".png"));;
 				}
 				catch (IOException e) {
-					System.err.println("Could not find image: " + imageNames[i][j]);
+					System.err.println("Could not find image: " + imageNames[i][j + 1]);
 				}
 			}
 			animations.put(imageNames[i][0], pics);	//Puts the array into the hashmap
@@ -235,9 +235,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 	}
 
 
-	private void loadNewGame(){
-		
-		
+	private void loadNewGame()
+	{		
 		if(ifEnterPressed){
 			storeGameState.push(gameState);
 			storeScreen.push(currentScreen);
