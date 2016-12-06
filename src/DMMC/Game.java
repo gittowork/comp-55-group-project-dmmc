@@ -226,10 +226,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 	private void loadNewGame()
 	{		
 		if(ifEnterPressed){
-			if (!profiles.get(currentUser).getHelpPageStatus())
-			{
-				showAnnoyingPop();
-			}
+			
 			storeGameState.push(gameState);
 			storeScreen.push(currentScreen);
 		}
@@ -267,7 +264,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 	}
 	
 	//when user presses tutorial, it still continues to new game, but it should go to how to
-	private void showAnnoyingPop()
+	private int showAnnoyingPop()
 	{
 		String[] buttons = {"Tutorial", "Continue (we warned you)"};
 		int returnValue = JOptionPane.showOptionDialog(null, "You should probably read the how-to first. Press tutorial to read it. Go.", "STOP", 
@@ -275,14 +272,14 @@ public class Game extends GraphicsProgram implements ActionListener{
 		if(returnValue == 0)
 		{
 			//doesnt work???
-			storeGameState = new Stack<GameState>();
-			storeScreen = new Stack<Screen>();
+			//storeGameState = new Stack<GameState>();
+			//storeScreen = new Stack<Screen>();
 			removeAll();
 			loadHowTo();
 			playMainSound();
 			profiles.get(currentUser).setHelpPageStatus(true);
 		}
-		
+		return returnValue;
 		
 		
 	}
@@ -625,6 +622,12 @@ public class Game extends GraphicsProgram implements ActionListener{
 		}
 		else if(event.getActionCommand() != null && event.getActionCommand().contains("GMap")){
 			mapIndex=Integer.parseInt(event.getActionCommand().substring(event.getActionCommand().length()-1))-1;
+			if (!profiles.get(currentUser).getHelpPageStatus()) //moved this part from loadGame function
+			{                            //earlier it kept executing loadgame funct. was not considering what user selected. changed to int funct and moved it 
+				int val=showAnnoyingPop();  
+				if(val==0)
+					return;
+			}
 			loadScreen(GameState.GameScreen);
 			playSoundForMap(event.getActionCommand());
 		}
