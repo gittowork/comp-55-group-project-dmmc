@@ -78,6 +78,7 @@ public class LevelScreen extends Screen{
 							Integer.parseInt(levelData[i + 2]) * Game.tileHeight,
 							Player.maxLives);
 		}
+		kernelsToBeSpawned = new ArrayList<GPoint>();
 	}
 
 	
@@ -124,6 +125,8 @@ public class LevelScreen extends Screen{
 			entities.add(new Sword(entities.size(), facing));
 		case 6:
 			entities.add(new Kernel(entities.size(), 7));
+		case 7:
+			entities.add(new Kernel(entities.size(), -7));
 			
 			break;
 		default:
@@ -266,21 +269,27 @@ public class LevelScreen extends Screen{
 
 		for(Entity e: getEntities())
 			if(e.isLiving())
+			{
+				if(frameNum%e.getAnimationSpeed() == 0 && !(e instanceof Player))
+					e.iterAnimantion();
 				e.update();
+			}
 		
 		for(GPoint g: kernelsToBeSpawned){
 			if (g.getX() > 0)
 				spawnEntity(4, (int)g.getX(), (int)g.getY(), 1);
-			if (g.getX() < 0)
-				spawnEntity(6, -(int)g.getX(), -(int)g.getY(), 1);
+			else{
+				if (g.getY() > 0)
+					spawnEntity(6, -(int)g.getX(), (int)g.getY(), 1);
+				if (g.getY() < 0)
+					spawnEntity(7, -(int)g.getX(), -(int)g.getY(), 1);
+			}
 		}
-		for (GPoint g:kernelsToBeSpawned){
-			g.setLocation(0,0);
-		}
+		kernelsToBeSpawned.clear();
 		
 		frameNum ++;
 		
-		if(frameNum == 61)
+		if(frameNum == 60)
 			frameNum = 0;
 	}
 
