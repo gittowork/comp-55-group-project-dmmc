@@ -17,7 +17,7 @@ import java.util.Stack;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
-
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.TitlePaneLayout;
 
 import DMMC.Physics.Brussel;
 import DMMC.Physics.Entity;
@@ -158,6 +158,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 	Entity e;
 	private int timerIndex;
 	GImage giraffe;
+	GImage girafe;
 	GImage howto;
 	GImage credits;
 	GImage leaderboards;
@@ -169,9 +170,11 @@ public class Game extends GraphicsProgram implements ActionListener{
 		
 		//read in all the pictures
 		giraffe =  new GImage("../media/Images/warrior.png");
+		girafe = new GImage("../media/Images/girafe.png");
 		howto = new GImage("../media/Images/howto.png");
 		credits = new GImage("../media/Images/credits.png");
 		leaderboards = new GImage("../media/Images/leaderboards.png");
+		
 		
 		//read the profiles text file
 		try {
@@ -288,15 +291,18 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 		int levelX = windowWidth/tileWidth;
 		int levelY = windowHeight/tileHeight;
-		GuiScreen tmp = new GuiScreen(levelX, levelY, giraffe); //peek returns whatever is on top of the stack
+		GuiScreen tmp = new GuiScreen(levelX, levelY, girafe); //peek returns whatever is on top of the stack
 		if(!storeGameState.empty() && storeGameState.peek()==GameState.MainMenuScreen){ // checking if top screen is the screen we are loading 
 			storeGameState.pop(); 
 			GuiScreen tmp1=(GuiScreen)storeScreen.pop();   //if yes, set previous cursor pos
 			tmp.setCursorPos(tmp1.getCursorPos());
 		}
+		
+		add(tmp.getTile(0,0).getScreenObj());
 		currentScreen=tmp;
 		gameState=GameState.MainMenuScreen;
-		GLabel title = new GLabel("Super Siege Smores", windowWidth/2-50, windowHeight/6 -50);
+		GLabel title = new GLabel("Super Siege Smores", windowWidth/2-100, windowHeight/6 -50);
+		title.setFont(new Font("Calibri", Font.BOLD, 24));
 		add(title);
 
 		//in the previous version, there were a lot of added buttons.
@@ -359,6 +365,12 @@ public class Game extends GraphicsProgram implements ActionListener{
 		GuiScreen tmp = new GuiScreen(levelX, levelY, bg);
 		currentScreen=tmp;
 		GButton button1;
+		
+		System.out.println(currentScreen.getSizeX());
+		
+		add(currentScreen.getTile(0, 0).getScreenObj());
+			
+		
 		if (back)
 		{
 			button1 = new GButton("Go Back(Esc)", 0, 0, 100, 50);
@@ -367,25 +379,19 @@ public class Game extends GraphicsProgram implements ActionListener{
 			tmp.addGButton(button1);
 			tmp.getGButton().drawCursor();
 		}
-		System.out.println(currentScreen.getSizeX());
-		for(int x = 0; x < currentScreen.getSizeX(); x ++)
-		{
-			for(int y = 0; y < currentScreen.getSizeY(); y ++)
-			{
-				add(currentScreen.getTile(x, y).getScreenObj());
-			}
-		}
 	}
 
 	private void loadMapScreen(){
 		int levelX = windowWidth/tileWidth;
 		int levelY = windowHeight/tileHeight;
-		GuiScreen tmp = new GuiScreen(levelX, levelY);
+		GuiScreen tmp = new GuiScreen(levelX, levelY, girafe);
 		if(!storeGameState.empty() && storeGameState.peek()==GameState.MapSelect){
 			storeGameState.pop();
 			GuiScreen tmp1=(GuiScreen)storeScreen.pop();
 			tmp.setCursorPos(tmp1.getCursorPos());
 		}
+		
+		add(tmp.getTile(0, 0).getScreenObj());
 		if(ifEnterPressed){
 			storeGameState.push(gameState);
 			storeScreen.push(currentScreen);
@@ -396,7 +402,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 		int buttonOffset=8;
 		if(newGameSelected)
 			buttonOffset=5;
-		GLabel title = new GLabel("Maps", windowWidth/2-50, windowHeight/6 -50);
+		GLabel title = new GLabel("Maps", windowWidth/2-30, windowHeight/6 -50);
+		title.setFont(new Font("Calibri", Font.BOLD, 24));
 		add(title);
 		int numberOfButton=3;
 		int posY=0;
@@ -423,7 +430,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 	{
 		loadBasic(false, giraffe);
 		addUsers();
-		GLabel title = new GLabel("Welcome!", windowWidth/2, 50);
+		GLabel title = new GLabel("Welcome!", windowWidth/2-70, 50);
+		title.setFont(new Font("Calibri", Font.BOLD, 24));
 		add(title);
 
 	}
@@ -498,10 +506,9 @@ public class Game extends GraphicsProgram implements ActionListener{
 			storeScreen.push(currentScreen);
 		}
 		loadBasic(true, giraffe);
-		//GLabel label = new GLabel("Game Music Volume: ", 0, 100);
 		final GuiScreen tmp = (GuiScreen)currentScreen;
-		String prefix = gameSoundOff?"On":"Off";
-		final GButton sound = new GButton(prefix+" Game Sound", windowWidth/2-50, 10, 100, 50); //button to turn game sound on/off 
+		String suffix = gameSoundOff?"On":"Off";
+		final GButton sound = new GButton("Game Sound " + suffix, windowWidth/2-50, 10, 100, 50); //button to turn game sound on/off 
 		sound.addActionListener(new ActionListener() {
 
 			@Override
@@ -568,7 +575,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 				String[] scores = line.split(",");
 				GLabel label = new GLabel(scores[0], 200, 220+i);
 				GLabel label2 = new GLabel(scores[1], 400, 220+i);
-				label.setFont(new Font("C)alibri", Font.PLAIN, 20));
+				label.setFont(new Font("Calibri", Font.PLAIN, 20));
 				label2.setFont(new Font("Calibri", Font.PLAIN, 20));
 				add(label2);
 				add(label);
