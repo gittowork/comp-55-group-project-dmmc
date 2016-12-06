@@ -302,7 +302,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		currentScreen=tmp;
 		gameState=GameState.MainMenuScreen;
 		GLabel title = new GLabel("Super Siege Smores", windowWidth/2-100, windowHeight/6 -50);
-		title.setFont(new Font("Calibri", Font.BOLD, 24));
+		title.setFont(new Font("Herculanum", Font.BOLD, 36));
 		add(title);
 
 		//in the previous version, there were a lot of added buttons.
@@ -316,7 +316,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		{
 			//did not use math.floor because for int division, 10/3 is going to be 3 anyway
 			posY = (i+1)*(windowHeight/(numberOfButton+2)); //finding position
-			GButton button = new GButton(UserSelectScreenData[(buttonOffset+i)], windowWidth/2-50, posY, 100, height); 
+			GButton button = new GButton(UserSelectScreenData[(buttonOffset+i)], windowWidth/2-80, posY, 170, height); 
 
 			add(button);
 			tmp.addGButton(button);
