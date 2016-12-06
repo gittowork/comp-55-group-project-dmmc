@@ -1,11 +1,5 @@
 package DMMC;
 
-/*
- * ArrayList<string> a[] = new ArrayList<String>[]; 
- * 
- * */
-
-
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,7 +17,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
-import com.sun.xml.internal.ws.policy.EffectiveAlternativeSelector;
 
 import DMMC.Physics.Brussel;
 import DMMC.Physics.Entity;
