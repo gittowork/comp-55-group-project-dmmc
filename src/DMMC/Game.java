@@ -226,6 +226,10 @@ public class Game extends GraphicsProgram implements ActionListener{
 	private void loadNewGame()
 	{		
 		if(ifEnterPressed){
+			if (!profiles.get(currentUser).getHelpPageStatus())
+			{
+				showAnnoyingPop();
+			}
 			storeGameState.push(gameState);
 			storeScreen.push(currentScreen);
 		}
@@ -260,6 +264,27 @@ public class Game extends GraphicsProgram implements ActionListener{
 			playMainSound(); //to get back to main menu song, and not have the game song keep playing after exiting.
 		}
 		gamePaused=false;
+	}
+	
+	//when user presses tutorial, it still continues to new game, but it should go to how to
+	private void showAnnoyingPop()
+	{
+		String[] buttons = {"Tutorial", "Continue (we warned you)"};
+		int returnValue = JOptionPane.showOptionDialog(null, "You should probably read the how-to first. Press tutorial to read it. Go.", "STOP", 
+				JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[0]);
+		if(returnValue == 0)
+		{
+			//doesnt work???
+			storeGameState = new Stack<GameState>();
+			storeScreen = new Stack<Screen>();
+			removeAll();
+			loadHowTo();
+			playMainSound();
+			profiles.get(currentUser).setHelpPageStatus(true);
+		}
+		
+		
+		
 	}
 
 	private void loadMainMenu(){
@@ -456,6 +481,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 				String filename = "profiles.txt";
 				FileWriter fw = new FileWriter(filename,true); //the true will append the new data
 				fw.write(name + "\n");//appends the string to the file
+				currentUser = profiles.indexOf(newUser);
 				fw.close();
 			}
 			catch(IOException ioe)
@@ -545,7 +571,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 				String[] scores = line.split(",");
 				GLabel label = new GLabel(scores[0], 200, 220+i);
 				GLabel label2 = new GLabel(scores[1], 400, 220+i);
-				label.setFont(new Font("Calibri", Font.PLAIN, 20));
+				label.setFont(new Font("C)alibri", Font.PLAIN, 20));
 				label2.setFont(new Font("Calibri", Font.PLAIN, 20));
 				add(label2);
 				add(label);
@@ -588,6 +614,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			{
 				loadScreen(GameState.MainMenuScreen);
 				currentUser = profiles.indexOf(p);
+				System.out.println(currentUser);
 			}
 		}
 
