@@ -21,6 +21,7 @@ public class Ghost extends Entity {
 	public Ghost(int id){
 		super ("ghost-idle",id, true, false);	
 		scaleScreenObj();
+		animationSpeed = 60;
 	}
 
 	@Override

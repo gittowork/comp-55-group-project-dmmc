@@ -26,7 +26,6 @@ public class Corn extends Entity{
 
 	@Override
 	public void deathAction() {
-		LevelScreen.kernelsToBeSpawned = new ArrayList<GPoint>();
 		GPoint g = new GPoint(-getScreenPosX(), -getScreenPosY());
 		LevelScreen.kernelsToBeSpawned.add(g);
 		LevelScreen.kernelsToBeSpawned.add(g);
@@ -35,7 +34,7 @@ public class Corn extends Entity{
 
 	@Override
 	public void behaviorAction() {
-		if (Game.player.getScreenPosX() - getScreenPosX() < 0){
+		if (Game.player.getScreenPosX() - getScreenPosX() > 0){
 			facing = true;
 		}
 		else{
@@ -43,7 +42,8 @@ public class Corn extends Entity{
 		}
 		if (counter % 180 == 0){
 			GPoint g = new GPoint(getScreenPosX(), getScreenPosY());
-			LevelScreen.kernelsToBeSpawned = new ArrayList<GPoint>();
+			if (!facing)
+				g.setLocation(g.getX(), -g.getY());
 			LevelScreen.kernelsToBeSpawned.add(g);
 		}
 		counter++;
