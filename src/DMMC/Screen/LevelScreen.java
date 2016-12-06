@@ -88,9 +88,6 @@ public class LevelScreen extends Screen{
 	
 	public void spawnEntity(int type, int posX, int posY, int playerHealth)
 	{
-		String facing = "left";
-		if(player.getCurAnimationName().contains("right"))
-			facing = "right";
 		switch (type) {
 		case 0:
 			// Player
@@ -114,10 +111,16 @@ public class LevelScreen extends Screen{
 			break;
 		case 4:
 			// CornCn
-			entities.add(new Kernel(entities.size(), facing));
+			String facing1 = "left";
+			if(player.getCurAnimationName().contains("right"))
+				facing1 = "right";
+			entities.add(new Kernel(entities.size(), facing1));
 			break;
 		case 5:
 			//sword
+			String facing = "left";
+			if(player.getCurAnimationName().contains("right"))
+				facing = "right";
 			entities.add(new Sword(entities.size(), facing));
 			
 			break;
