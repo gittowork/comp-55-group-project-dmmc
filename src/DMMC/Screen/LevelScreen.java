@@ -110,11 +110,8 @@ public class LevelScreen extends Screen{
 			//entities.add(new Corn(entities.size()));
 			break;
 		case 4:
-			// CornCn
-			String facing1 = "left";
-			if(player.getCurAnimationName().contains("right"))
-				facing1 = "right";
-			entities.add(new Kernel(entities.size(), facing1));
+			// CornCn			
+			entities.add(new Kernel(entities.size()/*, player.getCurAnimationName().contains("right")*/));
 			break;
 		case 5:
 			//sword

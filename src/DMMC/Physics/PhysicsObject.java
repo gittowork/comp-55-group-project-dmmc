@@ -54,7 +54,7 @@ public abstract class PhysicsObject {
 	
 	//Called every few seconds in Level.java using Timer
 	public void iterAnimantion() {
-		// index is -1 if no animation is loaded
+		// index is -1 if No Animation is loaded
 		if(curAnimeIndex != -1)
 		{
 			

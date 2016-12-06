@@ -1,13 +1,32 @@
 package DMMC.Physics;
 
-public class Kernel extends Entity{
+import java.util.Random;
 
-	private String facing; //0 means facing left   1 means facing right
+public class Kernel extends Entity{
+	
+	private static boolean lastFacing = false; 
+	
+	private boolean facing; //false means facing left true means facing right
 	private int id;
-	public Kernel(int id, String f){
-		super("kernel-0", id, true, true);
+	private double speed;
+	private final int sizeX = 25;
+	private final int sizeY = 25;
+	private Random rand = new Random();
+	public Kernel(int id, boolean f){
+		super("kernel-run", id, false, true);
 		facing = f;
+		speed = rand.nextDouble()* 2 + 1;
+		scaleScreenObj();
 	}
+	
+	public Kernel(int id){
+		super("kernel-run", id, false, true);
+		lastFacing = !lastFacing;
+		facing = lastFacing;
+		speed = rand.nextDouble()* 2 + 1;
+		scaleScreenObj();
+	}
+
 
 	@Override
 	public void spawnAction() {
@@ -23,14 +42,29 @@ public class Kernel extends Entity{
 
 	@Override
 	public void behaviorAction() {
-		if(!isGrounded()){
-			setVelY(2);
-			if(facing.equals("right")){
-				setVelX(2);
-			}
-			else{
-				setVelX(-2);
-			}
+		
+		if (isGrounded()){
+			setVelY(-2);
 		}
+		if(!facing){
+			setVelX(speed);
+		}
+		else{
+			setVelX(-speed);
+		}
+		if(colIndex[1] != 0)
+		{
+			//change direction
+			facing = true;
+		}
+		if(colIndex[3] != 0)
+		{
+			facing = false;
+		}
+	}
+	@Override
+	protected void scaleScreenObj()
+	{
+		screenObj.setSize(sizeX, sizeY);
 	}
 }
