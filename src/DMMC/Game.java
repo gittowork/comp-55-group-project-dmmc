@@ -1,5 +1,6 @@
 package DMMC;
 
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -90,15 +91,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 			{"default", "empty"}
 	};		//made this a 2d array so that when i load the files into the animation hashmap, its easier to call and organize
 
-	public static final int[] animationLengths = {
-			1,1,3,3,1,1,1, 	//player
-			2,				//ghost
-			1,1,1,1,		//brussel
-			1,				//corn
-			1,				//kernel
-			1,1,			//sword
-			1				//default
-	};
 	public static Entity player;
 	private static Screen currentScreen;
 
@@ -174,13 +166,16 @@ public class Game extends GraphicsProgram implements ActionListener{
 	{
 		this.resize(windowWidth, windowHeight);
 		profiles = new ArrayList<Profile>();
+		
+		//read in all the pictures
 		giraffe =  new GImage("../media/Images/warrior.png");
 		howto = new GImage("../media/Images/howto.png");
 		credits = new GImage("../media/Images/credits.png");
 		leaderboards = new GImage("../media/Images/leaderboards.png");
-		//read the profiles text file instead of hardcoding
+		
+		//read the profiles text file
 		try {
-			for (String line : Files.readAllLines(Paths.get("../media/profiles.txt")))
+			for (String line : Files.readAllLines(Paths.get("../bin/profiles.txt")))
 			{
 				profiles.add(new Profile(line));
 			}
@@ -231,6 +226,10 @@ public class Game extends GraphicsProgram implements ActionListener{
 	private void loadNewGame()
 	{		
 		if(ifEnterPressed){
+			if (!profiles.get(currentUser).getHelpPageStatus())
+			{
+				showAnnoyingPop();
+			}
 			storeGameState.push(gameState);
 			storeScreen.push(currentScreen);
 		}
@@ -265,6 +264,27 @@ public class Game extends GraphicsProgram implements ActionListener{
 			playMainSound(); //to get back to main menu song, and not have the game song keep playing after exiting.
 		}
 		gamePaused=false;
+	}
+	
+	//when user presses tutorial, it still continues to new game, but it should go to how to
+	private void showAnnoyingPop()
+	{
+		String[] buttons = {"Tutorial", "Continue (we warned you)"};
+		int returnValue = JOptionPane.showOptionDialog(null, "You should probably read the how-to first. Press tutorial to read it. Go.", "STOP", 
+				JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[0]);
+		if(returnValue == 0)
+		{
+			//doesnt work???
+			storeGameState = new Stack<GameState>();
+			storeScreen = new Stack<Screen>();
+			removeAll();
+			loadHowTo();
+			playMainSound();
+			profiles.get(currentUser).setHelpPageStatus(true);
+		}
+		
+		
+		
 	}
 
 	private void loadMainMenu(){
@@ -416,27 +436,30 @@ public class Game extends GraphicsProgram implements ActionListener{
 	{
 		int levelX = windowWidth/tileWidth; 
 		int levelY = windowHeight/tileHeight;
-		int posX = 0;
+		int posX = windowWidth/2 - 200;
 
 		GuiScreen temp = new GuiScreen(levelX, levelY);
 		if(!profiles.isEmpty())
 		{
+			GButton user;
 			for(int i = 0; i < profiles.size(); i++)
 			{
-
-				posX = (i+1)*(windowWidth/(profiles.size()+3));
-				GButton user = new GButton(profiles.get(i).getName(), posX, 150, 100, 100);
-
+				posX = (i+1)*(windowWidth/7);
+				user = new GButton(profiles.get(i).getName(), posX, 150, 100, 100);
 				add(user);
 				temp.addGButton(user);
-
 				user.addActionListener(this);
 			}
 		}
-		GButton newUser = new GButton("New User", posX+=100, 150, 100, 100);
-		add(newUser);
-		temp.addGButton(newUser);
-		newUser.addActionListener(this);
+		
+		//when theres too many profiles, new user button goes away
+		if (profiles.size() < 4)
+		{
+			GButton newUser = new GButton("New User", posX+=100, 150, 100, 100);
+			add(newUser);
+			temp.addGButton(newUser);
+			newUser.addActionListener(this);
+		}
 		temp.getGButton().drawCursor();
 		currentScreen = temp;
 	}
@@ -458,6 +481,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 				String filename = "profiles.txt";
 				FileWriter fw = new FileWriter(filename,true); //the true will append the new data
 				fw.write(name + "\n");//appends the string to the file
+				currentUser = profiles.indexOf(newUser);
 				fw.close();
 			}
 			catch(IOException ioe)
@@ -531,14 +555,31 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 	}
 
-	private void loadLeaderboards(String scores)
+	private void loadLeaderboards(String s)
 	{
 		if(ifEnterPressed){
 			storeGameState.push(gameState);
 			storeScreen.push(currentScreen);
 		}
 		loadBasic(true, leaderboards);
-
+		
+		//read in high scores from file, based on the map the user selects
+		try {
+			int i = 0;
+			for (String line : Files.readAllLines(Paths.get("../media/" + s + ".txt")))
+			{
+				String[] scores = line.split(",");
+				GLabel label = new GLabel(scores[0], 200, 220+i);
+				GLabel label2 = new GLabel(scores[1], 400, 220+i);
+				label.setFont(new Font("C)alibri", Font.PLAIN, 20));
+				label2.setFont(new Font("Calibri", Font.PLAIN, 20));
+				add(label2);
+				add(label);
+				i+=50;
+			}
+		} catch (IOException e1) {
+			System.err.println("leaderboard file not found");
+		}
 	}
 
 	public void run()
@@ -573,6 +614,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			{
 				loadScreen(GameState.MainMenuScreen);
 				currentUser = profiles.indexOf(p);
+				System.out.println(currentUser);
 			}
 		}
 
