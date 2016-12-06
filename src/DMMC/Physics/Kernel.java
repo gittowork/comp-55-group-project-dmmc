@@ -6,8 +6,8 @@ public class Kernel extends Entity{
 	
 	private static boolean lastFacing = false; 
 	
-	private boolean facing; //false means facing left true means facing right
-	private int id;
+	private boolean facing; //false = left; true = right
+	private double ispeed;
 	private double speed;
 	private final int sizeX = 25;
 	private final int sizeY = 25;
@@ -23,6 +23,15 @@ public class Kernel extends Entity{
 		super("kernel-run", id, false, true);
 		lastFacing = !lastFacing;
 		facing = lastFacing;
+		speed = rand.nextDouble()* 2 + 1;
+		ispeed = speed;
+		scaleScreenObj();
+	}
+	public Kernel(int id, double s){
+		super("kernel-run", id, false, true);
+		lastFacing = !lastFacing;
+		facing = lastFacing;
+		ispeed = s;
 		speed = rand.nextDouble()* 2 + 1;
 		scaleScreenObj();
 	}
@@ -47,11 +56,12 @@ public class Kernel extends Entity{
 			setVelY(-2);
 		}
 		if(!facing){
-			setVelX(speed);
+			setVelX(ispeed);
 		}
 		else{
-			setVelX(-speed);
+			setVelX(-ispeed);
 		}
+		ispeed = speed;
 		if(colIndex[1] != 0)
 		{
 			//change direction

@@ -10,6 +10,7 @@ import javax.sound.midi.VoiceStatus;
 
 import DMMC.Game;
 import DMMC.Physics.Brussel;
+import DMMC.Physics.Corn;
 import DMMC.Physics.Entity;
 import DMMC.Physics.GButton;
 import DMMC.Physics.Ghost;
@@ -107,7 +108,7 @@ public class LevelScreen extends Screen{
 			break;
 		case 3:
 			// CornMg
-			//entities.add(new Corn(entities.size()));
+			entities.add(new Corn(entities.size()));
 			break;
 		case 4:
 			// CornCn			
@@ -119,6 +120,8 @@ public class LevelScreen extends Screen{
 			if(player.getCurAnimationName().contains("right"))
 				facing = "right";
 			entities.add(new Sword(entities.size(), facing));
+		case 6:
+			entities.add(new Kernel(entities.size(), 7));
 			
 			break;
 		default:
@@ -137,6 +140,7 @@ public class LevelScreen extends Screen{
 	public void destroyEntity(int id) 
 	{
 		//Note: all Entities will stay in the list EVEN if destroyed until end of wave
+//		entities.get(id).deathAction();
 		entities.get(id).setLiving(false);
 		updateNeeded = true;
 	}
