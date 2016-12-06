@@ -1,7 +1,10 @@
 package DMMC.Physics;
 
+import java.util.ArrayList;
+
 import DMMC.Game;
 import DMMC.Screen.LevelScreen;
+import acm.graphics.GPoint;
 
 public class Corn extends Entity{
 	private boolean facing; //false = left; true = right
@@ -23,8 +26,11 @@ public class Corn extends Entity{
 
 	@Override
 	public void deathAction() {
-		
-		
+		LevelScreen.kernelsToBeSpawned = new ArrayList<GPoint>();
+		GPoint g = new GPoint(-getScreenPosX(), -getScreenPosY());
+		LevelScreen.kernelsToBeSpawned.add(g);
+		LevelScreen.kernelsToBeSpawned.add(g);
+		LevelScreen.kernelsToBeSpawned.add(g);
 	}
 
 	@Override
@@ -36,8 +42,9 @@ public class Corn extends Entity{
 			facing = false;
 		}
 		if (counter % 180 == 0){
-			LevelScreen temp = (LevelScreen)Game.getCurScreen();
-			temp.spawnEntity(6, (int)getScreenPosX(), (int)getScreenPosY(), 1);
+			GPoint g = new GPoint(getScreenPosX(), getScreenPosY());
+			LevelScreen.kernelsToBeSpawned = new ArrayList<GPoint>();
+			LevelScreen.kernelsToBeSpawned.add(g);
 		}
 		counter++;
 	}

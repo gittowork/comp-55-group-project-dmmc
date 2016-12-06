@@ -30,6 +30,7 @@ public class LevelScreen extends Screen{
 	// bit field, 8 bites in a byte, only using 4 for each key (up,left,right,x)
 	private byte keysPressed; 	// fired every time key down
 	private byte keysDown; 		// fired once key down
+	public static ArrayList<GPoint> kernelsToBeSpawned;
 
 	private GButton pauseButton;  LevelScreen(int sizeX, int sizeY) { //new pause button on game screen
 		super(sizeX, sizeY);
@@ -44,7 +45,7 @@ public class LevelScreen extends Screen{
 		entities.add(e);
 		entities.add(g);
 		player = (Player)e;
-
+		kernelsToBeSpawned = new ArrayList<GPoint>();
 	}
 
 
@@ -112,7 +113,7 @@ public class LevelScreen extends Screen{
 			break;
 		case 4:
 			// CornCn			
-			entities.add(new Kernel(entities.size()/*, player.getCurAnimationName().contains("right")*/));
+			entities.add(new Kernel(entities.size()));
 			break;
 		case 5:
 			//sword
@@ -140,7 +141,7 @@ public class LevelScreen extends Screen{
 	public void destroyEntity(int id) 
 	{
 		//Note: all Entities will stay in the list EVEN if destroyed until end of wave
-//		entities.get(id).deathAction();
+		entities.get(id).deathAction();
 		entities.get(id).setLiving(false);
 		updateNeeded = true;
 	}
@@ -265,6 +266,16 @@ public class LevelScreen extends Screen{
 		for(Entity e: getEntities())
 			if(e.isLiving())
 				e.update();
+		
+		for(GPoint g: kernelsToBeSpawned){
+			if (g.getX() > 0)
+				spawnEntity(4, (int)g.getX(), (int)g.getY(), 1);
+			if (g.getX() < 0)
+				spawnEntity(6, -(int)g.getX(), -(int)g.getY(), 1);
+		}
+		for (GPoint g:kernelsToBeSpawned){
+			g.setLocation(0,0);
+		}
 		
 		frameNum ++;
 		
