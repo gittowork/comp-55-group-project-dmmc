@@ -13,6 +13,7 @@ import DMMC.Physics.Brussel;
 import DMMC.Physics.Entity;
 import DMMC.Physics.GButton;
 import DMMC.Physics.Ghost;
+import DMMC.Physics.Kernel;
 import DMMC.Physics.Player;
 import DMMC.Physics.Sword;
 import acm.graphics.GPoint;
@@ -24,7 +25,7 @@ public class LevelScreen extends Screen{
 	private int curWave;
 	private int frameNum = 0;
 	private Player player;
-	private boolean updateNeeded; // if eneties need to be added to screen
+	private boolean updateNeeded; // if entities need to be added to screen
 	// bit field, 8 bites in a byte, only using 4 for each key (up,left,right,x)
 	private byte keysPressed; 	// fired every time key down
 	private byte keysDown; 		// fired once key down
@@ -87,7 +88,6 @@ public class LevelScreen extends Screen{
 	
 	public void spawnEntity(int type, int posX, int posY, int playerHealth)
 	{
-		
 		switch (type) {
 		case 0:
 			// Player
@@ -107,16 +107,17 @@ public class LevelScreen extends Screen{
 			break;
 		case 3:
 			// CornMg
+			//entities.add(new Corn(entities.size()));
 			break;
 		case 4:
-			// CornCn
+			// CornCn			
+			entities.add(new Kernel(entities.size()/*, player.getCurAnimationName().contains("right")*/));
 			break;
 		case 5:
 			//sword
 			String facing = "left";
 			if(player.getCurAnimationName().contains("right"))
 				facing = "right";
-
 			entities.add(new Sword(entities.size(), facing));
 			
 			break;
