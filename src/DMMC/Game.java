@@ -241,11 +241,11 @@ public class Game extends GraphicsProgram implements ActionListener{
 		for(Entity e: temp.getEntities())
 			add(e.getScreenObj());
 		player = temp.getPlayerEntity();
-		GButton button = new GButton("Pause", 50 , 50, 50, 50);
-		add(button);
-		button.drawCursor();
-		button.addActionListener(this);
-		((LevelScreen)currentScreen).setPauseButton(button);
+		//GButton button = new GButton("Pause", 50 , 50, 50, 50);
+		//add(button);
+		//button.drawCursor();
+		//button.addActionListener(this);
+		//((LevelScreen)currentScreen).setPauseButton(button);
 	}
 	
 	private void showPauseDialog(){
@@ -740,6 +740,10 @@ public class Game extends GraphicsProgram implements ActionListener{
 	
 	public void inputEsc()
 	{
+		if(currentScreen instanceof LevelScreen){
+			showPauseDialog(); //for game screen esc
+			return;
+			}
 		if(!storeGameState.empty())
 			loadScreen(storeGameState.peek());
 		playMainSound();
@@ -747,6 +751,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 	private void clearCurScreen()
 	{
+		
 		removeAll();
 		if(currentScreen != null)
 			currentScreen.clear();

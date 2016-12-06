@@ -31,7 +31,8 @@ public class LevelScreen extends Screen{
 	private byte keysPressed; 	// fired every time key down
 	private byte keysDown; 		// fired once key down
 
-	private GButton pauseButton;  LevelScreen(int sizeX, int sizeY) { //new pause button on game screen
+	//private GButton pauseButton;  
+	LevelScreen(int sizeX, int sizeY) { 
 		super(sizeX, sizeY);
 		keysDown = 0;
 		entities = new ArrayList<Entity>();
@@ -181,9 +182,9 @@ public class LevelScreen extends Screen{
 	public void inputEnter() 
 	{
 		
-		if(pauseButton != null){	
-			pauseButton.fireActionEvent(pauseButton.getGLabel().getLabel());
-		}
+		//if(pauseButton != null){	
+		//	pauseButton.fireActionEvent(pauseButton.getGLabel().getLabel());
+		//}
 		
 		
 	}
@@ -366,9 +367,9 @@ public class LevelScreen extends Screen{
 			player.setForced(false);
 	}
 	
-	public void setPauseButton(GButton b){
-		this.pauseButton=b;
-	}
+	//public void setPauseButton(GButton b){
+		//this.pauseButton=b;
+	//}
 	
 	/*
 	 * 0: nothing
