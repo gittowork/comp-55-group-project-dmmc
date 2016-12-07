@@ -34,6 +34,7 @@ public abstract class LevelData {
 				"1","6","2",
 				"2","7","5",
 				"3","7","6",
+				
 
 			},
 			

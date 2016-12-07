@@ -175,7 +175,7 @@ public class LevelScreen extends Screen{
 	}
 
 	@Override
-	public void inputX() 
+	public void inputZ() 
 	{
 		if((keysPressed & 8) != 8)
 		{
@@ -234,7 +234,7 @@ public class LevelScreen extends Screen{
 		keysPressed -= 2;
 	}
 	@Override
-	public void inputXReleased()
+	public void inputZReleased()
 	{
 		keysPressed -= 8;
 	}

@@ -105,7 +105,7 @@ public abstract class Screen {
 
 	public abstract void inputRight();
 
-	public abstract void inputX();
+	public abstract void inputZ();
 
 	public abstract void inputEnter();
 
@@ -117,7 +117,7 @@ public abstract class Screen {
 	
 	public abstract void inputUpReleased();
 	
-	public abstract void inputXReleased();
+	public abstract void inputZReleased();
 	
 	public abstract void update(); // called in Game.actionPerformed
 	

@@ -70,7 +70,7 @@ public class GuiScreen extends Screen implements ActionListener
 	}
 
 	@Override
-	public void inputX()
+	public void inputZ()
 	{
 
 	}
@@ -112,7 +112,7 @@ public class GuiScreen extends Screen implements ActionListener
 		
 	}
 	@Override
-	public void inputXReleased()
+	public void inputZReleased()
 	{
 		
 	}

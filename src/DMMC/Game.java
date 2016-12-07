@@ -725,8 +725,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 		case KeyEvent.VK_DOWN:
 			currentScreen.inputDown();
 			break;
-		case KeyEvent.VK_X:
-			currentScreen.inputX();
+		case KeyEvent.VK_Z:
+			currentScreen.inputZ();
 			break;
 		default:
 			break;
@@ -747,8 +747,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 		case KeyEvent.VK_UP:
 			currentScreen.inputUpReleased();
 			break;
-		case KeyEvent.VK_X:
-			currentScreen.inputXReleased();
+		case KeyEvent.VK_Z:
+			currentScreen.inputZReleased();
 			break;
 		default:
 			break;
