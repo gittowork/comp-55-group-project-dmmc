@@ -290,6 +290,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		
 		
 	}
+
 	private void loadMainMenu(){
 
 		int levelX = windowWidth/tileWidth;
@@ -305,7 +306,9 @@ public class Game extends GraphicsProgram implements ActionListener{
 		currentScreen=tmp;
 		gameState=GameState.MainMenuScreen;
 		GLabel title = new GLabel("Super Siege Smores", windowWidth/2-100, windowHeight/6 -50);
+
 		title.setFont(new Font("SketchFlow Print Regular", Font.BOLD, 36));
+
 		add(title);
 
 		//in the previous version, there were a lot of added buttons.
@@ -502,8 +505,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 				System.err.println("IOException: " + ioe.getMessage());
 			}
 		}
-
-
 	}
 	//dont know if i should get rid of these functions since the labels are needed...
 
@@ -603,8 +604,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 		gameState = GameState.UserSelectScreen;
 		loadScreen(gameState);
 		playMainSound();
-
-
 	}
 
 	@Override
@@ -682,13 +681,25 @@ public class Game extends GraphicsProgram implements ActionListener{
 			if(temp.needsUpdating())
 			{
 				for(Entity e: temp.getEntities())
+				{
 					if(e.isLiving())
 						//keep if alive
 						add(e.getScreenObj());
 					else 
 						//remove else
 						remove(e.getScreenObj());
+					if(e instanceof Player)
+						player = temp.getPlayerEntity();
+				}
 				
+				for(Entity e: temp.lastWaveEs)
+				{
+					System.out.println("YO");
+					remove(e.getScreenObj());
+					e = null;
+				}
+				temp.lastWaveEs.clear();
+			
 				
 				temp.setNeedsUpdating(false);
 			}
@@ -740,7 +751,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 		default:
 			break;
 		}
-
 	}
 	
 	public void keyReleased(KeyEvent e)

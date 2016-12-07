@@ -23,6 +23,8 @@ public class LevelScreen extends Screen{
 
 
 	private ArrayList <Entity> entities; 
+	public ArrayList <Entity> lastWaveEs;
+	private boolean loadedOnce = false;
 	private int curWave;
 	private int frameNum = 0;
 	private Player player;
@@ -31,6 +33,7 @@ public class LevelScreen extends Screen{
 	private byte keysPressed; 	// fired every time key down
 	private byte keysDown; 		// fired once key down
 	public static ArrayList<GPoint> kernelsToBeSpawned;
+	private static int curLevelID = -1;
 
 	//private GButton pauseButton;  
 	LevelScreen(int sizeX, int sizeY) { 
@@ -59,6 +62,8 @@ public class LevelScreen extends Screen{
 		super(Integer.parseInt(LevelData.getData(levelID)[0]),
 				Integer.parseInt(LevelData.getData(levelID)[1]));
 
+		curLevelID = levelID;
+				
 		keysDown = 0;
 		String[] levelData = LevelData.getData(levelID);
 
@@ -67,19 +72,9 @@ public class LevelScreen extends Screen{
 		initTiles(oneDChartoTwoDChar(levelData[2].toCharArray(), 
 				levelSizeX, levelSizeY));
 
-		entities = new ArrayList<Entity>();
-
-		//add entities
-		int maxIndex = (Integer.parseInt(levelData[3]) * 3) + 4;
-		
-		for(int i = 4; i < maxIndex; i += 3)
-		{
-			spawnEntity(Integer.parseInt(levelData[i]),
-							Integer.parseInt(levelData[i + 1]) * Game.tileWidth,
-							Integer.parseInt(levelData[i + 2]) * Game.tileHeight,
-							Player.maxLives);
-		}
+		loadWave(0);
 		kernelsToBeSpawned = new ArrayList<GPoint>();
+		lastWaveEs = new ArrayList<Entity>();
 	}
 
 	
@@ -100,7 +95,7 @@ public class LevelScreen extends Screen{
 			
 			//save pointer to player
 			player = (Player)entities.get(entities.size() - 1);
-			
+			System.out.println("SET");
 			break;
 		case 1:
 			//Brussel
@@ -291,7 +286,7 @@ public class LevelScreen extends Screen{
 			int type = 4;
 			int x = (int)g.getX();
 			int y = (int)g.getY();
-			
+			//Kernel spawns
 			if(y > 0)
 			{
 				//shoot
@@ -322,6 +317,20 @@ public class LevelScreen extends Screen{
 		
 		if(frameNum == 60){
 			frameNum = 0;
+		}
+		switch(gameState()){
+		case 1:
+			if(++curWave < Integer.parseInt(LevelData.getData(curLevelID)[LevelData.getData(curLevelID).length - 1]))
+				loadWave(curWave);
+			break;
+		case 2:
+			loadWave(curWave);
+			break;
+		case 3://checked in Game
+			break;
+		default:
+			break;
+			
 		}
 	}
 
@@ -446,6 +455,37 @@ public class LevelScreen extends Screen{
 				state = 3;
 		}
 		return state;
+	}
+	private void loadWave(int waveNum){
+		if(loadedOnce)
+		{
+			System.out.println("IN");
+			for(Entity e: entities)
+				lastWaveEs.add(e);
+			for(Entity e: lastWaveEs)
+				destroyEntity(e.getId());
+		}
+		entities = new ArrayList<Entity>();
+		String[] levelData = LevelData.getData(curLevelID);
+		int startIndex = 3;
+		for(int i = 0; i < waveNum; i++){
+			startIndex += Integer.parseInt(levelData[startIndex]) * 3 + 1;
+		}
+		//add entities
+		int maxIndex = (Integer.parseInt(levelData[startIndex]) * 3) + startIndex;
+		System.out.println("start index: " + startIndex + " max index: " + maxIndex);
+		for(int i = startIndex + 1; i < maxIndex; i += 3)
+		{
+			spawnEntity(Integer.parseInt(levelData[i]),
+							Integer.parseInt(levelData[i + 1]) * Game.tileWidth,
+							Integer.parseInt(levelData[i + 2]) * Game.tileHeight,
+							Player.maxLives);
+		}
+		
+		//reset sword
+		Sword.onePresent = false;
+		
+		loadedOnce = true;
 	}
 	
 }
