@@ -302,7 +302,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		currentScreen=tmp;
 		gameState=GameState.MainMenuScreen;
 		GLabel title = new GLabel("Super Siege Smores", windowWidth/2-100, windowHeight/6 -50);
-		title.setFont(new Font("Herculanum", Font.BOLD, 36));
+		title.setFont(new Font("Calibri", Font.BOLD, 36));
 		add(title);
 
 		//in the previous version, there were a lot of added buttons.
@@ -399,6 +399,12 @@ public class Game extends GraphicsProgram implements ActionListener{
 		currentScreen=tmp;
 		gameState=GameState.MapSelect;
 
+		GButton button1 = new GButton("Go Back(Esc)", 0, 0, 100, 50);
+		add(button1);
+		button1.addActionListener(this);
+		tmp.addGButton(button1);
+		//tmp.getGButton().drawCursor();
+		
 		int buttonOffset=8;
 		if(newGameSelected)
 			buttonOffset=5;
