@@ -428,7 +428,7 @@ public class LevelScreen extends Screen{
 	 * 2: reset cur wave
 	 * 3: game over
 	 * */
-	private int gameState()
+	public int gameState()
 	{
 		//next wave default
 		int state = 1;
