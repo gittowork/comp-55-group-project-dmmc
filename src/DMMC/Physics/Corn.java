@@ -12,10 +12,13 @@ public class Corn extends Entity{
 	private final int sizeX = 50;
 	private final int sizeY = 50;
 	public Corn(int id) {
-		super("corn-idle", id, false, true);
+		super("default", id, false, true);
 		scaleScreenObj();
-		facing = true;
+		facing = false;
 		counter = 0;
+		
+		//set aniamtion
+		setAnimation("corn-idle-" + getFacingString());
 	}
 
 	@Override
@@ -40,11 +43,28 @@ public class Corn extends Entity{
 				g.setLocation(-g.getX(), g.getY());
 			
 			LevelScreen.kernelsToBeSpawned.add(g);
+			setAnimation("corn-attack-" + getFacingString());
+			counter = 0;
 		}
+		
+		if(counter % 180 > 30)
+			//reset to idle
+			setAnimation("corn-idle-" + getFacingString());
+		
+		facing = (Game.player.getScreenPosX() - getScreenPosX() > 0);
+		
 		counter++;
 	}
 	protected void scaleScreenObj()
 	{
 		screenObj.setSize(sizeX, sizeY);
+	}
+	
+	private String getFacingString()
+	{
+		if(facing)
+			return "right";
+		
+		return "left";
 	}
 }

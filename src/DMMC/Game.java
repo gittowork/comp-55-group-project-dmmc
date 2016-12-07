@@ -17,7 +17,6 @@ import java.util.Stack;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.TitlePaneLayout;
 
 import DMMC.Physics.Brussel;
 import DMMC.Physics.Entity;
@@ -81,7 +80,12 @@ public class Game extends GraphicsProgram implements ActionListener{
 			{"brussel-bot","brussel-2"},
 			{"brussel-left","brussel-3"},
 			
-			{"corn-idle", "corn-0"},
+			{"corn-idle-right", "corn-0"},
+			{"corn-idle-left", "corn-3"},
+			{"corn-attack-right", "corn-1"},
+			{"corn-attack-left", "corn-4"},
+			{"corn-dead-right", "corn-2"},
+			{"corn-dead-left", "corn-5"},
 			
 			{"kernel-run", "kernel-0"},
 			
@@ -269,7 +273,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 	//when user presses tutorial, it still continues to new game, but it should go to how to
 	private int showAnnoyingPop()
 	{
-		String[] buttons = {"Continue (we warned you)","Tutorial"};
+		String[] buttons = {"Continue (we warned you)", "Tutorial"};
 		int returnValue = JOptionPane.showOptionDialog(null, "You should probably read the how-to first. Press tutorial to read it. Go.", "STOP", 
 				JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[0]);
 		if(returnValue == 1)
@@ -301,7 +305,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		currentScreen=tmp;
 		gameState=GameState.MainMenuScreen;
 		GLabel title = new GLabel("Super Siege Smores", windowWidth/2-100, windowHeight/6 -50);
-		title.setFont(new Font("Times New Roman", Font.BOLD, 36));
+		title.setFont(new Font("SketchFlow Print Regular", Font.BOLD, 36));
 		add(title);
 
 		//in the previous version, there were a lot of added buttons.
@@ -398,6 +402,11 @@ public class Game extends GraphicsProgram implements ActionListener{
 		currentScreen=tmp;
 		gameState=GameState.MapSelect;
 
+		GButton button1 = new GButton("Go Back(Esc)", 0, 0, 100, 50);
+		add(button1);
+		button1.addActionListener(this);
+		tmp.addGButton(button1);
+		
 		int buttonOffset=8;
 		if(newGameSelected)
 			buttonOffset=5;
@@ -684,6 +693,21 @@ public class Game extends GraphicsProgram implements ActionListener{
 				temp.setNeedsUpdating(false);
 			}
 			
+			//IDK IF THIS WORKS. UMM NEED TO TEST THAT THIS ACTUALLY DOES WHAT IT SHOULD DO
+			if (temp.gameState() == 3)
+			{
+				String[] buttons = {"Darn"};    //exit and continue for pop ups 
+				int returnValue = JOptionPane.showOptionDialog(null, "YOU DED. \n Wave: " +  temp.getCurWave(), "GAME OVER",
+						JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[0]);
+				if(returnValue==0){
+					storeGameState=new Stack<GameState>();
+					storeScreen=new Stack<Screen>();
+					removeAll();
+					loadLeaderboards("LMap" + mapIndex);
+					playMainSound(); //to get back to main menu song, and not have the game song keep playing after exiting.
+				}
+			}
+			
 
 		}
 
@@ -713,8 +737,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 		case KeyEvent.VK_DOWN:
 			currentScreen.inputDown();
 			break;
-		case KeyEvent.VK_X:
-			currentScreen.inputX();
+		case KeyEvent.VK_Z:
+			currentScreen.inputZ();
 			break;
 		default:
 			break;
@@ -735,8 +759,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 		case KeyEvent.VK_UP:
 			currentScreen.inputUpReleased();
 			break;
-		case KeyEvent.VK_X:
-			currentScreen.inputXReleased();
+		case KeyEvent.VK_Z:
+			currentScreen.inputZReleased();
 			break;
 		default:
 			break;
