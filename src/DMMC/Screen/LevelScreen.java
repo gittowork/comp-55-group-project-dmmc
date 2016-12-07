@@ -48,7 +48,8 @@ public class LevelScreen extends Screen{
 		player = (Player)e;
 		kernelsToBeSpawned = new ArrayList<GPoint>();
 	}
-
+	public int getCurWave(){return curWave;}
+	public void setCurWave(int i){curWave = i;}
 
 
 
@@ -444,8 +445,7 @@ public class LevelScreen extends Screen{
 			if(player.getCurLives() == 0)
 				state = 3;
 		}
-			
-		
 		return state;
 	}
+	
 }
