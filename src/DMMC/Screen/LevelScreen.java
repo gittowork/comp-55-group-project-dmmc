@@ -123,11 +123,13 @@ public class LevelScreen extends Screen{
 			if(player.getCurAnimationName().contains("right"))
 				facing = "right";
 			entities.add(new Sword(entities.size(), facing));
+			break;
 		case 6:
 			entities.add(new Kernel(entities.size(), 7));
+			break;
 		case 7:
 			entities.add(new Kernel(entities.size(), -7));
-			
+			System.out.println("Shoot");
 			break;
 		default:
 			System.err.println("INVALID ENTITY");
@@ -276,21 +278,50 @@ public class LevelScreen extends Screen{
 			}
 		
 		for(GPoint g: kernelsToBeSpawned){
-			if (g.getX() > 0)
-				spawnEntity(4, (int)g.getX(), (int)g.getY(), 1);
-			else{
-				if (g.getY() > 0)
-					spawnEntity(6, -(int)g.getX(), (int)g.getY(), 1);
-				if (g.getY() < 0)
-					spawnEntity(7, -(int)g.getX(), -(int)g.getY(), 1);
+//			if (g.getY() > 0){
+//				if(g.getX() > 0)
+//					spawnEntity(6, (int)g.getX(), (int)g.getY(), 1);
+//				else
+//					spawnEntity(7, -(int)g.getX(), (int)g.getY(), 1);
+//			}
+//			else
+//				spawnEntity(4, (int)g.getX(), -(int)g.getY(), 1);
+			
+			int type = 4;
+			int x = (int)g.getX();
+			int y = (int)g.getY();
+			
+			if(y > 0)
+			{
+				//shoot
+				if(x > 0)
+				{
+					//right
+					type = 6;
+				}
+				else
+				{
+					//left
+					type = 7;
+					x = -x;
+				}
 			}
+			else
+			{
+				//stay
+				y = -y;
+			}
+			System.out.println(type);
+			spawnEntity(type, x, y, 1);
 		}
+			
 		kernelsToBeSpawned.clear();
 		
 		frameNum ++;
 		
-		if(frameNum == 60)
+		if(frameNum == 60){
 			frameNum = 0;
+		}
 	}
 
 	@Override

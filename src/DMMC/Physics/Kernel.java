@@ -12,27 +12,19 @@ public class Kernel extends Entity{
 	private final int sizeX = 25;
 	private final int sizeY = 25;
 	private Random rand = new Random();
-	public Kernel(int id, boolean f){
+	public Kernel(int id){
 		super("kernel-run", id, false, true);
-		facing = f;
+		lastFacing = !lastFacing; 
+		facing = lastFacing;
 		speed = rand.nextDouble()* 2 + 1;
 		scaleScreenObj();
 	}
 	
-	public Kernel(int id){
-		super("kernel-run", id, false, true);
-		lastFacing = !lastFacing;
-		facing = lastFacing;
-		speed = rand.nextDouble()* 2 + 1;
-		ispeed = speed;
-		scaleScreenObj();
-	}
 	public Kernel(int id, double s){
 		super("kernel-run", id, false, true);
-		lastFacing = !lastFacing;
-		facing = lastFacing;
+		facing = (s > 0);
 		ispeed = s;
-		speed = rand.nextDouble()* 2 + 1;
+		speed = s;
 		scaleScreenObj();
 	}
 
@@ -55,20 +47,19 @@ public class Kernel extends Entity{
 		if (isGrounded()){
 			setVelY(-2);
 		}
-		if(!facing){
-			setVelX(ispeed);
-		}
-		else{
-			setVelX(-ispeed);
-		}
-		ispeed = speed;
+		
+		setVelX(speed);
+		
 		if(colIndex[1] != 0)
 		{
 			//change direction
+			speed = -rand.nextDouble()* 2 - 1;
 			facing = true;
 		}
 		if(colIndex[3] != 0)
 		{
+			
+			speed = rand.nextDouble()* 2 + 1;
 			facing = false;
 		}
 	}
