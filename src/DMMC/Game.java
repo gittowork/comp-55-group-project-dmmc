@@ -269,10 +269,10 @@ public class Game extends GraphicsProgram implements ActionListener{
 	//when user presses tutorial, it still continues to new game, but it should go to how to
 	private int showAnnoyingPop()
 	{
-		String[] buttons = {"Tutorial", "Continue (we warned you)"};
+		String[] buttons = {"Continue (we warned you)","Tutorial"};
 		int returnValue = JOptionPane.showOptionDialog(null, "You should probably read the how-to first. Press tutorial to read it. Go.", "STOP", 
 				JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[0]);
-		if(returnValue == 0)
+		if(returnValue == 1)
 		{
 			//doesnt work???
 			//storeGameState = new Stack<GameState>();
@@ -286,7 +286,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 		
 		
 	}
-
 	private void loadMainMenu(){
 
 		int levelX = windowWidth/tileWidth;
@@ -302,7 +301,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		currentScreen=tmp;
 		gameState=GameState.MainMenuScreen;
 		GLabel title = new GLabel("Super Siege Smores", windowWidth/2-100, windowHeight/6 -50);
-		title.setFont(new Font("SketchFlow Print Regular", Font.BOLD, 36));
+		title.setFont(new Font("Times New Roman", Font.BOLD, 36));
 		add(title);
 
 		//in the previous version, there were a lot of added buttons.
@@ -632,7 +631,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			if (!profiles.get(currentUser).getHelpPageStatus()) //moved this part from loadGame function
 			{                            //earlier it kept executing loadgame funct. was not considering what user selected. changed to int funct and moved it 
 				int val=showAnnoyingPop();  
-				if(val==0)
+				if(val==1)
 					return;
 			}
 			loadScreen(GameState.GameScreen);
