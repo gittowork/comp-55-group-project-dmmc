@@ -710,10 +710,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 					playMainSound(); //to get back to main menu song, and not have the game song keep playing after exiting.
 				}
 			}
-			
-
 		}
-
 	}
 
 	public void keyPressed(KeyEvent e)
@@ -768,7 +765,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 		default:
 			break;
 		}
-
 	}
 	
 	public void inputEsc()
@@ -784,7 +780,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 	private void clearCurScreen()
 	{
-		
 		removeAll();
 		if(currentScreen != null)
 			currentScreen.clear();
