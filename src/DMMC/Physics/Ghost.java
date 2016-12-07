@@ -14,7 +14,7 @@ public class Ghost extends Entity {
 	GImage Sprite;
 	static final String GHOST_FILE_PATH = "";
 	GPoint playerLoc;
-	private final double SPEED = 1.5;
+	private final double SPEED = 1;
 	private static final int sizeX = 50;
 	private static final int sizeY = 50;
 	

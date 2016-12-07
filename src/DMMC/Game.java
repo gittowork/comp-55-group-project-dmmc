@@ -80,7 +80,12 @@ public class Game extends GraphicsProgram implements ActionListener{
 			{"brussel-bot","brussel-2"},
 			{"brussel-left","brussel-3"},
 			
-			{"corn-idle", "corn-0"},
+			{"corn-idle-right", "corn-0"},
+			{"corn-idle-left", "corn-3"},
+			{"corn-attack-right", "corn-1"},
+			{"corn-attack-left", "corn-4"},
+			{"corn-dead-right", "corn-2"},
+			{"corn-dead-left", "corn-5"},
 			
 			{"kernel-run", "kernel-0"},
 			
@@ -735,8 +740,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 		case KeyEvent.VK_DOWN:
 			currentScreen.inputDown();
 			break;
-		case KeyEvent.VK_X:
-			currentScreen.inputX();
+		case KeyEvent.VK_Z:
+			currentScreen.inputZ();
 			break;
 		default:
 			break;
@@ -757,8 +762,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 		case KeyEvent.VK_UP:
 			currentScreen.inputUpReleased();
 			break;
-		case KeyEvent.VK_X:
-			currentScreen.inputXReleased();
+		case KeyEvent.VK_Z:
+			currentScreen.inputZReleased();
 			break;
 		default:
 			break;
