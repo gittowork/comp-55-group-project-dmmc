@@ -302,7 +302,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		currentScreen=tmp;
 		gameState=GameState.MainMenuScreen;
 		GLabel title = new GLabel("Super Siege Smores", windowWidth/2-100, windowHeight/6 -50);
-		title.setFont(new Font("Script Regular", Font.BOLD, 36));
+		title.setFont(new Font("SketchFlow Print Regular", Font.BOLD, 36));
 		add(title);
 
 		//in the previous version, there were a lot of added buttons.
