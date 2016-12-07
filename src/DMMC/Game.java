@@ -17,7 +17,6 @@ import java.util.Stack;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.TitlePaneLayout;
 
 import DMMC.Physics.Brussel;
 import DMMC.Physics.Entity;
