@@ -721,6 +721,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			//IT WORKS
 			if (temp.gameState() == 3)
 			{
+				Player.curLives = Player.maxLives;
 				String[] buttons = {"Darn"};    //exit and continue for pop ups 
 				int returnValue = JOptionPane.showOptionDialog(null, "YOU DED. \n Wave: " +  temp.getCurWave(), "GAME OVER",
 						JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[0]);

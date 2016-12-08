@@ -310,7 +310,6 @@ public class LevelScreen extends Screen{
 		}
 		switch(gameState()){
 		case 1:
-			player.curLives = player.maxLives;
 			if((++curWave) < Integer.parseInt(LevelData.getData(curLevelID)[LevelData.getData(curLevelID).length - 1]))
 				loadWave(curWave);
 			break;
