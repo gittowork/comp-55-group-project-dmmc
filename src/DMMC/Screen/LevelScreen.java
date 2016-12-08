@@ -68,7 +68,7 @@ public class LevelScreen extends Screen{
 		initTiles(oneDChartoTwoDChar(levelData[2].toCharArray(), 
 				levelSizeX, levelSizeY));
 
-		loadWave(0);
+		loadWave(3);
 		kernelsToBeSpawned = new ArrayList<GPoint>();
 		lastWaveEs = new ArrayList<Entity>();
 	}
