@@ -55,7 +55,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 	static String[] UserSelectScreenData = {
 			"New Run",
-			"Leaderboard",  //all button names
+			"Finishers",  //all button names
 			"Options",
 			"How To",
 			"Credits",
@@ -645,7 +645,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			loadScreen(GameState.HowToScreen);
 
 		}
-		else if("Leaderboard".equals(event.getActionCommand())){
+		else if("Finishers".equals(event.getActionCommand())){
 			newGameSelected=false;
 			loadScreen(GameState.MapSelect);
 
