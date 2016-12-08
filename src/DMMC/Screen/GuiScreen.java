@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import com.sun.javafx.geom.PickRay;
 
-import DMMC.Physics.Button;
 import DMMC.Physics.GButton;
 import acm.graphics.GImage;
 

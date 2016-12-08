@@ -356,8 +356,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 			loadCredits();
 		else if(g==GameState.HowToScreen)
 			loadHowTo();
-		else if(g==GameState.Leaderboards)
-			loadLeaderboards();
 		else if(g == GameState.OptionsScreen)
 			loadOptions();
 		else if(g== GameState.MapSelect)
@@ -566,6 +564,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			storeScreen.push(currentScreen);
 		}
 		loadBasic(true, leaderboards);
+		System.out.println("nonononnonono");
 
 	}
 
@@ -719,7 +718,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			add(waveLabel);
 			waveLabel.sendForward();
 
-			//IDK IF THIS WORKS. UMM NEED TO TEST THAT THIS ACTUALLY DOES WHAT IT SHOULD DO
+			//IT WORKS
 			if (temp.gameState() == 3)
 			{
 				String[] buttons = {"Darn"};    //exit and continue for pop ups 
@@ -729,15 +728,24 @@ public class Game extends GraphicsProgram implements ActionListener{
 					storeGameState=new Stack<GameState>();
 					storeScreen=new Stack<Screen>();
 					removeAll();
-					loadLeaderboards("LMap" + mapIndex);
+					loadLeaderboards("LMap" + (mapIndex+1));
 					playMainSound(); //to get back to main menu song, and not have the game song keep playing after exiting.
 				}
 			}
 			else if(temp.gameState() == 4)
 			{
 				//won
-				//TODO
-				System.out.println("WON");
+				String[] buttons = {"Yay!"};    //exit and continue for pop ups 
+				int returnValue = JOptionPane.showOptionDialog(null, "YOU WON!!! \n Wave: " +  temp.getCurWave(), "CONGRATULATIONS",
+						JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[0]);
+				if(returnValue==0){
+					storeGameState=new Stack<GameState>();
+					storeScreen=new Stack<Screen>();
+					removeAll();
+					loadLeaderboards("LMap" + (mapIndex+1));
+					playMainSound(); //to get back to main menu song, and not have the game song keep playing after exiting.
+				}
+				
 			}
 		}
 	}
