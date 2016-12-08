@@ -94,7 +94,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 			{"sword-left", "sword-0"},
 			{"sword-right", "sword-1"},
-			
+
 			{"heart", "heart"},
 
 			{"default", "empty"}
@@ -725,16 +725,13 @@ public class Game extends GraphicsProgram implements ActionListener{
 				String[] buttons = {"Darn"};    //exit and continue for pop ups 
 				int returnValue = JOptionPane.showOptionDialog(null, "YOU DED. \n Wave: " +  temp.getCurWave(), "GAME OVER",
 						JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[0]);
-				if(returnValue==0){
-					//storeGameState=new Stack<GameState>();
-					//storeScreen=new Stack<Screen>();
-					removeAll();
-					loadLeaderboards("LMap" + (mapIndex+1));
-					playMainSound();
-					//to get back to main menu song, and not have the game song keep playing after exiting.
-					playMainSound(); //to get back to main menu song, and not have the game song keep playing after exiting.
-				}
-				
+
+				removeAll();
+				loadLeaderboards("LMap" + (mapIndex+1));
+				playMainSound();
+				//to get back to main menu song, and not have the game song keep playing after exiting.
+				playMainSound(); //to get back to main menu song, and not have the game song keep playing after exiting.
+
 			}
 			else if(temp.gameState() == 4)
 			{
@@ -742,14 +739,11 @@ public class Game extends GraphicsProgram implements ActionListener{
 				String[] buttons = {"Yay!"};    //exit and continue for pop ups 
 				int returnValue = JOptionPane.showOptionDialog(null, "YOU WON!!! \n Wave: " +  temp.getCurWave(), "CONGRATULATIONS",
 						JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[0]);
-				if(returnValue==0){
-					//storeGameState=new Stack<GameState>();
-					//storeScreen=new Stack<Screen>();
-					removeAll();
-					loadLeaderboards("LMap" + (mapIndex+1));
-					playMainSound(); //to get back to main menu song, and not have the game song keep playing after exiting.
-				}
-				
+
+				removeAll();
+				loadLeaderboards("LMap" + (mapIndex+1));
+				playMainSound(); //to get back to main menu song, and not have the game song keep playing after exiting.
+
 			}
 		}
 	}
