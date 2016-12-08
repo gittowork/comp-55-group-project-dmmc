@@ -264,8 +264,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 		int returnValue = JOptionPane.showOptionDialog(null, "Press exit to go to main menu, and continue to keep playing the game!", "Options",
 				JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[0]);
 		if(returnValue==0){
-			storeGameState=new Stack<GameState>();
-			storeScreen=new Stack<Screen>();
+			//storeGameState=new Stack<GameState>();
+			//storeScreen=new Stack<Screen>();
 			removeAll();
 			loadMainMenu();
 			playMainSound(); //to get back to main menu song, and not have the game song keep playing after exiting.
@@ -727,13 +727,15 @@ public class Game extends GraphicsProgram implements ActionListener{
 				int returnValue = JOptionPane.showOptionDialog(null, "YOU DED. \n Wave: " +  temp.getCurWave(), "GAME OVER",
 						JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[0]);
 				if(returnValue==0){
-					storeGameState=new Stack<GameState>();
-					storeScreen=new Stack<Screen>();
+					//storeGameState=new Stack<GameState>();
+					//storeScreen=new Stack<Screen>();
 					removeAll();
 					loadLeaderboards("LMap" + (mapIndex+1));
 					System.out.println(mapIndex);
-					playMainSound(); //to get back to main menu song, and not have the game song keep playing after exiting.
+					playMainSound();
+					//to get back to main menu song, and not have the game song keep playing after exiting.
 				}
+				
 			}
 			else if(temp.gameState() == 4)
 			{
