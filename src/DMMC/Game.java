@@ -254,11 +254,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		for(Entity e: temp.getEntities())
 			add(e.getScreenObj());
 		player = temp.getPlayerEntity();
-		//GButton button = new GButton("Pause", 50 , 50, 50, 50);
-		//add(button);
-		//button.drawCursor();
-		//button.addActionListener(this);
-		//((LevelScreen)currentScreen).setPauseButton(button);
+		
 	}
 
 	private void showPauseDialog(){
@@ -267,8 +263,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		int returnValue = JOptionPane.showOptionDialog(null, "Press exit to go to main menu, and continue to keep playing the game!", "Options",
 				JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[0]);
 		if(returnValue==0){
-			//storeGameState=new Stack<GameState>();
-			//storeScreen=new Stack<Screen>();
+			
 			removeAll();
 			loadMainMenu();
 			playMainSound(); //to get back to main menu song, and not have the game song keep playing after exiting.
@@ -284,9 +279,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 				JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[0]);
 		if(returnValue == 1)
 		{
-			//doesnt work???
-			//storeGameState = new Stack<GameState>();
-			//storeScreen = new Stack<Screen>();
+
+		
 			removeAll();
 			loadHowTo();
 			playMainSound();
@@ -434,8 +428,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 		}
 		tmp.getGButton().drawCursor();
 
-		//reason for cursor bug:
-		//tmp.getGButton().drawCursor();
 	}
 
 
@@ -683,7 +675,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 			if(!gamePaused)  //when not gamepaused, screen is updated(freeze screen)
 				temp.update();
 
-			//temp.update(); //may be repeated code
 
 			//add wave label
 			if(waveLabel == null)
@@ -695,8 +686,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 				waveLabel.setLabel("Wave: " + (temp.getCurWave() + 1));
 			}
 			waveLabel.setFont(new Font("Calibri", Font.PLAIN, 20));
-			waveLabel.setColor(Color.white);
-			//waveLabel.setLocation(new GPoint(0,0));
+			waveLabel.setColor(Color.white);			
 
 			if(temp.needsUpdating())
 			{
