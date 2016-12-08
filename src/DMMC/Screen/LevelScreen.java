@@ -2,17 +2,10 @@ package DMMC.Screen;
 
 import java.util.ArrayList;
 
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.sound.midi.VoiceStatus;
-
-
 import DMMC.Game;
 import DMMC.Physics.Brussel;
 import DMMC.Physics.Corn;
 import DMMC.Physics.Entity;
-import DMMC.Physics.GButton;
 import DMMC.Physics.Ghost;
 import DMMC.Physics.Kernel;
 import DMMC.Physics.Player;
@@ -86,16 +79,15 @@ public class LevelScreen extends Screen{
 		return entities;
 	}
 	
-	public void spawnEntity(int type, int posX, int posY, int playerHealth)
+	public void spawnEntity(int type, int posX, int posY)
 	{
 		switch (type) {
 		case 0:
 			// Player
-			entities.add(new Player(entities.size(), playerHealth));
+			entities.add(new Player(entities.size()));
 			
 			//save pointer to player
 			player = (Player)entities.get(entities.size() - 1);
-			System.out.println("SET");
 			break;
 		case 1:
 			//Brussel
@@ -273,19 +265,11 @@ public class LevelScreen extends Screen{
 				e.update();
 			}
 		
-		for(GPoint g: kernelsToBeSpawned){
-//			if (g.getY() > 0){
-//				if(g.getX() > 0)
-//					spawnEntity(6, (int)g.getX(), (int)g.getY(), 1);
-//				else
-//					spawnEntity(7, -(int)g.getX(), (int)g.getY(), 1);
-//			}
-//			else
-//				spawnEntity(4, (int)g.getX(), -(int)g.getY(), 1);
-			
+		for(GPoint g: kernelsToBeSpawned){			
 			int type = 4;
 			int x = (int)g.getX();
 			int y = (int)g.getY();
+			
 			//Kernel spawns
 			if(y > 0)
 			{
@@ -308,7 +292,7 @@ public class LevelScreen extends Screen{
 				y = -y;
 			}
 			System.out.println(type);
-			spawnEntity(type, x, y, 1);
+			spawnEntity(type, x, y);
 		}
 			
 		kernelsToBeSpawned.clear();
@@ -320,7 +304,8 @@ public class LevelScreen extends Screen{
 		}
 		switch(gameState()){
 		case 1:
-			if(++curWave < Integer.parseInt(LevelData.getData(curLevelID)[LevelData.getData(curLevelID).length - 1]))
+			player.curLives = player.maxLives;
+			if((++curWave) < Integer.parseInt(LevelData.getData(curLevelID)[LevelData.getData(curLevelID).length - 1]))
 				loadWave(curWave);
 			break;
 		case 2:
@@ -376,7 +361,7 @@ public class LevelScreen extends Screen{
 				if(!Sword.onePresent)
 				{
 					player.setAnimation("player-attack-" + dir);
-					spawnEntity(5, 0, 0, player.getCurLives()); // note: position set in spawn
+					spawnEntity(5, 0, 0); // note: position set in spawn
 				}
 			}
 			
@@ -391,6 +376,9 @@ public class LevelScreen extends Screen{
 			{
 				// Move Right
 				player.setVelX(Entity.maxVelX);
+				
+				if(!player.getCurAnimationName().contains("run") && !Sword.onePresent)
+					player.setAnimation("player-run-right");
 				
 				//iterate animation
 				if(frameNum % player.getAnimationSpeed() == 0)
@@ -410,6 +398,9 @@ public class LevelScreen extends Screen{
 			{
 				//Move Left
 				player.setVelX(-Entity.maxVelX);
+				
+				if(!player.getCurAnimationName().contains("run")  && !Sword.onePresent)
+					player.setAnimation("player-run-left");
 				
 				//iterate animation
 				if(frameNum % player.getAnimationSpeed() == 0)
@@ -437,6 +428,7 @@ public class LevelScreen extends Screen{
 	 * 1: next wave
 	 * 2: reset cur wave
 	 * 3: game over
+	 * 4: all waves completed
 	 * */
 	public int gameState()
 	{
@@ -453,13 +445,15 @@ public class LevelScreen extends Screen{
 				state = 2;
 			if(player.getCurLives() == 0)
 				state = 3;
+			if(getCurWave() + 1 > Integer.parseInt(LevelData.getData(curLevelID)[LevelData.getData(curLevelID).length - 1]))
+				state = 4;
 		}
+		
 		return state;
 	}
 	private void loadWave(int waveNum){
 		if(loadedOnce)
 		{
-			System.out.println("IN");
 			for(Entity e: entities)
 				lastWaveEs.add(e);
 			for(Entity e: lastWaveEs)
@@ -478,8 +472,7 @@ public class LevelScreen extends Screen{
 		{
 			spawnEntity(Integer.parseInt(levelData[i]),
 							Integer.parseInt(levelData[i + 1]) * Game.tileWidth,
-							Integer.parseInt(levelData[i + 2]) * Game.tileHeight,
-							Player.maxLives);
+							Integer.parseInt(levelData[i + 2]) * Game.tileHeight);
 		}
 		
 		//reset sword

@@ -1,5 +1,6 @@
 package DMMC;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -50,6 +51,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 	private boolean gameSoundOff=false;//to check if sound is on or off in if statem.
 	private boolean gamePaused = false; //to check if game is paused or not
 
+	GLabel waveLabel;
+
 	static String[] UserSelectScreenData = {
 			"New Run",
 			"Leaderboard",  //all button names
@@ -72,26 +75,26 @@ public class Game extends GraphicsProgram implements ActionListener{
 			{"player-attack-right", "player-8"},
 			{"player-attack-left", "player-7"},
 			{"player-dead", "player-6"},
-			
+
 			{"ghost-idle","ghost-0","ghost-1"},
-			
+
 			{"brussel-top","brussel-0"},
 			{"brussel-right","brussel-1"},
 			{"brussel-bot","brussel-2"},
 			{"brussel-left","brussel-3"},
-			
+
 			{"corn-idle-right", "corn-0"},
 			{"corn-idle-left", "corn-3"},
 			{"corn-attack-right", "corn-1"},
 			{"corn-attack-left", "corn-4"},
 			{"corn-dead-right", "corn-2"},
 			{"corn-dead-left", "corn-5"},
-			
+
 			{"kernel-run", "kernel-0"},
-			
+
 			{"sword-left", "sword-0"},
 			{"sword-right", "sword-1"},
-			
+
 			{"default", "empty"}
 	};		//made this a 2d array so that when i load the files into the animation hashmap, its easier to call and organize
 
@@ -160,7 +163,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 	private GameState gameState;
 	private Timer timer;
 	Entity e;
-	private int timerIndex;
 	GImage giraffe;
 	GImage girafe;
 	GImage howto;
@@ -171,15 +173,15 @@ public class Game extends GraphicsProgram implements ActionListener{
 	{
 		this.resize(windowWidth, windowHeight);
 		profiles = new ArrayList<Profile>();
-		
+
 		//read in all the pictures
 		giraffe =  new GImage("../media/Images/warrior.png");
 		girafe = new GImage("../media/Images/girafe.png");
 		howto = new GImage("../media/Images/howto.png");
 		credits = new GImage("../media/Images/credits.png");
 		leaderboards = new GImage("../media/Images/leaderboards.png");
-		
-		
+
+
 		//read the profiles text file
 		try {
 			for (String line : Files.readAllLines(Paths.get("../bin/profiles.txt")))
@@ -196,7 +198,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 		timer = new Timer((int)(1000/FPS), this);	
 		addKeyListeners();
 		timer.start();
-		timerIndex = 0;
 
 		Image[] pics;	//array of images to hold all the animation pics for each character
 
@@ -233,7 +234,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 	private void loadNewGame()
 	{		
 		if(ifEnterPressed){
-			
+
 			storeGameState.push(gameState);
 			storeScreen.push(currentScreen);
 		}
@@ -254,7 +255,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		//button.addActionListener(this);
 		//((LevelScreen)currentScreen).setPauseButton(button);
 	}
-	
+
 	private void showPauseDialog(){
 		gamePaused=true;
 		String[] buttons = { "Exit", "Continue"};    //exit and continue for pop ups 
@@ -269,7 +270,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		}
 		gamePaused=false;
 	}
-	
+
 	//when user presses tutorial, it still continues to new game, but it should go to how to
 	private int showAnnoyingPop()
 	{
@@ -287,8 +288,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 			profiles.get(currentUser).setHelpPageStatus(true);
 		}
 		return returnValue;
-		
-		
+
+
 	}
 
 	private void loadMainMenu(){
@@ -301,7 +302,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			GuiScreen tmp1=(GuiScreen)storeScreen.pop();   //if yes, set previous cursor pos
 			tmp.setCursorPos(tmp1.getCursorPos());
 		}
-		
+
 		add(tmp.getTile(0,0).getScreenObj());
 		currentScreen=tmp;
 		gameState=GameState.MainMenuScreen;
@@ -371,12 +372,10 @@ public class Game extends GraphicsProgram implements ActionListener{
 		GuiScreen tmp = new GuiScreen(levelX, levelY, bg);
 		currentScreen=tmp;
 		GButton button1;
-		
-		System.out.println(currentScreen.getSizeX());
-		
+
 		add(currentScreen.getTile(0, 0).getScreenObj());
-			
-		
+
+
 		if (back)
 		{
 			button1 = new GButton("Go Back(Esc)", 0, 0, 100, 50);
@@ -396,7 +395,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			GuiScreen tmp1=(GuiScreen)storeScreen.pop();
 			tmp.setCursorPos(tmp1.getCursorPos());
 		}
-		
+
 		add(tmp.getTile(0, 0).getScreenObj());
 		if(ifEnterPressed){
 			storeGameState.push(gameState);
@@ -409,7 +408,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		add(button1);
 		button1.addActionListener(this);
 		tmp.addGButton(button1);
-		
+
 		int buttonOffset=8;
 		if(newGameSelected)
 			buttonOffset=5;
@@ -467,7 +466,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 				user.addActionListener(this);
 			}
 		}
-		
+
 		//when theres too many profiles, new user button goes away
 		if (profiles.size() < 4)
 		{
@@ -575,19 +574,21 @@ public class Game extends GraphicsProgram implements ActionListener{
 			storeScreen.push(currentScreen);
 		}
 		loadBasic(true, leaderboards);
-		
+
 		//read in high scores from file, based on the map the user selects
 		try {
 			int i = 0;
+			String[] scores;
+			GLabel nameLabel,scoreLabel;
 			for (String line : Files.readAllLines(Paths.get("../media/" + s + ".txt")))
 			{
-				String[] scores = line.split(",");
-				GLabel label = new GLabel(scores[0], 200, 220+i);
-				GLabel label2 = new GLabel(scores[1], 400, 220+i);
-				label.setFont(new Font("Calibri", Font.PLAIN, 20));
-				label2.setFont(new Font("Calibri", Font.PLAIN, 20));
-				add(label2);
-				add(label);
+				scores = line.split(",");
+				nameLabel= new GLabel(scores[0], 200, 220+i);
+				scoreLabel = new GLabel(scores[1], 400, 220+i);
+				nameLabel.setFont(new Font("Calibri", Font.PLAIN, 20));
+				scoreLabel.setFont(new Font("Calibri", Font.PLAIN, 20));
+				add(scoreLabel);
+				add(nameLabel);
 				i+=50;
 			}
 		} catch (IOException e1) {
@@ -597,7 +598,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 	public void run()
 	{
-		System.out.println("RUN");
 
 		//use this to test the different screens. so for example 
 		//if you're making the main menu, just change the gamestate to MainMenuScreen and then just load it
@@ -613,7 +613,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			addNewUser();
 
 		}
-		
+
 		if("Pause".equals(event.getActionCommand())){
 			showPauseDialog();
 		}
@@ -625,7 +625,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 			{
 				loadScreen(GameState.MainMenuScreen);
 				currentUser = profiles.indexOf(p);
-				System.out.println(currentUser);
 			}
 		}
 
@@ -677,7 +676,20 @@ public class Game extends GraphicsProgram implements ActionListener{
 				temp.update();
 
 			//temp.update(); //may be repeated code
-			
+
+			//add wave label
+			if(waveLabel == null)
+			{
+				waveLabel = new GLabel("Wave: " + temp.getCurWave(), tileWidth/ 2, tileHeight / 2);
+			}
+			else if(temp.gameState() != 4 || temp.gameState() != 3)
+			{
+				waveLabel.setLabel("Wave: " + (temp.getCurWave() + 1));
+			}
+			waveLabel.setFont(new Font("Calibri", Font.PLAIN, 20));
+			waveLabel.setColor(Color.white);
+			//waveLabel.setLocation(new GPoint(0,0));
+
 			if(temp.needsUpdating())
 			{
 				for(Entity e: temp.getEntities())
@@ -691,19 +703,20 @@ public class Game extends GraphicsProgram implements ActionListener{
 					if(e instanceof Player)
 						player = temp.getPlayerEntity();
 				}
-				
+
 				for(Entity e: temp.lastWaveEs)
 				{
-					System.out.println("YO");
 					remove(e.getScreenObj());
 					e = null;
 				}
 				temp.lastWaveEs.clear();
-			
-				
+
+
 				temp.setNeedsUpdating(false);
 			}
-			
+			add(waveLabel);
+			waveLabel.sendForward();
+
 			//IDK IF THIS WORKS. UMM NEED TO TEST THAT THIS ACTUALLY DOES WHAT IT SHOULD DO
 			if (temp.gameState() == 3)
 			{
@@ -718,41 +731,54 @@ public class Game extends GraphicsProgram implements ActionListener{
 					playMainSound(); //to get back to main menu song, and not have the game song keep playing after exiting.
 				}
 			}
+			else if(temp.gameState() == 4)
+			{
+				//won
+				//TODO
+				System.out.println("WON");
+			}
 		}
 	}
 
 	public void keyPressed(KeyEvent e)
 	{
-		switch (e.getKeyCode())
+		try
 		{
-		case KeyEvent.VK_ENTER:
-			ifEnterPressed=true;
-			currentScreen.inputEnter();
-			ifEnterPressed=false;
-			break;
-		case KeyEvent.VK_ESCAPE:
-			inputEsc();
-			break;
-		case KeyEvent.VK_LEFT:
-			currentScreen.inputLeft();
-			break;
-		case KeyEvent.VK_UP:
-			currentScreen.inputUp();
-			break;
-		case KeyEvent.VK_RIGHT:
-			currentScreen.inputRight();
-			break;
-		case KeyEvent.VK_DOWN:
-			currentScreen.inputDown();
-			break;
-		case KeyEvent.VK_Z:
-			currentScreen.inputZ();
-			break;
-		default:
-			break;
+			switch (e.getKeyCode())
+			{
+			case KeyEvent.VK_ENTER:
+				ifEnterPressed=true;
+				currentScreen.inputEnter();
+				ifEnterPressed=false;
+				break;
+			case KeyEvent.VK_ESCAPE:
+				inputEsc();
+				break;
+			case KeyEvent.VK_LEFT:
+				currentScreen.inputLeft();
+				break;
+			case KeyEvent.VK_UP:
+				currentScreen.inputUp();
+				break;
+			case KeyEvent.VK_RIGHT:
+				currentScreen.inputRight();
+				break;
+			case KeyEvent.VK_DOWN:
+				currentScreen.inputDown();
+				break;
+			case KeyEvent.VK_Z:
+				currentScreen.inputZ();
+				break;
+			default:
+				break;
+			}
+		}
+		catch(NullPointerException n)
+		{
+
 		}
 	}
-	
+
 	public void keyReleased(KeyEvent e)
 	{
 		switch (e.getKeyCode())
@@ -773,13 +799,13 @@ public class Game extends GraphicsProgram implements ActionListener{
 			break;
 		}
 	}
-	
+
 	public void inputEsc()
 	{
 		if(currentScreen instanceof LevelScreen){
 			showPauseDialog(); //for game screen esc
 			return;
-			}
+		}
 		if(!storeGameState.empty())
 			loadScreen(storeGameState.peek());
 		playMainSound();

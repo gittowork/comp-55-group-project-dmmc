@@ -1,13 +1,8 @@
 package DMMC.Physics;
 
-import java.awt.Image;
 import acm.graphics.GImage;
 import acm.graphics.GPoint;
-
-import java.lang.Math.*;
-
 import DMMC.Game;
-import DMMC.Screen.LevelScreen;
 
 public class Ghost extends Entity {
 

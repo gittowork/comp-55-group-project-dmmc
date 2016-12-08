@@ -9,10 +9,10 @@ public class Player extends Entity {
 	private static final int sizeX = 40;
 	private static final int sizeY = 40;
 	public static final int maxLives = 3;
+	public static int curLives = 3;
 	
 	private boolean entityColision;
 	private int attackTime = 0;
-	private int curLives;
 	
 	public Player(int id, int lives) {
 		super("player-idle-right",id, false, true);
@@ -23,7 +23,6 @@ public class Player extends Entity {
 	public Player(int id) {
 		super("player-idle-right",id, false, true);
 		scaleScreenObj();		
-		curLives = maxLives;
 	}
 	
 	public int getCurLives() {return curLives;}
