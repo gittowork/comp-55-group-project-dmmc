@@ -60,6 +60,7 @@ public class Player extends Entity {
 				if(e.getScreenObj().contains(colPoints[i])
 						&& !(e instanceof Player)
 						&& !(e instanceof Sword)
+						&& !(e instanceof Heart)
 						&& e.isLiving())
 					entityColision = true;
 		}
