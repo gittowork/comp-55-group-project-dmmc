@@ -6,11 +6,13 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -754,17 +756,14 @@ public class Game extends GraphicsProgram implements ActionListener{
 	{
 		
 		
-		try
-		{
-			FileWriter fw = new FileWriter(map + ".txt",true); //the true will append the new data
-			fw.write(name + "\n");//appends the string to the file
-			fw.close();
-		}
-		catch(IOException ioe)
-		{
-			System.err.println("IOException: " + ioe.getMessage());
-		}
-		
+		try(FileWriter fw = new FileWriter(map + ".txt", true);
+			    BufferedWriter bw = new BufferedWriter(fw);
+			    PrintWriter out = new PrintWriter(bw))
+			{
+			    out.println(name);
+			} catch (IOException e) {
+				System.err.println("IOException: " + e.getMessage());
+			}
 		
 		
 	}
