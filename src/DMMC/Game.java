@@ -566,6 +566,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			storeScreen.push(currentScreen);
 		}
 		loadBasic(true, leaderboards);
+		System.out.println("nonononnonono");
 
 	}
 
@@ -729,7 +730,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 					storeGameState=new Stack<GameState>();
 					storeScreen=new Stack<Screen>();
 					removeAll();
-					loadLeaderboards("LMap" + mapIndex);
+					loadLeaderboards("LMap" + (mapIndex+1));
+					System.out.println(mapIndex);
 					playMainSound(); //to get back to main menu song, and not have the game song keep playing after exiting.
 				}
 			}
