@@ -545,7 +545,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 			storeScreen.push(currentScreen);
 		}
 		loadBasic(true, credits);
-
 	}
 
 	private void loadHowTo() 
@@ -555,17 +554,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 			storeScreen.push(currentScreen);
 		}
 		loadBasic(true, howto);
-	}
-
-	private void loadLeaderboards()
-	{
-		if(ifEnterPressed){
-			storeGameState.push(gameState);
-			storeScreen.push(currentScreen);
-		}
-		loadBasic(true, leaderboards);
-		System.out.println("nonononnonono");
-
 	}
 
 	private void loadLeaderboards(String s)
