@@ -356,8 +356,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 			loadCredits();
 		else if(g==GameState.HowToScreen)
 			loadHowTo();
-		else if(g==GameState.Leaderboards)
-			loadLeaderboards();
 		else if(g == GameState.OptionsScreen)
 			loadOptions();
 		else if(g== GameState.MapSelect)
@@ -720,7 +718,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			add(waveLabel);
 			waveLabel.sendForward();
 
-			//IDK IF THIS WORKS. UMM NEED TO TEST THAT THIS ACTUALLY DOES WHAT IT SHOULD DO
+			//IT WORKS
 			if (temp.gameState() == 3)
 			{
 				String[] buttons = {"Darn"};    //exit and continue for pop ups 
@@ -731,7 +729,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 					storeScreen=new Stack<Screen>();
 					removeAll();
 					loadLeaderboards("LMap" + (mapIndex+1));
-					System.out.println(mapIndex);
 					playMainSound(); //to get back to main menu song, and not have the game song keep playing after exiting.
 				}
 			}
