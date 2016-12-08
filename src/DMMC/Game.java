@@ -58,7 +58,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 	static String[] UserSelectScreenData = {
 			"New Run",
-			"Leaderboard",  //all button names
+			"Finishers",  //all button names
 			"Options",
 			"How To",
 			"Credits",
@@ -643,7 +643,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			loadScreen(GameState.HowToScreen);
 
 		}
-		else if("Leaderboard".equals(event.getActionCommand())){
+		else if("Finishers".equals(event.getActionCommand())){
 			newGameSelected=false;
 			loadScreen(GameState.MapSelect);
 
@@ -707,7 +707,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 			//IT WORKS
 			if (temp.gameState() == 3)
 			{
-				Player.curLives = Player.maxLives;
 				String[] buttons = {"Darn"};    //exit and continue for pop ups 
 				JOptionPane.showOptionDialog(null, "YOU DED. \n Wave: " +  temp.getCurWave(), "GAME OVER",
 						JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[0]);

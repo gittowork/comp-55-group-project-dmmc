@@ -54,9 +54,12 @@ public class LevelScreen extends Screen{
 
 	public LevelScreen(int levelID)
 	{		
+		
 		//parse string from level data
 		super(Integer.parseInt(LevelData.getData(levelID)[0]),
 				Integer.parseInt(LevelData.getData(levelID)[1]));
+
+		Player.curLives = Player.maxLives;
 
 		curLevelID = levelID;
 				
@@ -68,7 +71,7 @@ public class LevelScreen extends Screen{
 		initTiles(oneDChartoTwoDChar(levelData[2].toCharArray(), 
 				levelSizeX, levelSizeY));
 
-		loadWave(3);
+		loadWave(0);
 		kernelsToBeSpawned = new ArrayList<GPoint>();
 		lastWaveEs = new ArrayList<Entity>();
 	}

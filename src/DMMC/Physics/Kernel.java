@@ -9,8 +9,8 @@ public class Kernel extends Entity{
 	private boolean facing; //false = left; true = right
 	private double ispeed;
 	private double speed;
-	private final int sizeX = 35;
-	private final int sizeY = 35;
+	private final int sizeX = 30;
+	private final int sizeY = 30;
 	private Random rand = new Random();
 	public Kernel(int id){
 		super("kernel-run", id, false, true);
