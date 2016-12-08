@@ -84,6 +84,16 @@ public class Player extends Entity {
 			
 			attackTime = 0;
 		}
+		if(screenObj.getX() < 0)
+			curLives--;
+		if(screenObj.getX() > Game.windowWidth)
+			curLives--;
+		
+		if(screenObj.getY() < 0)
+			curLives--;
+		if(screenObj.getY() > Game.windowHeight)
+			curLives--;
+		
 	}
 	
 	@Override

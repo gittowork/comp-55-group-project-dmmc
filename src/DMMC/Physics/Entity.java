@@ -96,6 +96,17 @@ public abstract class Entity extends PhysicsObject{
 		if(!forced && getVelX() != 0)
 			setVelX(getVelX() * 0.7);
 		
+		//check if offscreen
+		if(screenObj.getX() < 0)
+			setLiving(false);
+		if(screenObj.getX() > Game.windowWidth)
+			setLiving(false);
+		
+		if(screenObj.getY() < 0)
+			setLiving(false);
+		if(screenObj.getY() > Game.windowHeight)
+			setLiving(false);
+		
 		behaviorAction();
 	}
 

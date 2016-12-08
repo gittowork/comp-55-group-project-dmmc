@@ -27,7 +27,7 @@ public abstract class LevelData {
 				+ "10000000000001"
 				+ "10000111100001"
 				+ "10000000000001"
-				+ "11111111111111", // map layout
+				+ "10000000000001", // map layout
 				"3",				// num Entities
 				"0","2","2",		// add Entity [ID],[TilePosX],[TilePosY]
 				"1","7","6",
