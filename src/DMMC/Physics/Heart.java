@@ -27,42 +27,11 @@ public class Heart extends Entity{
 	@Override
 	public void deathAction() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void behaviorAction() {
 		// TODO Auto-generated method stub
-		
-		//BROKEN
-//		counter++;
-//		
-//		if(counter % 60 == 0)
-//		{
-//			if(sizeX >= Game.tileWidth)
-//			{
-//				sizeX = Game.tileWidth * 0.75;
-//				screenObj.setLocation(secondPos);
-//			}
-//			else
-//			{
-//				sizeX = Game.tileWidth;
-//				screenObj.setLocation(initPos);
-//			}
-//			
-//			if(sizeY >= Game.tileHeight)
-//			{
-//				sizeY = Game.tileHeight * 0.75;
-//			}
-//			else
-//			{
-//				sizeY = Game.tileHeight;
-//			}
-//			
-//			scaleScreenObj();
-//			counter = 0;
-//		}
-		
 	}
 
 	@Override
