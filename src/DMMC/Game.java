@@ -571,16 +571,37 @@ public class Game extends GraphicsProgram implements ActionListener{
 		try {
 			int i = 0;
 			GLabel nameLabel;
+			ArrayList<String> names = new ArrayList<String>();
 			for (String line : Files.readAllLines(Paths.get("../media/" + s + ".txt")))
 			{
-				nameLabel= new GLabel(line, 200, 220+i);
-				nameLabel.setFont(new Font("Calibri", Font.PLAIN, 20));
-				add(nameLabel);
-				i+=50;
+				
+				names.add(line);
+				
 			}
+			for (int k = 0; k < names.size(); k++)
+			{
+				if (names.size() - k < 0)
+				{
+					break;
+				}
+				else if(k == 4)
+				{
+					break;
+				}
+				else
+				{
+					nameLabel= new GLabel(names.get(names.size()-k-1), 300, 220+i);
+					nameLabel.setFont(new Font("Calibri", Font.PLAIN, 20));
+					add(nameLabel);
+					i+=50;
+				}
+			}
+		
 		} catch (IOException e1) {
 			System.err.println("leaderboard file not found");
 		}
+		
+		
 	}
 
 	public void run()
@@ -741,13 +762,13 @@ public class Game extends GraphicsProgram implements ActionListener{
 	
 	public void updateHighScores(String map, String name) throws IOException
 	{
-		ArrayList<String> names = new ArrayList<String>();
+		/*ArrayList<String> names = new ArrayList<String>();
 		names.add(name);
 		for (int i = 1; i < 5; i ++)
 		{
 			try {
 		
-				for (String line : Files.readAllLines(Paths.get("../media/" + map + ".txt")))
+				for (String line : Files.readAllLines(Paths.get("../bin/" + map + ".txt")))
 				{
 					names.add(line);
 				}
@@ -760,9 +781,21 @@ public class Game extends GraphicsProgram implements ActionListener{
 		writer.write((names.get(0) + "\n").getBytes());
 		for (int i = 1; i < names.size(); i++)
 		{
+			writer.append(names.get(i) + "\n");
 			FileWriter fw = new FileWriter(map,true); //the true will append the new data
 			fw.write(names.get(i) + "\n");//appends the string to the file
 			fw.close();
+		}*/
+		
+		try
+		{
+			FileWriter fw = new FileWriter(map,true); //the true will append the new data
+			fw.write(name + "\n");//appends the string to the file
+			fw.close();
+		}
+		catch(IOException ioe)
+		{
+			System.err.println("IOException: " + ioe.getMessage());
 		}
 		
 		
