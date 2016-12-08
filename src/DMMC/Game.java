@@ -590,7 +590,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 				}
 				else
 				{
-					nameLabel= new GLabel(names.get(names.size()-k-1), 300, 120+i);
+					nameLabel= new GLabel(names.get(names.size()-k-1), 300, 200+i);
 					nameLabel.setFont(new Font("Calibri", Font.PLAIN, 20));
 					add(nameLabel);
 					i+=50;
