@@ -584,13 +584,13 @@ public class Game extends GraphicsProgram implements ActionListener{
 				{
 					break;
 				}
-				else if(k == 4)
+				else if(k == 5)
 				{
 					break;
 				}
 				else
 				{
-					nameLabel= new GLabel(names.get(names.size()-k-1), 300, 220+i);
+					nameLabel= new GLabel(names.get(names.size()-k-1), 300, 120+i);
 					nameLabel.setFont(new Font("Calibri", Font.PLAIN, 20));
 					add(nameLabel);
 					i+=50;
