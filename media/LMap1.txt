@@ -1,2 +1,2 @@
-Maxine,100
-Peanut,2
+Maxine
+Peanut

@@ -1,2 +1,2 @@
-Maxine,101
-Brendan,43
+Maxine
+Brendan

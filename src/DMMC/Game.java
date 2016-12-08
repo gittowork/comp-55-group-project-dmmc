@@ -7,12 +7,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Queue;
 import java.util.Stack;
 
 import javax.imageio.ImageIO;
@@ -567,16 +570,11 @@ public class Game extends GraphicsProgram implements ActionListener{
 		//read in high scores from file, based on the map the user selects
 		try {
 			int i = 0;
-			String[] scores;
-			GLabel nameLabel,scoreLabel;
+			GLabel nameLabel;
 			for (String line : Files.readAllLines(Paths.get("../media/" + s + ".txt")))
 			{
-				scores = line.split(",");
-				nameLabel= new GLabel(scores[0], 200, 220+i);
-				scoreLabel = new GLabel(scores[1], 400, 220+i);
+				nameLabel= new GLabel(line, 200, 220+i);
 				nameLabel.setFont(new Font("Calibri", Font.PLAIN, 20));
-				scoreLabel.setFont(new Font("Calibri", Font.PLAIN, 20));
-				add(scoreLabel);
 				add(nameLabel);
 				i+=50;
 			}
@@ -711,7 +709,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			{
 				Player.curLives = Player.maxLives;
 				String[] buttons = {"Darn"};    //exit and continue for pop ups 
-				int returnValue = JOptionPane.showOptionDialog(null, "YOU DED. \n Wave: " +  temp.getCurWave(), "GAME OVER",
+				JOptionPane.showOptionDialog(null, "YOU DED. \n Wave: " +  temp.getCurWave(), "GAME OVER",
 						JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[0]);
 
 				removeAll();
@@ -724,8 +722,14 @@ public class Game extends GraphicsProgram implements ActionListener{
 			else if(temp.gameState() == 4)
 			{
 				//won
+				try {
+					updateHighScores("LMap" + (mapIndex+1), profiles.get(currentUser).getName());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				String[] buttons = {"Yay!"};    //exit and continue for pop ups 
-				int returnValue = JOptionPane.showOptionDialog(null, "YOU WON!!! \n Wave: " +  temp.getCurWave(), "CONGRATULATIONS",
+				JOptionPane.showOptionDialog(null, "YOU WON!!! \n Wave: " +  temp.getCurWave(), "CONGRATULATIONS",
 						JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[0]);
 
 				removeAll();
@@ -734,6 +738,36 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 			}
 		}
+	}
+	
+	public void updateHighScores(String map, String name) throws IOException
+	{
+		ArrayList<String> names = new ArrayList<String>();
+		names.add(name);
+		for (int i = 1; i < 5; i ++)
+		{
+			try {
+		
+				for (String line : Files.readAllLines(Paths.get("../media/" + map + ".txt")))
+				{
+					names.add(line);
+				}
+			} catch (IOException e1) {
+				System.err.println("leaderboard file not found");
+			}
+		}
+		
+		FileOutputStream writer = new FileOutputStream(map);
+		writer.write((names.get(0) + "\n").getBytes());
+		for (int i = 1; i < names.size(); i++)
+		{
+			FileWriter fw = new FileWriter(map,true); //the true will append the new data
+			fw.write(names.get(i) + "\n");//appends the string to the file
+			fw.close();
+		}
+		
+		
+		
 	}
 
 	public void keyPressed(KeyEvent e)
