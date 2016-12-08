@@ -94,6 +94,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 
 			{"sword-left", "sword-0"},
 			{"sword-right", "sword-1"},
+			
+			{"heart", "heart"},
 
 			{"default", "empty"}
 	};		//made this a 2d array so that when i load the files into the animation hashmap, its easier to call and organize

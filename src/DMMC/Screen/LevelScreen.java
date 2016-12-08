@@ -2,11 +2,14 @@ package DMMC.Screen;
 
 import java.util.ArrayList;
 
+import com.sun.corba.se.impl.naming.namingutil.IIOPEndpointInfo;
+
 import DMMC.Game;
 import DMMC.Physics.Brussel;
 import DMMC.Physics.Corn;
 import DMMC.Physics.Entity;
 import DMMC.Physics.Ghost;
+import DMMC.Physics.Heart;
 import DMMC.Physics.Kernel;
 import DMMC.Physics.Player;
 import DMMC.Physics.Sword;
@@ -118,6 +121,9 @@ public class LevelScreen extends Screen{
 		case 7:
 			entities.add(new Kernel(entities.size(), -7));
 			System.out.println("Shoot");
+			break;
+		case 8:
+			entities.add(new Heart(entities.size()));
 			break;
 		default:
 			System.err.println("INVALID ENTITY");
@@ -439,7 +445,8 @@ public class LevelScreen extends Screen{
 		{
 			if(e.isLiving() 
 					&& !(e instanceof Player) 
-					&& !(e instanceof Sword))
+					&& !(e instanceof Sword)
+					&& !(e instanceof Heart))
 				state = 0; // enemy is still alive
 			if(!player.isLiving())
 				state = 2;
@@ -477,6 +484,14 @@ public class LevelScreen extends Screen{
 		
 		//reset sword
 		Sword.onePresent = false;
+		
+		//add hearts
+		GPoint pos;
+		for(int i = 0; i < player.curLives; i ++)
+		{
+			pos = Game.tilePosToScreen(8 + i, 0);
+			spawnEntity(8, (int)pos.getX(), (int)pos.getY());
+		}
 		
 		loadedOnce = true;
 	}
