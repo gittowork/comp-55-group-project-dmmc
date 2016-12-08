@@ -54,9 +54,12 @@ public class LevelScreen extends Screen{
 
 	public LevelScreen(int levelID)
 	{		
+		
 		//parse string from level data
 		super(Integer.parseInt(LevelData.getData(levelID)[0]),
 				Integer.parseInt(LevelData.getData(levelID)[1]));
+
+		Player.curLives = Player.maxLives;
 
 		curLevelID = levelID;
 				
