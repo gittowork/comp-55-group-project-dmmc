@@ -735,8 +735,17 @@ public class Game extends GraphicsProgram implements ActionListener{
 			else if(temp.gameState() == 4)
 			{
 				//won
-				//TODO
-				System.out.println("WON");
+				String[] buttons = {"Yay!"};    //exit and continue for pop ups 
+				int returnValue = JOptionPane.showOptionDialog(null, "YOU WON!!! \n Wave: " +  temp.getCurWave(), "CONGRATULATIONS",
+						JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[0]);
+				if(returnValue==0){
+					storeGameState=new Stack<GameState>();
+					storeScreen=new Stack<Screen>();
+					removeAll();
+					loadLeaderboards("LMap" + (mapIndex+1));
+					playMainSound(); //to get back to main menu song, and not have the game song keep playing after exiting.
+				}
+				
 			}
 		}
 	}
