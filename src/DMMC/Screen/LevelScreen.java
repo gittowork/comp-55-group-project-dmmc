@@ -123,7 +123,6 @@ public class LevelScreen extends Screen{
 			break;
 		case 7:
 			entities.add(new Kernel(entities.size(), -7));
-			System.out.println("Shoot");
 			break;
 		case 8:
 			entities.add(new Heart(entities.size()));
@@ -300,7 +299,6 @@ public class LevelScreen extends Screen{
 				//stay
 				y = -y;
 			}
-			System.out.println(type);
 			spawnEntity(type, x, y);
 		}
 			
@@ -337,7 +335,6 @@ public class LevelScreen extends Screen{
 	private void playerControls()
 	{
 		
-		//System.out.println("GameState: " + gameState());
 		
 		//keys down
 		if(keysDown != 0)
@@ -374,7 +371,6 @@ public class LevelScreen extends Screen{
 			}
 			
 			keysDown = 0;
-			System.out.println();
 		}
 
 		//keys pressed 
@@ -476,7 +472,6 @@ public class LevelScreen extends Screen{
 		}
 		//add entities
 		int maxIndex = (Integer.parseInt(levelData[startIndex]) * 3) + startIndex;
-		System.out.println("start index: " + startIndex + " max index: " + maxIndex);
 		for(int i = startIndex + 1; i < maxIndex; i += 3)
 		{
 			spawnEntity(Integer.parseInt(levelData[i]),

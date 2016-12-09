@@ -6,11 +6,13 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -254,11 +256,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		for(Entity e: temp.getEntities())
 			add(e.getScreenObj());
 		player = temp.getPlayerEntity();
-		//GButton button = new GButton("Pause", 50 , 50, 50, 50);
-		//add(button);
-		//button.drawCursor();
-		//button.addActionListener(this);
-		//((LevelScreen)currentScreen).setPauseButton(button);
+		
 	}
 
 	private void showPauseDialog(){
@@ -267,8 +265,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		int returnValue = JOptionPane.showOptionDialog(null, "Press exit to go to main menu, and continue to keep playing the game!", "Options",
 				JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[0]);
 		if(returnValue==0){
-			//storeGameState=new Stack<GameState>();
-			//storeScreen=new Stack<Screen>();
+			
 			removeAll();
 			loadMainMenu();
 			playMainSound(); //to get back to main menu song, and not have the game song keep playing after exiting.
@@ -284,9 +281,8 @@ public class Game extends GraphicsProgram implements ActionListener{
 				JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, buttons, buttons[0]);
 		if(returnValue == 1)
 		{
-			//doesnt work???
-			//storeGameState = new Stack<GameState>();
-			//storeScreen = new Stack<Screen>();
+
+		
 			removeAll();
 			loadHowTo();
 			playMainSound();
@@ -434,8 +430,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 		}
 		tmp.getGButton().drawCursor();
 
-		//reason for cursor bug:
-		//tmp.getGButton().drawCursor();
 	}
 
 
@@ -572,7 +566,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 			int i = 0;
 			GLabel nameLabel;
 			ArrayList<String> names = new ArrayList<String>();
-			for (String line : Files.readAllLines(Paths.get("../media/" + s + ".txt")))
+			for (String line : Files.readAllLines(Paths.get("../bin/" + s + ".txt")))
 			{
 				
 				names.add(line);
@@ -684,7 +678,6 @@ public class Game extends GraphicsProgram implements ActionListener{
 			if(!gamePaused)  //when not gamepaused, screen is updated(freeze screen)
 				temp.update();
 
-			//temp.update(); //may be repeated code
 
 			//add wave label
 			if(waveLabel == null)
@@ -696,8 +689,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 				waveLabel.setLabel("Wave: " + (temp.getCurWave() + 1));
 			}
 			waveLabel.setFont(new Font("Calibri", Font.PLAIN, 20));
-			waveLabel.setColor(Color.white);
-			//waveLabel.setLocation(new GPoint(0,0));
+			waveLabel.setColor(Color.white);			
 
 			if(temp.needsUpdating())
 			{
@@ -763,42 +755,16 @@ public class Game extends GraphicsProgram implements ActionListener{
 	
 	public void updateHighScores(String map, String name) throws IOException
 	{
-		/*ArrayList<String> names = new ArrayList<String>();
-		names.add(name);
-		for (int i = 1; i < 5; i ++)
-		{
-			try {
 		
-				for (String line : Files.readAllLines(Paths.get("../bin/" + map + ".txt")))
-				{
-					names.add(line);
-				}
-			} catch (IOException e1) {
-				System.err.println("leaderboard file not found");
+		
+		try(FileWriter fw = new FileWriter(map + ".txt", true);
+			    BufferedWriter bw = new BufferedWriter(fw);
+			    PrintWriter out = new PrintWriter(bw))
+			{
+			    out.println(name);
+			} catch (IOException e) {
+				System.err.println("IOException: " + e.getMessage());
 			}
-		}
-		
-		FileOutputStream writer = new FileOutputStream(map);
-		writer.write((names.get(0) + "\n").getBytes());
-		for (int i = 1; i < names.size(); i++)
-		{
-			writer.append(names.get(i) + "\n");
-			FileWriter fw = new FileWriter(map,true); //the true will append the new data
-			fw.write(names.get(i) + "\n");//appends the string to the file
-			fw.close();
-		}*/
-		
-		try
-		{
-			FileWriter fw = new FileWriter(map,true); //the true will append the new data
-			fw.write(name + "\n");//appends the string to the file
-			fw.close();
-		}
-		catch(IOException ioe)
-		{
-			System.err.println("IOException: " + ioe.getMessage());
-		}
-		
 		
 		
 	}

@@ -78,8 +78,7 @@ public abstract class LevelData {
 				"0","6","8",		
 				"1","6","3",
 				"1","6","6",
-				"2"
-/*				"4",//wave 3
+				"4",//wave 3
 				"0","6","8",		
 				"1","6","3",
 				"1","6","6",
@@ -100,7 +99,7 @@ public abstract class LevelData {
 				"2","6","1",
 				"3","6","2",
 				"5"//total number of waves
-*/			},
+			},
 			
 
 			{
