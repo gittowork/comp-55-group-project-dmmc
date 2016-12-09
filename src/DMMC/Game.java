@@ -662,6 +662,7 @@ public class Game extends GraphicsProgram implements ActionListener{
 		}
 		else if("How To".equals(event.getActionCommand())){
 			loadScreen(GameState.HowToScreen);
+			profiles.get(currentUser).setHelpPageStatus(true);
 
 		}
 		else if("Finishers".equals(event.getActionCommand())){
